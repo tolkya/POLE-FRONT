@@ -1,0 +1,16 @@
+services:
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pole-front-node
+    ports:
+      - "4200:4200"
+    volumes:
+      # Monte le code source pour le hot reload
+      - ./src:/app/src
+      - ./public:/app/public
+      # Exclut node_modules du volume (utilise ceux installés dans le container)
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
