@@ -1,5 +1,8 @@
 FROM node:22-alpine
 
+# Variable passée depuis docker-compose (via .env ou .env.dev)
+ARG API_BASE_URL=https://localhost
+
 WORKDIR /app
 
 # Installe Angular CLI globalement
@@ -13,6 +16,9 @@ RUN npm install
 
 # Copie le reste du code source
 COPY . .
+
+# Injecte l'URL du back en remplaçant le placeholder dans les fichiers environment Angular
+RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.ts src/environments/environment.development.ts
 
 # Expose le port de dev Angular
 EXPOSE 4200
