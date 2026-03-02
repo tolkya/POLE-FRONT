@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: dev
       args:
         API_BASE_URL: ${API_BASE_URL}
     container_name: pole-front-node
