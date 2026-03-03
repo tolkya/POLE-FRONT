@@ -4,13 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: dev
-      args:
-        API_BASE_URL: ${API_BASE_URL}
     container_name: pole-front-node
-    env_file:
-      - .env
-      - path: .env.dev
-        required: false
     ports:
       - "4200:4200"
     volumes:
