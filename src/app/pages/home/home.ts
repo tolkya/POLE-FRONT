@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth } from '../../core/services/auth';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Auth } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
