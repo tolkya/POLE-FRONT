@@ -13,13 +13,13 @@ export class Auth {
 
   login(email: string, password: string): Observable<void> {
     return this.http
-      .post<void>(`${environment.api.baseUrl}/api/login`, { email, password })
+      .post<void>(`${environment.api.baseUrl}login`, { email, password })
       .pipe(map(() => undefined));
   }
 
   logout(): void {
     this.http
-      .post(`${environment.api.baseUrl}/api/logout`, {})
+      .post(`${environment.api.baseUrl}logout`, {})
       .subscribe({ complete: () => void this.router.navigate(['/login']) });
   }
 }
