@@ -1,3 +1,5 @@
+@use '../../../styles/variables' as *;
+
 .home {
   min-height: 100vh;
   display: flex;
@@ -5,7 +7,7 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: #f8f7f4;
+  background: $color-bg;
 
   &__brand {
     text-align: center;
@@ -15,7 +17,7 @@
   &__logo {
     font-size: 2.8rem;
     font-weight: 800;
-    color: #7c3aed;
+    color: $color-primary;
     margin: 0 0 0.4rem;
     letter-spacing: -1px;
   }
@@ -27,18 +29,18 @@
   }
 
   &__content {
-    background: #fff;
-    border-radius: 14px;
+    background: $color-surface;
+    border-radius: $radius-lg;
     padding: 2.5rem;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+    box-shadow: $shadow-card;
   }
 
   &__section-title {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #1a1a2e;
+    color: $color-text;
     margin: 0 0 1.5rem;
   }
 
@@ -53,7 +55,7 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: #e5e7eb;
+      background: $color-border;
     }
 
     span {
@@ -69,77 +71,4 @@
     gap: 0.75rem;
   }
 
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.25rem;
-
-  label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.4rem;
-  }
-
-  input {
-    padding: 0.65rem 0.875rem;
-    border: 1.5px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.15s;
-    color: #1a1a2e;
-
-    &::placeholder { color: #9ca3af; }
-    &:focus { border-color: #7c3aed; }
-  }
-}
-
-.form-error {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
-  color: #dc2626;
-}
-
-.alert--error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  margin-bottom: 1.25rem;
-}
-
-.btn {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  transition: background 0.15s, opacity 0.15s;
-  border: none;
-
-  &--primary {
-    background: #7c3aed;
-    color: #fff;
-    margin-top: 0.5rem;
-
-    &:hover:not(:disabled) { background: #6d28d9; }
-    &:disabled { opacity: 0.6; cursor: not-allowed; }
-  }
-
-  &--secondary {
-    background: #f3f0ff;
-    color: #7c3aed;
-    border: 1.5px solid #ddd6fe;
-
-    &:hover { background: #ede9fe; }
-  }
 }

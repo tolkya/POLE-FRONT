@@ -8,12 +8,13 @@ export const routes: Routes = [
   { path: '', component: Home },
   { path: 'register/club-admin', component: RegisterClubAdmin },
   { path: 'register', component: Register },
-  {
-    path: 'dashboard/super-admin',
-    loadComponent: () =>
-      import('./pages/dashboard-super-admin/dashboard-super-admin').then(
-        (m) => m.DashboardSuperAdmin
-      ),
-    canActivate: [authGuard],
-  },
+  // TODO: décommenter après ng generate component pages/dashboard-super-admin
+  // {
+  //   path: 'dashboard/super-admin',
+  //   loadComponent: () =>
+  //     import('./pages/dashboard-super-admin/dashboard-super-admin').then(
+  //       (m) => m.DashboardSuperAdmin
+  //     ),
+  //   canActivate: [authGuard],
+  // },
 ];
