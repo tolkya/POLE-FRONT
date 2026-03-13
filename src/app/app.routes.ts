@@ -3,6 +3,7 @@ import { Home } from './pages/home/home';
 import { RegisterClubAdmin } from './pages/register-club-admin/register-club-admin';
 import { Register } from './pages/register/register';
 import { authGuard } from './core/guards/auth-guard';
+import { superAdminGuard } from './core/guards/super-admin-guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -15,6 +16,6 @@ export const routes: Routes = [
   //     import('./pages/dashboard-super-admin/dashboard-super-admin').then(
   //       (m) => m.DashboardSuperAdmin
   //     ),
-  //   canActivate: [authGuard],
+  //   canActivate: [authGuard, superAdminGuard],
   // },
 ];
