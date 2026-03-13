@@ -1,1 +1,4 @@
-<p>stats-card works!</p>
+<div class="stats-card" [class.stats-card--alert]="variant() === 'alert'">
+  <span class="stats-card__value">{{ value() }}</span>
+  <span class="stats-card__label">{{ label() }}</span>
+</div>

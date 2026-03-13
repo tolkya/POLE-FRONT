@@ -1,0 +1,38 @@
+@use '../../../../styles/variables' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: $color-surface;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+  &__brand {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: $color-primary;
+    letter-spacing: -0.5px;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: $color-text-muted;
+  }
+
+  &__logout {
+    padding: 0.4rem 1rem;
+    background: $color-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-sm;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover { opacity: 0.85; }
+  }
+}

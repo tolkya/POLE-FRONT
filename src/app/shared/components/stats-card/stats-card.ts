@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-stats-card',
@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
   templateUrl: './stats-card.html',
   styleUrl: './stats-card.scss',
 })
-export class StatsCard {}
+export class StatsCard {
+  readonly label = input.required<string>();
+  readonly value = input.required<number>();
+  readonly variant = input<'default' | 'alert'>('default');
+}
