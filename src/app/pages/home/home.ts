@@ -33,7 +33,18 @@ export class Home {
     const { email, password } = this.form.getRawValue();
 
     this.auth.login(email, password).subscribe({
-      next: () => void this.router.navigate(['/']),
+      next: () => {
+        this.auth.getMe().subscribe({
+          next: (user) => {
+            if (user.roles.includes('ROLE_SUPER_ADMIN')) {
+              void this.router.navigate(['/dashboard/super-admin']);
+            } else {
+              void this.router.navigate(['/dashboard']);
+            }
+          },
+          error: () => void this.router.navigate(['/'])
+        });
+      },
       error: (err: HttpErrorResponse) => {
         this.pending.set(false);
         if (err.status === 401) {
