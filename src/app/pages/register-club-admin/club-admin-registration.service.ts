@@ -26,7 +26,7 @@ export class ClubAdminRegistration {
 
   register(payload: ClubAdminRegistrationPayload): Observable<ClubAdminRegistrationResponse> {
     return this.http.post<ClubAdminRegistrationResponse>(
-      `${environment.api.baseUrl}register/club-admin`,
+      `${environment.api.baseUrl}/register/club-admin`,
       payload
     );
   }

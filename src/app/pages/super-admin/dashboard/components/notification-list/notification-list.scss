@@ -1,0 +1,72 @@
+@use '../../../../../../styles/variables' as *;
+
+.notif-list {
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $color-text;
+    margin: 0 0 1rem;
+  }
+
+  &__empty {
+    color: $color-text-muted;
+    font-size: 0.9rem;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: $radius-md;
+    background: $color-neutral-bg;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid $color-border;
+
+    &--unread {
+      background: $color-primary-light;
+      border-left-color: $color-primary;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__message {
+    font-size: 0.9rem;
+    color: $color-text;
+  }
+
+  &__date {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+  }
+
+  &__btn {
+    padding: 0.4rem 0.9rem;
+    background: $color-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-sm;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover { opacity: 0.85; }
+  }
+
+  &__badge {
+    padding: 0.3rem 0.75rem;
+    background: $color-neutral-bg;
+    color: $color-text-muted;
+    border-radius: $radius-sm;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid $color-border;
+    white-space: nowrap;
+  }
+}

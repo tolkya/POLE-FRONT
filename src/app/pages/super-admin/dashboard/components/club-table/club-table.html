@@ -1,1 +1,30 @@
-<p>club-table works!</p>
+<section class="club-table">
+  <h2 class="club-table__title">Clubs inscrits</h2>
+
+  @if (clubs().length === 0) {
+    <p class="club-table__empty">Aucun club inscrit.</p>
+  } @else {
+    <table class="club-table__table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Code</th>
+          <th>Inscrit le</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (club of clubs(); track club.id) {
+          <tr>
+            <td>{{ club.name }}</td>
+            <td>{{ club.email ?? '—' }}</td>
+            <td>{{ club.phone ?? '—' }}</td>
+            <td class="club-table__code">cde_{{ club.id }}</td>
+            <td>{{ club.createdAt | date:'dd/MM/yyyy' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

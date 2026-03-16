@@ -1,1 +1,23 @@
-<p>notification-list works!</p>
+<section class="notif-list">
+  <h2 class="notif-list__title">Notifications</h2>
+
+  @if (receipts().length === 0) {
+    <p class="notif-list__empty">Aucune notification.</p>
+  }
+
+  @for (receipt of receipts(); track receipt.id) {
+    <div class="notif-list__item" [class.notif-list__item--unread]="!receipt.isRead">
+      <div class="notif-list__content">
+        <span class="notif-list__message">{{ buildMessage(receipt) }}</span>
+        <span class="notif-list__date">{{ receipt.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+      </div>
+      @if (!receipt.isRead) {
+        <button class="notif-list__btn" (click)="onMarkAsRead(receipt.id)">
+          Marquer comme lu
+        </button>
+      } @else {
+        <span class="notif-list__badge">Lu</span>
+      }
+    </div>
+  }
+</section>

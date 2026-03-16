@@ -1,1 +1,22 @@
-<p>dashboard works!</p>
+<app-header />
+
+<main class="dashboard">
+  @if (stats(); as s) {
+    <section class="dashboard__stats">
+      <app-stats-card label="Clubs" [value]="s.clubs" />
+      <app-stats-card label="Utilisateurs" [value]="s.users" />
+      <app-stats-card label="Notifications non lues" [value]="s.unreadNotifications" variant="alert" />
+    </section>
+  }
+
+  <section class="dashboard__section">
+    <app-notification-list
+      [receipts]="receipts()"
+      (markAsRead)="onMarkAsRead($event)"
+    />
+  </section>
+
+  <section class="dashboard__section">
+    <app-club-table [clubs]="clubs()" />
+  </section>
+</main>

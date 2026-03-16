@@ -25,7 +25,7 @@ export class UserRegistrationService {
 
   register(payload: UserRegistrationPayload): Observable<UserRegistrationResponse> {
     return this.http.post<UserRegistrationResponse>(
-      `${environment.api.baseUrl}register`,
+      `${environment.api.baseUrl}/register`,
       payload
     );
   }

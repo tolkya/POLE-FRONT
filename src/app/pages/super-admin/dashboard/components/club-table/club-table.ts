@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
+export interface Club {
+  id: number;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  createdAt: string;
+}
 
 @Component({
   selector: 'app-club-table',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './club-table.html',
   styleUrl: './club-table.scss',
 })
-export class ClubTable {}
+export class ClubTable {
+  readonly clubs = input.required<Club[]>();
+}

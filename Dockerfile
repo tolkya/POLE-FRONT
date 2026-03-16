@@ -24,7 +24,7 @@ COPY . .
 EXPOSE 4200
 
 # Lance le serveur de développement en écoutant sur toutes les interfaces (obligatoire dans Docker)
-CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200"]
+CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--ssl"]
 
 
 # ============================================================

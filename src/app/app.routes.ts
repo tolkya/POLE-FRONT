@@ -6,16 +6,16 @@ import { authGuard } from './core/guards/auth-guard';
 import { superAdminGuard } from './core/guards/super-admin-guard';
 
 export const routes: Routes = [
-  { path: '', component: Home },
-  { path: 'register/club-admin', component: RegisterClubAdmin },
-  { path: 'register', component: Register },
-  // TODO: décommenter après ng generate component pages/dashboard-super-admin
-  // {
-  //   path: 'dashboard/super-admin',
-  //   loadComponent: () =>
-  //     import('./pages/dashboard-super-admin/dashboard-super-admin').then(
-  //       (m) => m.DashboardSuperAdmin
-  //     ),
-  //   canActivate: [authGuard, superAdminGuard],
-  // },
+    { path: '', component: Home },
+    { path: 'register/club-admin', component: RegisterClubAdmin },
+    { path: 'register', component: Register },
+    {
+    path: 'dashboard/super-admin',
+    loadComponent: () =>
+        import('./pages/super-admin/dashboard/dashboard').then(
+        (m) => m.Dashboard
+        ),
+    canActivate: [superAdminGuard],
+    },
+
 ];
