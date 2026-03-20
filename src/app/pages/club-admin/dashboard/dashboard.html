@@ -28,7 +28,31 @@
   </section>
 
   <section class="dashboard__section">
-    <h2>Membres du club</h2>
-    <p>Liste des membres à venir...</p>
+    <h2>Membres du club ({{ members().length }})</h2>
+    
+    @if (members().length === 0) {
+      <p class="empty">Aucun membre pour le moment.</p>
+    } @else {
+      <table class="members-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Rôle(s)</th>
+            <th>Inscrit le</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (m of members(); track m.member.email) {
+            <tr>
+              <td>{{ m.member.firstName }} {{ m.member.lastName }}</td>
+              <td>{{ m.member.email }}</td>
+              <td>{{ m.roles.join(', ') }}</td>
+              <td>{{ m.createdAt | date:'dd/MM/yyyy' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
   </section>
 </main>

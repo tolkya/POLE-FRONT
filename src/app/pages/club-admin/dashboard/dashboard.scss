@@ -84,3 +84,33 @@
     }
   }
 }
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    background: $color-neutral-bg;
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  td {
+    color: $color-text-muted;
+  }
+
+  tr:hover td {
+    background: rgba($color-primary, 0.02);
+  }
+}
+
+.empty {
+  color: $color-text-muted;
+  font-style: italic;
+}
