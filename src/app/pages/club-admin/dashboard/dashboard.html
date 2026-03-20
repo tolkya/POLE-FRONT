@@ -1,0 +1,34 @@
+<app-header />
+
+<main class="dashboard">
+  <section class="dashboard__club-info">
+    <h1>Mon Club</h1>
+    
+    @if (currentClub(); as club) {
+      <div class="club-card">
+        <h2>{{ club.club.name }}</h2>
+        <p><strong>Rôle :</strong> {{ club.roles.join(', ') }}</p>
+        <p><strong>Membre depuis :</strong> {{ club.validatedAt || 'En attente' }}</p>
+      </div>
+    }
+
+    @if (userClubs().length > 1) {
+      <div class="club-switcher">
+        <h3>Changer de club</h3>
+        @for (uc of userClubs(); track uc.club.id) {
+          <button 
+            (click)="selectClub(uc)"
+            [class.active]="currentClub()?.club?.id === uc.club.id"
+          >
+            {{ uc.club.name }} ({{ uc.roles.join(', ') }})
+          </button>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="dashboard__section">
+    <h2>Membres du club</h2>
+    <p>Liste des membres à venir...</p>
+  </section>
+</main>
