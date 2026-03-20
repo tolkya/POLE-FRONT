@@ -31,6 +31,15 @@ export class Dashboard implements OnInit {
     phone: [''],
   });
 
+  readonly creatingClub = signal(false);
+  readonly creatingClubPending = signal(false);
+
+  readonly createClubForm = this.fb.nonNullable.group({
+    name: ['', Validators.required],
+    email: [''],
+    phone: [''],
+  });
+
   constructor() {
     effect(() => {
       const club = this.currentClub();
@@ -82,6 +91,30 @@ export class Dashboard implements OnInit {
         }
       },
       error: () => this.saving.set(false),
+    });
+  }
+
+  startCreateClub(): void {
+    this.createClubForm.reset();
+    this.creatingClub.set(true);
+  }
+
+  cancelCreateClub(): void {
+    this.creatingClub.set(false);
+  }
+
+  submitCreateClub(): void {
+    if (this.createClubForm.invalid || this.creatingClubPending()) return;
+
+    this.creatingClubPending.set(true);
+    this.clubService.createClub(this.createClubForm.getRawValue()).subscribe({
+      next: () => {
+        this.creatingClub.set(false);
+        this.creatingClubPending.set(false);
+        // Recharger les clubs de l'utilisateur
+        this.userClubsService.fetchUserClubs().subscribe();
+      },
+      error: () => this.creatingClubPending.set(false),
     });
   }
 

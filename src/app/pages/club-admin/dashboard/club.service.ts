@@ -8,10 +8,17 @@ export interface Club {
   name: string;
   email: string | null;
   phone: string | null;
+  clubCode: string;
 }
 
 export interface ClubUpdateDto {
   name?: string;
+  email?: string;
+  phone?: string;
+}
+
+export interface ClubCreateDto {
+  name: string;
   email?: string;
   phone?: string;
 }
@@ -32,5 +39,9 @@ export class ClubService {
       data,
       { headers: { 'Content-Type': 'application/merge-patch+json' } }
     );
+  }
+
+  createClub(data: ClubCreateDto): Observable<Club> {
+    return this.http.post<Club>(`${environment.api.baseUrl}/clubs`, data);
   }
 }
