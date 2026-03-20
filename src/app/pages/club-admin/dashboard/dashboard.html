@@ -4,12 +4,36 @@
   <section class="dashboard__club-info">
     <h1>Mon Club</h1>
     
-    @if (currentClub(); as club) {
-      <div class="club-card">
-        <h2>{{ club.club.name }}</h2>
-        <p><strong>Rôle :</strong> {{ club.roles.join(', ') }}</p>
-        <p><strong>Membre depuis :</strong> {{ club.validatedAt || 'En attente' }}</p>
-      </div>
+    @if (clubDetails(); as club) {
+      @if (editing()) {
+        <form class="club-form" [formGroup]="editForm" (ngSubmit)="saveClub()">
+          <div class="form-group">
+            <label for="name">Nom du club *</label>
+            <input id="name" type="text" formControlName="name" />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input id="phone" type="text" formControlName="phone" />
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="cancelEdit()">Annuler</button>
+            <button type="submit" class="btn-primary" [disabled]="editForm.invalid || saving()">
+              {{ saving() ? 'Enregistrement...' : 'Enregistrer' }}
+            </button>
+          </div>
+        </form>
+      } @else {
+        <div class="club-card">
+          <h2>{{ club.name }}</h2>
+          <p><strong>Email :</strong> {{ club.email || 'Non renseigné' }}</p>
+          <p><strong>Téléphone :</strong> {{ club.phone || 'Non renseigné' }}</p>
+          <button class="btn-edit" (click)="startEdit()">Modifier</button>
+        </div>
+      }
     }
 
     @if (userClubs().length > 1) {
