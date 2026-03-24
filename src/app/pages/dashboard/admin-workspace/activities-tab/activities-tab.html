@@ -26,14 +26,113 @@
             </thead>
             <tbody>
               @for (a of group.items; track a.id) {
-                <tr>
+                <tr [class.selected]="selectedActivityId() === a.id">
                   <td>{{ a.name }}</td>
                   <td class="description-cell">{{ a.description || '—' }}</td>
                   <td>{{ a.status }}</td>
-                  <td>
+                  <td class="actions-cell">
+                    <button class="btn-ghost btn-sm" (click)="selectActivity(a.id)">
+                      {{ selectedActivityId() === a.id ? 'Fermer' : 'Niveaux' }}
+                    </button>
                     <button class="btn-danger btn-sm" (click)="onDelete(a.id)">Supprimer</button>
                   </td>
                 </tr>
+
+                @if (selectedActivityId() === a.id) {
+                  <tr class="levels-row">
+                    <td colspan="4">
+                      <div class="levels-panel">
+                        <div class="levels-panel__header">
+                          <h4>Niveaux de « {{ a.name }} »</h4>
+                          @if (!showLevelForm()) {
+                            <button class="btn-secondary btn-sm" (click)="showLevelForm.set(true)">+ Ajouter un niveau</button>
+                          }
+                        </div>
+
+                        @if (levelsLoading()) {
+                          <p class="loading-text">Chargement…</p>
+                        }
+
+                        @if (showLevelForm()) {
+                          <div class="level-form">
+                            <p-select
+                              [options]="levelValues"
+                              [ngModel]="newLevelValue()"
+                              (ngModelChange)="newLevelValue.set($event)"
+                              optionLabel="label"
+                              optionValue="value"
+                              placeholder="Choisir un niveau…"
+                              styleClass="w-full"
+                            />
+                            <input
+                              type="text"
+                              [value]="newLevelDescription()"
+                              (input)="newLevelDescription.set($any($event.target).value)"
+                              placeholder="Description (optionnel)"
+                            />
+                            <div class="form-actions">
+                              <button class="btn-secondary btn-sm" (click)="showLevelForm.set(false)">Annuler</button>
+                              <button
+                                class="btn-primary btn-sm"
+                                [disabled]="!newLevelValue() || levelSaving()"
+                                (click)="submitAddLevel()"
+                              >{{ levelSaving() ? '…' : 'Ajouter' }}</button>
+                            </div>
+                          </div>
+                        }
+
+                        @if (levels().length === 0 && !levelsLoading()) {
+                          <p class="empty-small">Aucun niveau défini.</p>
+                        }
+
+                        @for (lvl of levels(); track lvl.id) {
+                          <div class="level-block">
+                            <div class="level-block__header">
+                              <span class="level-badge">{{ getLevelLabel(lvl.value) }}</span>
+                              @if (lvl.description) {
+                                <span class="level-desc">{{ lvl.description }}</span>
+                              }
+                              <button class="btn-danger btn-xs ml-auto" (click)="deleteLevel(lvl.id)">Supprimer</button>
+                            </div>
+
+                            <ul class="skills-list">
+                              @for (skill of getSkills(lvl.id); track skill.id) {
+                                <li class="skill-item">
+                                  <span>{{ skill.name }}</span>
+                                  <button class="btn-ghost btn-xs" (click)="deleteSkill(lvl.id, skill.id)">✕</button>
+                                </li>
+                              }
+                              @if (getSkills(lvl.id).length === 0) {
+                                <li class="skill-item--empty">Aucune compétence.</li>
+                              }
+                            </ul>
+
+                            @if (openSkillFormForLevelId() === lvl.id) {
+                              <div class="skill-form">
+                                <input
+                                  type="text"
+                                  [value]="newSkillName()"
+                                  (input)="newSkillName.set($any($event.target).value)"
+                                  placeholder="Nom de la compétence *"
+                                />
+                                <div class="form-actions">
+                                  <button class="btn-secondary btn-xs" (click)="cancelSkillForm()">Annuler</button>
+                                  <button
+                                    class="btn-primary btn-xs"
+                                    [disabled]="!newSkillName().trim() || skillSaving()"
+                                    (click)="submitAddSkill(lvl.id)"
+                                  >{{ skillSaving() ? '…' : 'Ajouter' }}</button>
+                                </div>
+                              </div>
+                            } @else {
+                              <button class="btn-link btn-sm" (click)="openSkillForm(lvl.id)">+ Ajouter une compétence</button>
+                            }
+                          </div>
+                        }
+                      </div>
+                    </td>
+                  </tr>
+                }
               }
             </tbody>
           </table>
@@ -118,7 +217,7 @@
         class="btn-primary"
         [disabled]="!disciplineNewName().trim() || !selectedType() || disciplineSaving()"
         (click)="submitAddDiscipline()"
-      >{{ disciplineSaving() ? 'Enregistrement...' : 'Ajouter' }}</button>
+      >{{ disciplineSaving() ? '...' : 'Créer' }}</button>
     </div>
   </div>
 }

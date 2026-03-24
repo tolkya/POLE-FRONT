@@ -145,3 +145,121 @@
   font-size: 0.85rem;
   max-width: 250px;
 }
+
+tr.selected td {
+  background-color: rgba($color-primary, 0.05);
+}
+
+tr.levels-row td {
+  padding: 0;
+  border-top: none;
+}
+
+.levels-panel {
+  background: $color-neutral-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: 1rem 1.25rem;
+  margin: 0.5rem 0 1rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+  }
+}
+
+.level-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  input { flex: 1; min-width: 160px; }
+}
+
+.level-block {
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  background: white;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.level-badge {
+  background: $color-primary;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.level-desc {
+  font-size: 0.85rem;
+  color: $color-text-muted;
+}
+
+.skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: $color-neutral-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.skill-item--empty {
+  font-size: 0.8rem;
+  color: $color-text-muted;
+  font-style: italic;
+}
+
+.skill-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.5rem;
+
+  input { flex: 1; min-width: 140px; }
+}
+
+.btn-xs {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.loading-text, .empty-small {
+  font-size: 0.85rem;
+  color: $color-text-muted;
+  font-style: italic;
+}
+
+.ml-auto { margin-left: auto; }
