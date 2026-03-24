@@ -1,0 +1,91 @@
+@use 'variables' as *;
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: $color-primary;
+  color: #fff;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: opacity $transition-base;
+
+  &:hover:not(:disabled) { opacity: 0.88; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  background: $color-primary-light;
+  color: $color-primary;
+  border: none;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background $transition-base;
+
+  &:hover:not(:disabled) { background: darken($color-primary-light, 4%); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: #fee2e2;
+  color: #991b1b;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.82rem;
+  transition: background $transition-base;
+
+  &:hover:not(:disabled) { background: #fecaca; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-success {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: #d1fae5;
+  color: #065f46;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.82rem;
+  transition: background $transition-base;
+
+  &:hover:not(:disabled) { background: #a7f3d0; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: none;
+  color: $color-text-muted;
+  border: 1px dashed $color-border;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: border-color $transition-base, color $transition-base;
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+}

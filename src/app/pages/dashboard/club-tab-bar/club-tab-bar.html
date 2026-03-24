@@ -1,0 +1,17 @@
+<nav class="tab-bar">
+  @for (uc of userClubs(); track uc.club.id) {
+    <button
+      class="club-tab"
+      [class.active]="isActive(uc)"
+      (click)="clubSelected.emit(uc)"
+    >
+      <span class="role-icon">{{ roleIcons[getMainRole(uc)] }}</span>
+      {{ uc.club.name }}
+    </button>
+  }
+
+  <span class="spacer"></span>
+
+  <button class="action-tab" (click)="joinClub.emit()">🔍 Rejoindre</button>
+  <button class="action-tab" (click)="createClub.emit()">+ Créer</button>
+</nav>

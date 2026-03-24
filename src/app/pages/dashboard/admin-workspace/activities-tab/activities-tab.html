@@ -1,0 +1,78 @@
+@if (activities().length === 0) {
+  <p class="empty">Aucune activité pour le moment.</p>
+} @else {
+  <table class="activities-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Type</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (a of activities(); track a.id) {
+        <tr>
+          <td>{{ a.name }}</td>
+          <td>{{ a.activityType.name || '—' }}</td>
+          <td>{{ a.status }}</td>
+          <td>
+            <button class="btn-danger" (click)="onDelete(a.id)">Supprimer</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+@if (!showForm()) {
+  <button class="btn-primary btn-create" (click)="showForm.set(true)">+ Ajouter une activité</button>
+} @else {
+  <div class="create-form">
+    <h3>Nouvelle activité</h3>
+    <div class="form-group">
+      <label>Nom *</label>
+      <input
+        type="text"
+        [value]="newName()"
+        (input)="newName.set($any($event.target).value)"
+        placeholder="Ex : Pole Sport Adultes"
+      />
+    </div>
+    <div class="form-group">
+      <label>Type d'activité *</label>
+      <input
+        type="text"
+        [value]="typeSearch()"
+        (input)="onTypeInput($event)"
+        placeholder="Rechercher un type..."
+        autocomplete="off"
+      />
+      @if (typeSuggestions().length > 0) {
+        <ul class="suggestions">
+          @for (t of typeSuggestions(); track t.id) {
+            <li (click)="selectType(t)">{{ t.name }}</li>
+          }
+        </ul>
+      }
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        rows="2"
+        [value]="newDescription()"
+        (input)="newDescription.set($any($event.target).value)"
+        placeholder="Optionnel"
+      ></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn-secondary" type="button" (click)="resetForm()">Annuler</button>
+      <button
+        class="btn-primary"
+        type="button"
+        [disabled]="!newName().trim() || !selectedType() || saving()"
+        (click)="submitCreate()"
+      >{{ saving() ? 'Enregistrement...' : 'Ajouter' }}</button>
+    </div>
+  </div>
+}

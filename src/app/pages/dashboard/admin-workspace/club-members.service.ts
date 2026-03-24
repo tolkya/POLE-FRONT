@@ -10,6 +10,7 @@ export interface MemberUser {
 }
 
 export interface ClubMember {
+  id: number;
   member: MemberUser;
   roles: string[];
   validatedAt: string | null;
@@ -31,10 +32,8 @@ export class ClubMembersService {
     return this.http
       .get<HydraCollection<ClubMember>>(
         `${environment.api.baseUrl}/clubs/${clubId}/members`,
-        {
-          headers: new HttpHeaders({ Accept: 'application/ld+json' }),
-        }
+        { headers: new HttpHeaders({ Accept: 'application/ld+json' }) }
       )
-      .pipe(map((response) => response.member));
+      .pipe(map((r) => r.member));
   }
 }

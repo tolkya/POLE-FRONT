@@ -3,8 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
+export type ClubRole = 'ADMIN' | 'TEACHER' | 'SECRETARY' | 'MEMBER' | 'USER';
+
 export interface UserClubPatchDto {
-  roles?: string[];
+  roles?: ClubRole[];
   validatedAt?: string | null;
 }
 

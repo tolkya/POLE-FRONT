@@ -1,0 +1,46 @@
+@if (members().length === 0) {
+  <p class="empty">Aucun membre pour le moment.</p>
+} @else {
+  <table class="members-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Rôle(s)</th>
+        <th>Inscrit le</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (m of members(); track m.id) {
+        <tr>
+          <td>{{ m.member.firstName }} {{ m.member.lastName }}</td>
+          <td>{{ m.member.email }}</td>
+          <td>
+            @for (r of m.roles; track r) {
+              <span class="badge" [class.badge--pending]="r === 'USER'">
+                {{ roleLabels[r] || r }}
+              </span>
+            }
+          </td>
+          <td>{{ m.createdAt | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <div class="actions">
+              @if (!m.validatedAt) {
+                <button class="btn-success" (click)="onValidate(m.id)">Valider</button>
+              }
+              <select (change)="onChangeRole(m.id, $event)">
+                @for (r of roles; track r) {
+                  <option [value]="r" [selected]="m.roles.includes(r)">
+                    {{ roleLabels[r] }}
+                  </option>
+                }
+              </select>
+              <button class="btn-danger" (click)="onRemove(m.id)">Retirer</button>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

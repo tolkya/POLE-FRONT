@@ -20,7 +20,7 @@ export interface Activity {
 export interface ActivityCreateDto {
   name: string;
   description?: string;
-  activityType: string; // IRI : /api/activity-types/{id}
+  activityType: string;
 }
 
 interface HydraCollection<T> {

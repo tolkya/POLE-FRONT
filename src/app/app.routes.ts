@@ -1,30 +1,37 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
-import { RegisterClubAdmin } from './pages/register-club-admin/register-club-admin';
-import { Register } from './pages/register/register';
-import { authGuard } from './core/guards/auth-guard';
-import { clubAdminGuard } from './core/guards/club-admin-guard';
 import { superAdminGuard } from './core/guards/super-admin-guard';
-
+import { dashboardGuard } from './core/guards/dashboard-guard';
 
 export const routes: Routes = [
-    { path: '', component: Home },
-    { path: 'register/club-admin', component: RegisterClubAdmin },
-    { path: 'register', component: Register },
-    {
-        path: 'dashboard/super-admin',
-        loadComponent: () =>
-            import('./pages/super-admin/dashboard/dashboard').then(
-                (m) => m.Dashboard
-            ),
-        canActivate: [superAdminGuard],
-    },
-    {
-        path: 'dashboard/club-admin',
-        loadComponent: () =>
-            import('./pages/club-admin/dashboard/dashboard').then(
-                (m) => m.Dashboard
-            ),
-        canActivate: [clubAdminGuard],
-    },
+  {
+    path: '',
+    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
+  },
+  {
+    path: 'register/club-admin',
+    loadComponent: () =>
+      import('./pages/register-club-admin/register-club-admin').then(
+        (m) => m.RegisterClubAdmin
+      ),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register/register').then((m) => m.Register),
+  },
+  {
+    path: 'dashboard/super-admin',
+    loadComponent: () =>
+      import('./pages/super-admin/dashboard/dashboard').then(
+        (m) => m.Dashboard
+      ),
+    canActivate: [superAdminGuard],
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+    canActivate: [dashboardGuard],
+  },
+  { path: '**', redirectTo: '' },
 ];

@@ -9,6 +9,7 @@ export interface ClubSummary {
 }
 
 export interface UserClub {
+  id: number;
   club: ClubSummary;
   roles: string[];
   validatedAt: string | null;

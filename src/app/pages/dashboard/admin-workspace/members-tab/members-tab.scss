@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+.empty {
+  color: $color-text-muted;
+  padding: 16px 0;
+}
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    font-weight: 600;
+    color: $color-text-muted;
+    font-size: 0.85rem;
+  }
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: $color-primary-light;
+  color: $color-primary;
+  margin-right: 4px;
+
+  &--pending {
+    background: $color-warning-bg;
+    color: #92400e;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+select {
+  padding: 4px 8px;
+  border-radius: $radius-sm;
+  border: 1px solid $color-border;
+  font-size: 0.82rem;
+}

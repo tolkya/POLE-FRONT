@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 export interface Club {
   id: number;
@@ -43,5 +43,12 @@ export class ClubService {
 
   createClub(data: ClubCreateDto): Observable<Club> {
     return this.http.post<Club>(`${environment.api.baseUrl}/clubs`, data);
+  }
+
+  joinClub(clubCode: string): Observable<void> {
+    return this.http.post<void>(
+      `${environment.api.baseUrl}/user-clubs/join`,
+      { clubCode }
+    );
   }
 }

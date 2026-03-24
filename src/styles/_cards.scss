@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+.card {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: 24px;
+  box-shadow: $shadow-card;
+}
+
+.card--flat {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: 24px;
+}
+
+.card--neutral {
+  background: $color-neutral-bg;
+  border-radius: $radius-lg;
+  padding: 20px;
+}
