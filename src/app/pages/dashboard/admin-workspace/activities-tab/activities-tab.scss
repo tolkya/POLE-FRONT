@@ -67,3 +67,81 @@
   gap: 10px;
   margin-top: 8px;
 }
+
+.discipline-group {
+  margin-bottom: 2rem;
+}
+
+.discipline-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $color-primary;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inline-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+
+  .form-group {
+    flex: 1;
+    min-width: 150px;
+  }
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: $color-primary;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px 0;
+  margin-top: 0.25rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn-add-discipline {
+  margin-top: 1rem;
+}
+
+.discipline-form {
+  margin-top: 1.5rem;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: 1rem;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+.discipline-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+:host ::ng-deep .p-accordionheader {
+  display: flex;
+  align-items: center;
+
+  .p-badge {
+    margin-left: auto;
+    margin-right: 0.5rem;
+  }
+}
+
+.description-cell {
+  color: $color-text-muted;
+  font-size: 0.85rem;
+  max-width: 250px;
+}

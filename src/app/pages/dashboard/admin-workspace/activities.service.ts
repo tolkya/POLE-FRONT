@@ -65,4 +65,13 @@ export class ActivitiesService {
       )
       .pipe(map((r) => r.member));
   }
+
+  getAllActivityTypes(): Observable<ActivityType[]> {
+    return this.http
+      .get<HydraCollection<ActivityType>>(
+        `${environment.api.baseUrl}/activity-types`,
+        { headers: new HttpHeaders({ Accept: 'application/ld+json' }) }
+      )
+      .pipe(map((r) => r.member));
+  }
 }

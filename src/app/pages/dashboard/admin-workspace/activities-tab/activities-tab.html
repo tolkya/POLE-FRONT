@@ -1,78 +1,124 @@
-@if (activities().length === 0) {
+@if (groupedActivities().length === 0 && !showAddDisciplineForm()) {
   <p class="empty">Aucune activité pour le moment.</p>
-} @else {
-  <table class="activities-table">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Type</th>
-        <th>Statut</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (a of activities(); track a.id) {
-        <tr>
-          <td>{{ a.name }}</td>
-          <td>{{ a.activityType.name || '—' }}</td>
-          <td>{{ a.status }}</td>
-          <td>
-            <button class="btn-danger" (click)="onDelete(a.id)">Supprimer</button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
 }
 
-@if (!showForm()) {
-  <button class="btn-primary btn-create" (click)="showForm.set(true)">+ Ajouter une activité</button>
+@if (groupedActivities().length > 0) {
+  <p-accordion [multiple]="true">
+    @for (group of groupedActivities(); track group.type.id) {
+      <p-accordion-panel [value]="group.type.id">
+        <p-accordion-header>
+          <ng-template #toggleicon let-active="active">
+            <i [class]="active ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" style="margin-right: 0.5rem;"></i>
+          </ng-template>
+          <span class="discipline-label">{{ group.type.name }}</span>
+          <p-badge [value]="group.items.length.toString()" class="ml-auto mr-2" />
+        </p-accordion-header>
+
+        <p-accordion-content>
+          <table class="activities-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (a of group.items; track a.id) {
+                <tr>
+                  <td>{{ a.name }}</td>
+                  <td class="description-cell">{{ a.description || '—' }}</td>
+                  <td>{{ a.status }}</td>
+                  <td>
+                    <button class="btn-danger btn-sm" (click)="onDelete(a.id)">Supprimer</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (openFormForTypeId() === group.type.id) {
+            <div class="inline-form">
+              <div class="form-group">
+                <input
+                  type="text"
+                  [value]="inlineNewName()"
+                  (input)="inlineNewName.set($any($event.target).value)"
+                  placeholder="Nom de la sous-discipline *"
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="text"
+                  [value]="inlineNewDescription()"
+                  (input)="inlineNewDescription.set($any($event.target).value)"
+                  placeholder="Description (optionnel)"
+                />
+              </div>
+              <div class="form-actions">
+                <button class="btn-secondary btn-sm" (click)="cancelInlineForm()">Annuler</button>
+                <button
+                  class="btn-primary btn-sm"
+                  [disabled]="!inlineNewName().trim() || inlineSaving()"
+                  (click)="submitInlineCreate(group.type)"
+                >{{ inlineSaving() ? '...' : 'Ajouter' }}</button>
+              </div>
+            </div>
+          } @else {
+            <button class="btn-link" (click)="openInlineForm(group.type.id)">+ Ajouter une sous-discipline</button>
+          }
+        </p-accordion-content>
+      </p-accordion-panel>
+    }
+  </p-accordion>
+}
+
+@if (!showAddDisciplineForm()) {
+  <button class="btn-secondary btn-add-discipline" (click)="showAddDisciplineForm.set(true)">
+    + Ajouter une activité
+  </button>
 } @else {
-  <div class="create-form">
+  <div class="discipline-form">
     <h3>Nouvelle activité</h3>
     <div class="form-group">
-      <label>Nom *</label>
-      <input
-        type="text"
-        [value]="newName()"
-        (input)="newName.set($any($event.target).value)"
-        placeholder="Ex : Pole Sport Adultes"
+      <label>Discipline *</label>
+      <p-select
+        [options]="allActivityTypes()"
+        [ngModel]="selectedType()"
+        (ngModelChange)="selectedType.set($event)"
+        optionLabel="name"
+        [filter]="true"
+        filterBy="name"
+        placeholder="Sélectionner une discipline..."
+        styleClass="w-full"
       />
     </div>
     <div class="form-group">
-      <label>Type d'activité *</label>
+      <label>Nom de la sous-discipline *</label>
       <input
         type="text"
-        [value]="typeSearch()"
-        (input)="onTypeInput($event)"
-        placeholder="Rechercher un type..."
-        autocomplete="off"
+        [value]="disciplineNewName()"
+        (input)="disciplineNewName.set($any($event.target).value)"
+        placeholder="Ex : Heels débutantes"
       />
-      @if (typeSuggestions().length > 0) {
-        <ul class="suggestions">
-          @for (t of typeSuggestions(); track t.id) {
-            <li (click)="selectType(t)">{{ t.name }}</li>
-          }
-        </ul>
-      }
     </div>
     <div class="form-group">
       <label>Description</label>
       <textarea
         rows="2"
-        [value]="newDescription()"
-        (input)="newDescription.set($any($event.target).value)"
+        [value]="disciplineNewDescription()"
+        (input)="disciplineNewDescription.set($any($event.target).value)"
         placeholder="Optionnel"
       ></textarea>
     </div>
     <div class="form-actions">
-      <button class="btn-secondary" type="button" (click)="resetForm()">Annuler</button>
+      <button class="btn-secondary" (click)="resetDisciplineForm()">Annuler</button>
       <button
         class="btn-primary"
-        type="button"
-        [disabled]="!newName().trim() || !selectedType() || saving()"
-        (click)="submitCreate()"
-      >{{ saving() ? 'Enregistrement...' : 'Ajouter' }}</button>
+        [disabled]="!disciplineNewName().trim() || !selectedType() || disciplineSaving()"
+        (click)="submitAddDiscipline()"
+      >{{ disciplineSaving() ? 'Enregistrement...' : 'Ajouter' }}</button>
     </div>
   </div>
 }
