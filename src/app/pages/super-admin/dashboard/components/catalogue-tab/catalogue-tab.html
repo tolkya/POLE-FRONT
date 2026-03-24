@@ -1,0 +1,72 @@
+<div class="catalogue-header">
+  <h3>Catalogue des disciplines</h3>
+  @if (!showForm()) {
+    <button class="btn-primary" (click)="showForm.set(true)">+ Nouvelle discipline</button>
+  }
+</div>
+
+@if (showForm()) {
+  <div class="create-form">
+    <div class="form-group">
+      <label>Nom *</label>
+      <input
+        type="text"
+        [value]="newName()"
+        (input)="newName.set($any($event.target).value)"
+        placeholder="Ex : Pole Dance"
+      />
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        rows="2"
+        [value]="newDescription()"
+        (input)="newDescription.set($any($event.target).value)"
+        placeholder="Optionnel"
+      ></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn-secondary" type="button" (click)="resetForm()">Annuler</button>
+      <button
+        class="btn-primary"
+        type="button"
+        [disabled]="!newName().trim() || saving()"
+        (click)="submitCreate()"
+      >{{ saving() ? 'Enregistrement...' : 'Ajouter' }}</button>
+    </div>
+  </div>
+}
+
+@if (types().length === 0) {
+  <p class="empty">Aucune discipline dans le catalogue.</p>
+} @else {
+  <table class="catalogue-table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of types(); track t.id) {
+        <tr [class.blocked]="t.status === 'BLOCKED'">
+          <td>{{ t.name }}</td>
+          <td>{{ t.description || '—' }}</td>
+          <td>
+            <span class="badge" [class.badge--blocked]="t.status === 'BLOCKED'">
+              {{ t.status === 'ACTIVE' ? 'Active' : 'Bloquée' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn-secondary btn-sm" (click)="toggleStatus(t)">
+              {{ t.status === 'ACTIVE' ? 'Bloquer' : 'Réactiver' }}
+            </button>
+            <button class="btn-danger btn-sm" (click)="delete(t.id)">Supprimer</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

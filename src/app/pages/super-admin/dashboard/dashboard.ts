@@ -3,14 +3,16 @@ import { Header } from '../../../shared/components/header/header';
 import { StatsCard } from '../../../shared/components/stats-card/stats-card';
 import { NotificationList } from './components/notification-list/notification-list';
 import { ClubTable, Club } from './components/club-table/club-table';
+import { CatalogueTab } from './components/catalogue-tab/catalogue-tab';
 import { StatsService, Stats } from './stats.service';
 import { NotificationReceiptsService, NotificationReceipt } from './notification-receipts.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [Header, StatsCard, NotificationList, ClubTable],
+  imports: [Header, StatsCard, NotificationList, ClubTable, CatalogueTab, Tabs, TabList, Tab, TabPanels, TabPanel],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

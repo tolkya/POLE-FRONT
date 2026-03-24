@@ -9,14 +9,34 @@
     </section>
   }
 
-  <section class="dashboard__section">
-    <app-notification-list
-      [receipts]="receipts()"
-      (markAsRead)="onMarkAsRead($event)"
-    />
-  </section>
+  <p-tabs value="notifications">
+    <p-tablist>
+      <p-tab value="notifications">Notifications</p-tab>
+      <p-tab value="clubs">Clubs</p-tab>
+      <p-tab value="catalogue">Catalogue</p-tab>
+    </p-tablist>
 
-  <section class="dashboard__section">
-    <app-club-table [clubs]="clubs()" />
-  </section>
+    <p-tabpanels>
+      <p-tabpanel value="notifications">
+        <div class="dashboard__section">
+          <app-notification-list
+            [receipts]="receipts()"
+            (markAsRead)="onMarkAsRead($event)"
+          />
+        </div>
+      </p-tabpanel>
+
+      <p-tabpanel value="clubs">
+        <div class="dashboard__section">
+          <app-club-table [clubs]="clubs()" />
+        </div>
+      </p-tabpanel>
+
+      <p-tabpanel value="catalogue">
+        <div class="dashboard__section">
+          <app-catalogue-tab />
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 </main>
