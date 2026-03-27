@@ -42,93 +42,172 @@
                   <tr class="levels-row">
                     <td colspan="4">
                       <div class="levels-panel">
-                        <div class="levels-panel__header">
-                          <h4>Niveaux de « {{ a.name }} »</h4>
-                          @if (!showLevelForm()) {
-                            <button class="btn-secondary btn-sm" (click)="showLevelForm.set(true)">+ Ajouter un niveau</button>
-                          }
-                        </div>
+                        <p-tabs value="niveaux">
+                          <p-tablist>
+                            <p-tab value="niveaux">Niveaux</p-tab>
+                            <p-tab value="inscrits">Inscrits ({{ approvedMembers().length }})</p-tab>
+                          </p-tablist>
+                          <p-tabpanels>
 
-                        @if (levelsLoading()) {
-                          <p class="loading-text">Chargement…</p>
-                        }
-
-                        @if (showLevelForm()) {
-                          <div class="level-form">
-                            <p-select
-                              [options]="levelValues"
-                              [ngModel]="newLevelValue()"
-                              (ngModelChange)="newLevelValue.set($event)"
-                              optionLabel="label"
-                              optionValue="value"
-                              placeholder="Choisir un niveau…"
-                              styleClass="w-full"
-                            />
-                            <input
-                              type="text"
-                              [value]="newLevelDescription()"
-                              (input)="newLevelDescription.set($any($event.target).value)"
-                              placeholder="Description (optionnel)"
-                            />
-                            <div class="form-actions">
-                              <button class="btn-secondary btn-sm" (click)="showLevelForm.set(false)">Annuler</button>
-                              <button
-                                class="btn-primary btn-sm"
-                                [disabled]="!newLevelValue() || levelSaving()"
-                                (click)="submitAddLevel()"
-                              >{{ levelSaving() ? '…' : 'Ajouter' }}</button>
-                            </div>
-                          </div>
-                        }
-
-                        @if (levels().length === 0 && !levelsLoading()) {
-                          <p class="empty-small">Aucun niveau défini.</p>
-                        }
-
-                        @for (lvl of levels(); track lvl.id) {
-                          <div class="level-block">
-                            <div class="level-block__header">
-                              <span class="level-badge">{{ getLevelLabel(lvl.value) }}</span>
-                              @if (lvl.description) {
-                                <span class="level-desc">{{ lvl.description }}</span>
-                              }
-                              <button class="btn-danger btn-xs ml-auto" (click)="deleteLevel(lvl.id)">Supprimer</button>
-                            </div>
-
-                            <ul class="skills-list">
-                              @for (skill of getSkills(lvl.id); track skill.id) {
-                                <li class="skill-item">
-                                  <span>{{ skill.name }}</span>
-                                  <button class="btn-ghost btn-xs" (click)="deleteSkill(lvl.id, skill.id)">✕</button>
-                                </li>
-                              }
-                              @if (getSkills(lvl.id).length === 0) {
-                                <li class="skill-item--empty">Aucune compétence.</li>
-                              }
-                            </ul>
-
-                            @if (openSkillFormForLevelId() === lvl.id) {
-                              <div class="skill-form">
-                                <input
-                                  type="text"
-                                  [value]="newSkillName()"
-                                  (input)="newSkillName.set($any($event.target).value)"
-                                  placeholder="Nom de la compétence *"
-                                />
-                                <div class="form-actions">
-                                  <button class="btn-secondary btn-xs" (click)="cancelSkillForm()">Annuler</button>
-                                  <button
-                                    class="btn-primary btn-xs"
-                                    [disabled]="!newSkillName().trim() || skillSaving()"
-                                    (click)="submitAddSkill(lvl.id)"
-                                  >{{ skillSaving() ? '…' : 'Ajouter' }}</button>
-                                </div>
+                            <p-tabpanel value="niveaux">
+                              <div class="levels-panel__header">
+                                <h4>Niveaux de « {{ a.name }} »</h4>
+                                @if (!showLevelForm()) {
+                                  <button class="btn-secondary btn-sm" (click)="showLevelForm.set(true)">+ Ajouter un niveau</button>
+                                }
                               </div>
-                            } @else {
-                              <button class="btn-link btn-sm" (click)="openSkillForm(lvl.id)">+ Ajouter une compétence</button>
-                            }
-                          </div>
-                        }
+
+                              @if (levelsLoading()) {
+                                <p class="loading-text">Chargement…</p>
+                              }
+
+                              @if (showLevelForm()) {
+                                <div class="level-form">
+                                  <p-select
+                                    [options]="levelValues"
+                                    [ngModel]="newLevelValue()"
+                                    (ngModelChange)="newLevelValue.set($event)"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Choisir un niveau…"
+                                    styleClass="w-full"
+                                  />
+                                  <input
+                                    type="text"
+                                    [value]="newLevelDescription()"
+                                    (input)="newLevelDescription.set($any($event.target).value)"
+                                    placeholder="Description (optionnel)"
+                                  />
+                                  <div class="form-actions">
+                                    <button class="btn-secondary btn-sm" (click)="showLevelForm.set(false)">Annuler</button>
+                                    <button
+                                      class="btn-primary btn-sm"
+                                      [disabled]="!newLevelValue() || levelSaving()"
+                                      (click)="submitAddLevel()"
+                                    >{{ levelSaving() ? '…' : 'Ajouter' }}</button>
+                                  </div>
+                                </div>
+                              }
+
+                              @if (levels().length === 0 && !levelsLoading()) {
+                                <p class="empty-small">Aucun niveau défini.</p>
+                              }
+
+                              @for (lvl of levels(); track lvl.id) {
+                                <div class="level-block">
+                                  <div class="level-block__header">
+                                    <span class="level-badge">{{ getLevelLabel(lvl.value) }}</span>
+                                    @if (lvl.description) {
+                                      <span class="level-desc">{{ lvl.description }}</span>
+                                    }
+                                    <button class="btn-danger btn-xs ml-auto" (click)="deleteLevel(lvl.id)">Supprimer</button>
+                                  </div>
+
+                                  <ul class="skills-list">
+                                    @for (skill of getSkills(lvl.id); track skill.id) {
+                                      <li class="skill-item">
+                                        <span>{{ skill.name }}</span>
+                                        <button class="btn-ghost btn-xs" (click)="deleteSkill(lvl.id, skill.id)">✕</button>
+                                      </li>
+                                    }
+                                    @if (getSkills(lvl.id).length === 0) {
+                                      <li class="skill-item--empty">Aucune compétence.</li>
+                                    }
+                                  </ul>
+
+                                  @if (openSkillFormForLevelId() === lvl.id) {
+                                    <div class="skill-form">
+                                      <input
+                                        type="text"
+                                        [value]="newSkillName()"
+                                        (input)="newSkillName.set($any($event.target).value)"
+                                        placeholder="Nom de la compétence *"
+                                      />
+                                      <div class="form-actions">
+                                        <button class="btn-secondary btn-xs" (click)="cancelSkillForm()">Annuler</button>
+                                        <button
+                                          class="btn-primary btn-xs"
+                                          [disabled]="!newSkillName().trim() || skillSaving()"
+                                          (click)="submitAddSkill(lvl.id)"
+                                        >{{ skillSaving() ? '…' : 'Ajouter' }}</button>
+                                      </div>
+                                    </div>
+                                  } @else {
+                                    <button class="btn-link btn-sm" (click)="openSkillForm(lvl.id)">+ Ajouter une compétence</button>
+                                  }
+                                </div>
+                              }
+                            </p-tabpanel>
+
+                            <p-tabpanel value="inscrits">
+                              @if (isAdmin()) {
+                                <div class="enroll-form">
+                                  <select [ngModel]="enrollMemberId()" (ngModelChange)="enrollMemberId.set(+$event)">
+                                    <option [ngValue]="null">-- Choisir un membre --</option>
+                                    @for (m of clubMembersForEnroll(); track m.id) {
+                                      <option [ngValue]="m.member.id">{{ m.member.firstName }} {{ m.member.lastName }}</option>
+                                    }
+                                  </select>
+                                  <select [ngModel]="enrollRole()" (ngModelChange)="enrollRole.set($event)">
+                                    <option value="STUDENT">Élève</option>
+                                    <option value="TEACHER">Professeur</option>
+                                  </select>
+                                  <button class="btn-primary btn-sm" [disabled]="!enrollMemberId() || enrollSaving()" (click)="submitEnroll()">
+                                    {{ enrollSaving() ? '...' : 'Inscrire' }}
+                                  </button>
+                                  @if (enrollError()) {
+                                    <p class="error-text">{{ enrollError() }}</p>
+                                  }
+                                </div>
+                              }
+
+                              @if (pendingMembers().length > 0) {
+                                <div class="pending-section">
+                                  <h5>En attente</h5>
+                                  <ul class="pending-list">
+                                    @for (m of pendingMembers(); track m.id) {
+                                      <li class="pending-item">
+                                        <span>{{ m.member.firstName }} {{ m.member.lastName }} — {{ m.role }}</span>
+                                        <div>
+                                          <button class="btn-primary btn-xs" (click)="approveEnrollment(m.id)">Approuver</button>
+                                          <button class="btn-danger btn-xs" (click)="rejectEnrollment(m.id)">Rejeter</button>
+                                        </div>
+                                      </li>
+                                    }
+                                  </ul>
+                                </div>
+                              }
+
+                              @if (membersLoading()) {
+                                <p>Chargement…</p>
+                              } @else if (approvedMembers().length === 0) {
+                                <p class="empty-small">Aucun inscrit.</p>
+                              } @else {
+                                <table class="members-table">
+                                  <thead>
+                                    <tr>
+                                      <th>Nom</th>
+                                      <th>Rôle</th>
+                                      <th>Inscrit le</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    @for (m of approvedMembers(); track m.id) {
+                                      <tr>
+                                        <td>{{ m.member.firstName }} {{ m.member.lastName }}</td>
+                                        <td>{{ m.role }}</td>
+                                        <td>{{ m.createdAt | date:'dd/MM/yyyy' }}</td>
+                                        <td><button class="btn-danger btn-xs" (click)="deleteEnrollment(m.id)">Retirer</button></td>
+                                      </tr>
+                                    }
+                                  </tbody>
+                                </table>
+                              }
+                            </p-tabpanel>
+
+                          </p-tabpanels>
+                        </p-tabs>
                       </div>
                     </td>
                   </tr>

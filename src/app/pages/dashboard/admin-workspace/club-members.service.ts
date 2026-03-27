@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
 export interface MemberUser {
+  id: number;
   email: string;
   firstName: string;
   lastName: string;

@@ -263,3 +263,87 @@ tr.levels-row td {
 }
 
 .ml-auto { margin-left: auto; }
+
+// --- Inscrits ---
+
+.enroll-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: $color-neutral-bg;
+  border-radius: $radius-sm;
+
+  select {
+    padding: 6px 10px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    font-size: 0.9rem;
+    background: white;
+  }
+}
+
+.pending-section {
+  margin-bottom: 1rem;
+
+  h5 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.5rem;
+  }
+}
+
+.pending-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pending-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border: 1px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: 0.9rem;
+
+  div {
+    display: flex;
+    gap: 0.4rem;
+  }
+}
+
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th, td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid $color-border;
+  }
+
+  th {
+    font-weight: 600;
+    color: $color-text-muted;
+    font-size: 0.8rem;
+  }
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 0.85rem;
+  width: 100%;
+  margin: 0;
+}

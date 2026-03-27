@@ -1,11 +1,16 @@
 import { Component, input, output, signal, inject, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { Activity, ActivityType, ActivitiesService, ActivityCreateDto } from '../activities.service';
 import { LevelsService, Level, LevelCreateDto } from './levels.service';
 import { SkillsService, Skill, SkillCreateDto } from './skills.service';
+import { ActivityMembersService, ActivityMember, EnrollMemberDto } from './activity-members.service';
+import { ClubMembersService, ClubMember } from '../club-members.service';
+import { UserClubsService } from '../../../../core/services/user-clubs.service';
 import { Select } from 'primeng/select';
 import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
 import { Badge } from 'primeng/badge';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
 
 interface ActivityGroup {
   type: ActivityType;
@@ -25,7 +30,7 @@ const LEVEL_VALUES = [
 
 @Component({
   selector: 'app-activities-tab',
-  imports: [FormsModule, Select, Accordion, AccordionPanel, AccordionHeader, AccordionContent, Badge],
+  imports: [FormsModule, DatePipe, Select, Accordion, AccordionPanel, AccordionHeader, AccordionContent, Badge, Tabs, TabList, Tab, TabPanels, TabPanel],
   templateUrl: './activities-tab.html',
   styleUrl: './activities-tab.scss',
 })
@@ -33,6 +38,9 @@ export class ActivitiesTab implements OnInit {
   private readonly activitiesService = inject(ActivitiesService);
   private readonly levelsService = inject(LevelsService);
   private readonly skillsService = inject(SkillsService);
+  private readonly activityMembersService = inject(ActivityMembersService);
+  private readonly clubMembersService = inject(ClubMembersService);
+  private readonly userClubsService = inject(UserClubsService);
 
   readonly clubId = input.required<number>();
   readonly activities = input.required<Activity[]>();
@@ -88,8 +96,28 @@ export class ActivitiesTab implements OnInit {
   readonly newSkillDescription = signal('');
   readonly skillSaving = signal(false);
 
+  // --- Inscrits (UserActivity) ---
+  readonly activityMembers = signal<ActivityMember[]>([]);
+  readonly membersLoading = signal(false);
+  readonly enrollError = signal<string | null>(null);
+  readonly enrollMemberId = signal<number | null>(null);
+  readonly enrollRole = signal<string>('STUDENT');
+  readonly enrollSaving = signal(false);
+  readonly clubMembersForEnroll = signal<ClubMember[]>([]);
+
+  readonly approvedMembers = computed(() =>
+    this.activityMembers().filter((m) => m.status === 'APPROVED')
+  );
+  readonly pendingMembers = computed(() =>
+    this.activityMembers().filter((m) => m.status === 'PENDING')
+  );
+  readonly isAdmin = computed(() =>
+    this.userClubsService.currentClub()?.roles.includes('ADMIN') ?? false
+  );
+
   ngOnInit(): void {
     this.activitiesService.getAllActivityTypes().subscribe((t) => this.allActivityTypes.set(t));
+    this.clubMembersService.getMembers(this.clubId()).subscribe((m) => this.clubMembersForEnroll.set(m));
   }
 
   // --- Activités ---
@@ -174,6 +202,8 @@ export class ActivitiesTab implements OnInit {
         this.levelsLoading.set(false);
         // Charger les skills de chaque niveau
         lvls.forEach((lvl) => this.loadSkills(lvl.id));
+        // Charger les inscrits
+        this.loadMembers(activityId);
       },
       error: () => this.levelsLoading.set(false),
     });
@@ -268,5 +298,65 @@ export class ActivitiesTab implements OnInit {
 
   getSkills(levelId: number): Skill[] {
     return this.skillsByLevel().get(levelId) ?? [];
+  }
+
+  // --- Inscrits ---
+
+  loadMembers(activityId: number): void {
+    this.membersLoading.set(true);
+    this.activityMembersService.getMembers(activityId).subscribe({
+      next: (members) => {
+        this.activityMembers.set(members);
+        this.membersLoading.set(false);
+      },
+      error: () => this.membersLoading.set(false),
+    });
+  }
+
+  submitEnroll(): void {
+    const memberId = this.enrollMemberId();
+    const activityId = this.selectedActivityId();
+    if (!memberId || !activityId || this.enrollSaving()) return;
+    this.enrollError.set(null);
+    this.enrollSaving.set(true);
+    const dto: EnrollMemberDto = { memberId, role: this.enrollRole() };
+    this.activityMembersService.enrollMember(activityId, dto).subscribe({
+      next: (m) => {
+        this.activityMembers.update((list) => [...list, m]);
+        this.enrollMemberId.set(null);
+        this.enrollRole.set('STUDENT');
+        this.enrollSaving.set(false);
+      },
+      error: (err) => {
+        this.enrollError.set(err?.error?.detail ?? 'Erreur lors de l\'inscription.');
+        this.enrollSaving.set(false);
+      },
+    });
+  }
+
+  approveEnrollment(id: number): void {
+    this.activityMembersService.patchStatus(id, 'APPROVED').subscribe({
+      next: (updated) => {
+        this.activityMembers.update((list) =>
+          list.map((m) => (m.id === id ? updated : m))
+        );
+      },
+    });
+  }
+
+  rejectEnrollment(id: number): void {
+    this.activityMembersService.patchStatus(id, 'REJECTED').subscribe({
+      next: () => {
+        this.activityMembers.update((list) => list.filter((m) => m.id !== id));
+      },
+    });
+  }
+
+  deleteEnrollment(id: number): void {
+    this.activityMembersService.deleteMembership(id).subscribe({
+      next: () => {
+        this.activityMembers.update((list) => list.filter((m) => m.id !== id));
+      },
+    });
   }
 }
