@@ -95,9 +95,9 @@ export class AdminWorkspace {
       .subscribe(() => this.loadMembers(this.userClub().club.id));
   }
 
-  onChangeRole(event: { userClubId: number; role: ClubRole }): void {
+  onChangeRole(event: { userClubId: number; roles: ClubRole[] }): void {
     this.userClubsManagementService
-      .patch(event.userClubId, { roles: [event.role] })
+      .patch(event.userClubId, { roles: event.roles })
       .subscribe(() => this.loadMembers(this.userClub().club.id));
   }
 

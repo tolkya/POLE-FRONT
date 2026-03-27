@@ -19,7 +19,7 @@
           <td>
             @for (r of m.roles; track r) {
               <span class="badge" [class.badge--pending]="r === 'USER'">
-                {{ roleLabels[r] || r }}
+                {{ getRoleLabel(r) }}
               </span>
             }
           </td>
@@ -29,13 +29,16 @@
               @if (!m.validatedAt) {
                 <button class="btn-success" (click)="onValidate(m.id)">Valider</button>
               }
-              <select (change)="onChangeRole(m.id, $event)">
-                @for (r of roles; track r) {
-                  <option [value]="r" [selected]="m.roles.includes(r)">
-                    {{ roleLabels[r] }}
-                  </option>
-                }
-              </select>
+              <p-multiselect
+                [ngModel]="m.roles"
+                (ngModelChange)="onChangeRoles(m.id, $event)"
+                [options]="roleOptions"
+                optionLabel="label"
+                optionValue="value"
+                [showClear]="true"
+                placeholder="Rôles..."
+                styleClass="roles-multiselect"
+              />
               <button class="btn-danger" (click)="onRemove(m.id)">Retirer</button>
             </div>
           </td>
