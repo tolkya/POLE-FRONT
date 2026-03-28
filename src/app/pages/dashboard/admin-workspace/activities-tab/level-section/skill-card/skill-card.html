@@ -1,0 +1,86 @@
+<div class="skill-card">
+  @if (editing()) {
+    <div class="skill-card__edit-form">
+      <input
+        type="text"
+        [value]="editName()"
+        (input)="editName.set($any($event.target).value)"
+        placeholder="Nom *"
+        class="skill-card__edit-input"
+      />
+      <input
+        type="text"
+        [value]="editDescription()"
+        (input)="editDescription.set($any($event.target).value)"
+        placeholder="Description (optionnel)"
+        class="skill-card__edit-input"
+      />
+      <div class="skill-card__edit-actions">
+        <button class="btn-secondary btn-xs" (click)="cancelEdit()">Annuler</button>
+        <button class="btn-primary btn-xs" [disabled]="!editName().trim() || editSaving()" (click)="submitEdit()">
+          {{ editSaving() ? '…' : 'Enregistrer' }}
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="skill-card__header">
+      <span class="skill-card__name">{{ skill().name }}</span>
+      <div class="skill-card__actions">
+        @if (canManage() || isCreator()) {
+          <button class="skill-card__btn" (click)="startEdit()" title="Modifier">✏️</button>
+        }
+        @if (canManage()) {
+          <button class="skill-card__btn skill-card__btn--danger" (click)="onDeleteSkill()" title="Supprimer">🗑️</button>
+        }
+      </div>
+    </div>
+
+    @if (skill().description) {
+      <p class="skill-card__description">{{ skill().description }}</p>
+    }
+
+    <p class="skill-card__creator">Par {{ skill().createdBy.firstName }} {{ skill().createdBy.lastName }}</p>
+  }
+
+  <div class="skill-card__media-grid">
+    @for (tuto of skill().skillMediaTutos; track tuto.id) {
+      <div class="media-thumb" (click)="openPreview(tuto)">
+        @if (isImage(tuto.mimetype)) {
+          <img [src]="getMediaUrl(tuto)" [alt]="tuto.originalName ?? ''" />
+        } @else if (isVideo(tuto.mimetype)) {
+          <video [src]="getMediaUrl(tuto)" preload="metadata"></video>
+        }
+        @if (canManage() || isCreator()) {
+          <button class="media-thumb__delete" (click)="deleteTuto(tuto.id); $event.stopPropagation()" title="Supprimer">✕</button>
+        }
+      </div>
+    }
+    @if (canManage() || isCreator()) {
+      <label
+        class="media-thumb media-thumb--add"
+        [class.media-thumb--loading]="uploading()"
+        title="Ajouter un fichier"
+      >
+        @if (uploading()) {
+          ⏳
+        } @else {
+          +
+        }
+        <input type="file" accept="image/*,video/*" (change)="onFileSelected($event)" hidden />
+      </label>
+    }
+  </div>
+
+  @if (previewTuto()) {
+    <div class="media-overlay" (click)="closePreview()">
+      <div class="media-overlay__content" (click)="$event.stopPropagation()">
+        <button class="media-overlay__close" (click)="closePreview()">✕</button>
+        @if (isImage(previewTuto()!.mimetype)) {
+          <img [src]="getMediaUrl(previewTuto()!)" [alt]="previewTuto()!.originalName ?? ''" />
+        } @else if (isVideo(previewTuto()!.mimetype)) {
+          <video [src]="getMediaUrl(previewTuto()!)" controls autoplay></video>
+        }
+      </div>
+    </div>
+  }
+</div>

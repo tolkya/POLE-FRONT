@@ -1,0 +1,108 @@
+@use 'variables' as *;
+
+.level-section {
+  padding: 16px 0;
+  border-bottom: 1px solid $color-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  &__desc {
+    font-size: 0.85rem;
+    color: $color-text-muted;
+  }
+
+  &__grid {
+    margin-bottom: 12px;
+  }
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  padding: 8px 0 12px;
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  background: $color-primary-light;
+  color: $color-primary;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.loading-text,
+.empty-small {
+  font-size: 0.85rem;
+  color: $color-text-muted;
+  margin: 8px 0;
+}
+
+.skill-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 8px;
+  padding: 12px;
+  background: $color-neutral-bg;
+  border-radius: $radius-md;
+
+  input[type="text"] {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  &__file {
+    width: 100%;
+  }
+
+  &__file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px dashed $color-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: $color-text-muted;
+    transition: background $transition-base, color $transition-base;
+
+    &:hover {
+      background: $color-primary-light;
+      color: $color-primary;
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: $color-primary;
+  cursor: pointer;
+  font-size: 0.88rem;
+  padding: 4px 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

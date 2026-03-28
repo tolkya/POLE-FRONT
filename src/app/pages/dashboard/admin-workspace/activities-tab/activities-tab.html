@@ -94,48 +94,12 @@
                               }
 
                               @for (lvl of levels(); track lvl.id) {
-                                <div class="level-block">
-                                  <div class="level-block__header">
-                                    <span class="level-badge">{{ getLevelLabel(lvl.value) }}</span>
-                                    @if (lvl.description) {
-                                      <span class="level-desc">{{ lvl.description }}</span>
-                                    }
-                                    <button class="btn-danger btn-xs ml-auto" (click)="deleteLevel(lvl.id)">Supprimer</button>
-                                  </div>
-
-                                  <ul class="skills-list">
-                                    @for (skill of getSkills(lvl.id); track skill.id) {
-                                      <li class="skill-item">
-                                        <span>{{ skill.name }}</span>
-                                        <button class="btn-ghost btn-xs" (click)="deleteSkill(lvl.id, skill.id)">✕</button>
-                                      </li>
-                                    }
-                                    @if (getSkills(lvl.id).length === 0) {
-                                      <li class="skill-item--empty">Aucune compétence.</li>
-                                    }
-                                  </ul>
-
-                                  @if (openSkillFormForLevelId() === lvl.id) {
-                                    <div class="skill-form">
-                                      <input
-                                        type="text"
-                                        [value]="newSkillName()"
-                                        (input)="newSkillName.set($any($event.target).value)"
-                                        placeholder="Nom de la compétence *"
-                                      />
-                                      <div class="form-actions">
-                                        <button class="btn-secondary btn-xs" (click)="cancelSkillForm()">Annuler</button>
-                                        <button
-                                          class="btn-primary btn-xs"
-                                          [disabled]="!newSkillName().trim() || skillSaving()"
-                                          (click)="submitAddSkill(lvl.id)"
-                                        >{{ skillSaving() ? '…' : 'Ajouter' }}</button>
-                                      </div>
-                                    </div>
-                                  } @else {
-                                    <button class="btn-link btn-sm" (click)="openSkillForm(lvl.id)">+ Ajouter une compétence</button>
-                                  }
-                                </div>
+                                <app-level-section
+                                  [level]="lvl"
+                                  [canManage]="isAdmin()"
+                                  [currentUserId]="currentUserId()"
+                                  (levelDeleted)="deleteLevel($event)"
+                                />
                               }
                             </p-tabpanel>
 

@@ -3,6 +3,16 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 
+export const LEVEL_VALUES = [
+  { label: 'Novice',        value: 'NOVICE' },
+  { label: 'Initiation',   value: 'INITIATION' },
+  { label: 'Débutant',     value: 'DEBUTANT' },
+  { label: 'Intermédiaire',value: 'INTERMEDIAIRE' },
+  { label: 'Confirmé',     value: 'CONFIRME' },
+  { label: 'Avancé',       value: 'AVANCE' },
+  { label: 'Master',       value: 'MASTER' },
+];
+
 export interface Level {
   id: number;
   value: string;
