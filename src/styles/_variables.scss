@@ -1,28 +1,74 @@
-// Couleurs principales
-$color-primary:       #7c3aed;
-$color-primary-light: #f5f3ff;
-$color-bg:            #f8f7f4;
-$color-surface:       #ffffff;
-$color-text:          #1a1a2e;
-$color-text-muted:    #6b7280;
-$color-border:        #e5e7eb;
-$color-error:         #dc2626;
-$color-warning-bg:    #fef3c7;
-$color-neutral-bg:    #f9fafb;
+// ─── Couleurs principales ────────────────────────────────────────────────────
+$color-primary:        #7c3aed;
+$color-primary-light:  #f5f3ff;
+$color-primary-dark:   #5b21b6;
 
-// Formes
-$radius-sm:  6px;
-$radius-md:  8px;
-$radius-lg:  14px;
-$radius-xl:  20px;
+// Sémantiques
+$color-success:        #059669;
+$color-success-bg:     #d1fae5;
+$color-warning:        #d97706;
+$color-warning-bg:     #fef3c7;
+$color-info:           #0284c7;
+$color-info-bg:        #e0f2fe;
+$color-error:          #dc2626;
+$color-error-bg:       #fee2e2;
 
-// Ombres
+// Couleurs métier — tag et check "gestionnaires"
+$color-manage-bg:      #e8f5e9;
+$color-manage-text:    #2e7d32;
+
+// Fonds & surfaces
+$color-bg:             #f8f7f4;
+$color-surface:        #ffffff;
+$color-surface-alt:    #f9fafb;
+$color-input-bg:       #fafafa;
+$color-neutral-bg:     #f3f4f6;
+
+// Textes & bords
+$color-text:           #1a1a2e;
+$color-text-muted:     #6b7280;
+$color-text-light:     #9ca3af;
+$color-border:         #e5e7eb;
+$color-border-light:   #f3f4f6;
+
+// ─── Formes ─────────────────────────────────────────────────────────────────
+$radius-sm:   6px;
+$radius-md:   8px;
+$radius-lg:   14px;
+$radius-xl:   20px;
+$radius-2xl:  28px;
+$radius-full: 999px;
+
+// ─── Ombres ──────────────────────────────────────────────────────────────────
 $shadow-card: 0 4px 24px rgba(0, 0, 0, 0.07);
 $shadow-sm:   0 1px 4px rgba(0, 0, 0, 0.08);
+$shadow-md:   0 4px 12px rgba(0, 0, 0, 0.12);
+$shadow-lg:   0 8px 32px rgba(0, 0, 0, 0.16);
 
-// Typographie
+// ─── Typographie ─────────────────────────────────────────────────────────────
 $font-base:    'Inter', system-ui, sans-serif;
 $font-heading: 'Inter', system-ui, sans-serif;
 
-// Transitions
-$transition-base: 0.15s ease;
+$font-size-xs:   0.75rem;   // 12px
+$font-size-sm:   0.875rem;  // 14px
+$font-size-base: 1rem;      // 16px
+$font-size-lg:   1.125rem;  // 18px
+$font-size-xl:   1.25rem;   // 20px
+
+// ─── Espacements ─────────────────────────────────────────────────────────────
+$space-xs:  4px;
+$space-sm:  8px;
+$space-md:  16px;
+$space-lg:  24px;
+$space-xl:  40px;
+$space-2xl: 64px;
+
+// ─── Breakpoints ─────────────────────────────────────────────────────────────
+$bp-sm:  640px;
+$bp-md:  768px;
+$bp-lg:  1024px;
+$bp-xl:  1280px;
+
+// ─── Transitions ─────────────────────────────────────────────────────────────
+$transition-base:    0.15s ease;
+$transition-smooth:  0.25s ease;

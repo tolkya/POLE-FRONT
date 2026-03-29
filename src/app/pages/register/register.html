@@ -1,68 +1,148 @@
-<div class="register">
-  @if (success()) {
-    <div class="success">
-      <h2>Compte créé !</h2>
-      <p>{{ success()!.message }}</p>
-      <a routerLink="/">Se connecter</a>
-    </div>
-  } @else {
-    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-      <h1>Rejoindre un club</h1>
+<div class="auth-page">
+
+  <header class="auth-page__header">
+    <a routerLink="/" class="auth-page__logo">Sparklib</a>
+    <nav class="auth-page__header-nav">
+      <a routerLink="/login" class="btn-outline">Se connecter</a>
+    </nav>
+  </header>
+
+  <div class="auth-page__body">
+    <div class="auth-page__box">
+
+      <h1 class="auth-page__title">
+        @switch (mode()) {
+          @case ('club-admin') { S'inscrire et cr&eacute;er mon club }
+          @case ('join')       { S'inscrire et rejoindre un club }
+          @default             { S'inscrire }
+        }
+      </h1>
 
       @if (serverError()) {
-        <div class="alert--error">{{ serverError() }}</div>
+        <div class="alert alert--error">{{ serverError() }}</div>
       }
 
-      <div class="form-group">
-        <label for="firstName">Prénom</label>
-        <input id="firstName" type="text" formControlName="firstName" />
-        @if (form.controls.firstName.invalid && form.controls.firstName.touched) {
-          <span class="form-error">Le prénom est obligatoire.</span>
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+        <div class="form-group">
+          <label for="firstName">Pr&eacute;nom</label>
+          <input id="firstName" type="text" formControlName="firstName"
+            autocomplete="given-name" placeholder="Jean" />
+          @if (form.controls.firstName.invalid && form.controls.firstName.touched) {
+            <span class="form-error">Le pr&eacute;nom est obligatoire.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nom</label>
+          <input id="lastName" type="text" formControlName="lastName"
+            autocomplete="family-name" placeholder="Dupont" />
+          @if (form.controls.lastName.invalid && form.controls.lastName.touched) {
+            <span class="form-error">Le nom est obligatoire.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email"
+            autocomplete="email" placeholder="votre@email.com" />
+          @if (form.controls.email.invalid && form.controls.email.touched) {
+            <span class="form-error">Email invalide.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="phone">T&eacute;l&eacute;phone <span class="text-muted text-sm">(optionnel)</span></label>
+          <input id="phone" type="tel" formControlName="phone"
+            autocomplete="tel" placeholder="06 00 00 00 00" />
+        </div>
+
+        <div class="form-group">
+          <label for="plainPassword">Mot de passe</label>
+          <div class="form-group__input-wrap">
+            <input id="plainPassword" [type]="showPwd() ? 'text' : 'password'"
+              formControlName="plainPassword"
+              autocomplete="new-password" placeholder="8 caract&egrave;res minimum"
+              (focus)="pwdFocused.set(true)" />
+            <button type="button" class="form-group__eye" (click)="showPwd.set(!showPwd())"
+              [attr.aria-label]="showPwd() ? 'Masquer' : 'Afficher'">
+              <app-eye-icon [visible]="showPwd()" />
+            </button>
+          </div>
+
+          @if (pwdFocused()) {
+            <ul class="pwd-criteria">
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().minLength">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().minLength ? '&#10003;' : '&#10007;' }}</span>
+                8 caract&egrave;res minimum
+              </li>
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().hasUpper">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().hasUpper ? '&#10003;' : '&#10007;' }}</span>
+                1 majuscule
+              </li>
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().hasDigit">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().hasDigit ? '&#10003;' : '&#10007;' }}</span>
+                1 chiffre
+              </li>
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().hasSpecial">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().hasSpecial ? '&#10003;' : '&#10007;' }}</span>
+                1 symbole (!&#64;#$%...)
+              </li>
+            </ul>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le mot de passe</label>
+          <div class="form-group__input-wrap">
+            <input id="confirmPassword" [type]="showConfirmPwd() ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              autocomplete="new-password" placeholder="Retapez votre mot de passe" />
+            <button type="button" class="form-group__eye" (click)="showConfirmPwd.set(!showConfirmPwd())"
+              [attr.aria-label]="showConfirmPwd() ? 'Masquer' : 'Afficher'">
+              <app-eye-icon [visible]="showConfirmPwd()" />
+            </button>
+          </div>
+          @if (form.controls.confirmPassword.dirty && form.hasError('passwordsMismatch')) {
+            <span class="form-error">Les mots de passe ne correspondent pas.</span>
+          }
+        </div>
+
+        @if (mode() === 'join') {
+          <div class="form-group">
+            <label for="clubCode">Code du club</label>
+            <input id="clubCode" type="text" formControlName="clubCode"
+              placeholder="cde_..." />
+            @if (form.controls.clubCode.invalid && form.controls.clubCode.touched) {
+              <span class="form-error">Le code club est obligatoire.</span>
+            }
+          </div>
         }
-      </div>
 
-      <div class="form-group">
-        <label for="lastName">Nom</label>
-        <input id="lastName" type="text" formControlName="lastName" />
-        @if (form.controls.lastName.invalid && form.controls.lastName.touched) {
-          <span class="form-error">Le nom est obligatoire.</span>
+        @if (mode() === 'club-admin') {
+          <div class="form-group">
+            <label for="clubName">Nom du club</label>
+            <input id="clubName" type="text" formControlName="clubName"
+              placeholder="Mon club de pole dance" />
+            @if (form.controls.clubName.invalid && form.controls.clubName.touched) {
+              <span class="form-error">Le nom du club est obligatoire.</span>
+            }
+          </div>
         }
+
+        <button type="submit" class="btn-primary btn--full btn--lg"
+          [disabled]="form.invalid || pending()">
+          {{ pending() ? 'Inscription...' : 'Valider' }}
+        </button>
+
+      </form>
+
+      <div class="auth-page__links">
+        <span>D&eacute;j&agrave; un compte&nbsp;?</span>
+        <a routerLink="/login">Se connecter</a>
       </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" autocomplete="email" />
-        @if (form.controls.email.invalid && form.controls.email.touched) {
-          <span class="form-error">Email invalide.</span>
-        }
-      </div>
+    </div>
+  </div>
 
-      <div class="form-group">
-        <label for="phone">Téléphone (optionnel)</label>
-        <input id="phone" type="tel" formControlName="phone" />
-      </div>
-
-      <div class="form-group">
-        <label for="plainPassword">Mot de passe (8 caractères min.)</label>
-        <input id="plainPassword" type="password" formControlName="plainPassword" autocomplete="new-password" />
-        @if (form.controls.plainPassword.invalid && form.controls.plainPassword.touched) {
-          <span class="form-error">8 caractères minimum.</span>
-        }
-      </div>
-
-      <div class="form-group">
-        <label for="clubCode">Code du club</label>
-        <input id="clubCode" type="text" formControlName="clubCode" placeholder="cde_..." />
-        @if (form.controls.clubCode.invalid && form.controls.clubCode.touched) {
-          <span class="form-error">Le code club est obligatoire.</span>
-        }
-      </div>
-
-      <button type="submit" class="btn--primary" [disabled]="form.invalid || pending()">
-        {{ pending() ? 'Inscription...' : 'Rejoindre le club' }}
-      </button>
-
-      <a class="btn--primary" routerLink="/">Retour</a>
-    </form>
-  }
 </div>

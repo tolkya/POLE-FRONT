@@ -3,7 +3,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.9rem;
 
   label {
     font-size: 0.875rem;
@@ -18,8 +18,9 @@
     padding: 0.6rem 0.9rem;
     font-size: 0.95rem;
     color: $color-text;
-    background: #fafafa;
+    background: $color-input-bg;
     transition: border-color 0.2s;
+    width: 100%;
 
     &:focus {
       outline: none;
@@ -27,12 +28,68 @@
       background: $color-surface;
     }
   }
+
+  // ── Champ avec bouton œil ─────────────────────────────────────────────────
+  &__input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    input {
+      padding-right: 2.8rem; // espace pour le bouton
+    }
+  }
+
+  &__eye {
+    position: absolute;
+    right: 0.7rem;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: $color-text-muted;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+
+    &:hover { color: $color-text; }
+  }
 }
 
 .form-error {
   font-size: 0.8rem;
   color: $color-error;
   margin-top: 0.25rem;
+}
+
+// ── Feedback critères mot de passe ───────────────────────────────────────────
+.pwd-criteria {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: $color-error;
+    transition: color 0.2s;
+
+    &.pwd-criteria__item--ok {
+      color: $color-success;
+    }
+  }
+
+  &__icon {
+    font-size: 0.75rem;
+    width: 14px;
+    text-align: center;
+    flex-shrink: 0;
+  }
 }
 
 .server-error {
