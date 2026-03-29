@@ -1,0 +1,81 @@
+<div class="landing">
+
+  <header class="landing__header">
+    <a routerLink="/" class="landing__logo">Sparklib</a>
+    <nav class="landing__nav">
+      <a routerLink="/login" class="btn-outline">Se connecter</a>
+      <a routerLink="/register" class="btn-primary">S'inscrire</a>
+    </nav>
+  </header>
+
+  <section class="landing__hero">
+    <p class="landing__hero-eyebrow">La plateforme des clubs sportifs et créatifs</p>
+    <h1 class="landing__hero-title">Bienvenue sur Sparklib</h1>
+    <p class="landing__hero-sub">
+      Que vous gériez un club ou que vous cherchiez votre prochaine passion,
+      Sparklib réunit gestionnaires et pratiquants dans un seul espace.
+    </p>
+  </section>
+
+  <main class="landing__main">
+
+    <div class="landing__block landing__block--manage">
+      <div class="landing__block-content">
+        <span class="landing__block-tag landing__block-tag--manage">Pour les gestionnaires</span>
+        <h2 class="landing__block-title">
+          Pilotez un ou plusieurs clubs depuis un seul endroit.
+        </h2>
+        <p class="landing__block-desc">
+          Sparklib vous donne tous les outils pour gérer vos clubs au quotidien.
+          Créez vos activités, structurez-les par type et par niveau de progression,
+          définissez les compétences à maîtriser pour chaque cours.
+          Gérez vos membres et enseignants, validez les inscriptions,
+          et suivez qui pratique quoi — que vous administriez un club local
+          ou une structure multi-disciplines.
+        </p>
+        <ul class="landing__features">
+          <li><span class="landing__check">✓</span> Gestion multi-clubs depuis un tableau de bord unique</li>
+          <li><span class="landing__check">✓</span> Arborescence activités → niveaux → compétences</li>
+          <li><span class="landing__check">✓</span> Gestion des membres, enseignants et inscriptions</li>
+          <li><span class="landing__check">✓</span> Statistiques et suivi en temps réel</li>
+          <li><span class="landing__check">✓</span> Médias pédagogiques attachés aux compétences</li>
+        </ul>
+        <a routerLink="/register/club-admin" class="btn-primary btn--lg">
+          M'inscrire et créer mon club
+        </a>
+      </div>
+    </div>
+
+    <div class="landing__divider"></div>
+
+    <div class="landing__block landing__block--discover">
+      <div class="landing__block-content">
+        <span class="landing__block-tag landing__block-tag--discover">Pour les Sparklibers</span>
+        <h2 class="landing__block-title">
+          Rejoignez un ou plusieurs clubs qui vous ressemblent.
+        </h2>
+        <p class="landing__block-desc">
+          Vous pratiquez le pole dance, la danse, le yoga ou n'importe quelle
+          discipline créative ou sportive&nbsp;? Rejoignez les clubs de vos
+          enseignants avec le code qu'ils vous ont transmis. Accédez à vos
+          activités sur chacun de vos clubs, suivez votre progression niveau
+          par niveau, consultez les compétences à travailler et accédez aux
+          ressources pédagogiques partagées par vos enseignants — tout ça
+          depuis votre espace personnel Sparklib.
+        </p>
+        <ul class="landing__features">
+          <li><span class="landing__check landing__check--alt">✓</span> Accès à tous vos clubs et activités en un clic</li>
+          <li><span class="landing__check landing__check--alt">✓</span> Suivi de progression niveau par niveau</li>
+          <li><span class="landing__check landing__check--alt">✓</span> Compétences et objectifs clairs par cours</li>
+          <li><span class="landing__check landing__check--alt">✓</span> Ressources pédagogiques (vidéos, médias)</li>
+          <li><span class="landing__check landing__check--alt">✓</span> Inscription validée par votre enseignant</li>
+        </ul>
+        <a routerLink="/register" [queryParams]="{join: true}" class="btn-primary btn--lg landing__btn-discover">
+          M'inscrire et rejoindre mon club
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+</div>
