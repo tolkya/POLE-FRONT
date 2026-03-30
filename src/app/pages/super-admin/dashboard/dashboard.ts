@@ -1,5 +1,4 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { Header } from '../../../shared/components/header/header';
 import { StatsCard } from '../../../shared/components/stats-card/stats-card';
 import { NotificationList } from './components/notification-list/notification-list';
 import { ClubTable, Club } from './components/club-table/club-table';
@@ -12,7 +11,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [Header, StatsCard, NotificationList, ClubTable, CatalogueTab, Tabs, TabList, Tab, TabPanels, TabPanel],
+  imports: [StatsCard, NotificationList, ClubTable, CatalogueTab, Tabs, TabList, Tab, TabPanels, TabPanel],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

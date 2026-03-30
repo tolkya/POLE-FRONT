@@ -1,23 +1,8 @@
-<app-header />
-
-<app-club-tab-bar
-  [userClubs]="userClubs()"
-  [activeClub]="currentClub()"
-  (clubSelected)="selectClub($event)"
-  (joinClub)="joinDialog.open()"
-  (createClub)="createDialog.open()"
-/>
-
-<app-join-club-dialog #joinDialog />
-<app-create-club-dialog #createDialog />
-
-<main class="workspace">
-  @if (currentClub(); as club) {
-    <app-club-workspace [userClub]="club" />
-  } @else if (userClubs().length === 0) {
-    <div class="empty-state">
-      <p>Vous n'êtes membre d'aucun club.</p>
-      <p>Rejoignez un club avec un code d'invitation ou créez le vôtre.</p>
-    </div>
-  }
-</main>
+@if (currentClub(); as club) {
+  <app-club-workspace [userClub]="club" />
+} @else if (userClubs().length === 0) {
+  <div class="empty-state">
+    <p>Vous n'êtes membre d'aucun club.</p>
+    <p>Rejoignez un club ou créez le vôtre depuis le menu à gauche.</p>
+  </div>
+}

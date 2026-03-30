@@ -4,7 +4,6 @@
   <nav class="header__nav">
     @if (isLoggedIn()) {
       <span class="header__user-name">{{ user()?.firstName }} {{ user()?.lastName }}</span>
-      <button class="header__logout" (click)="logout()">Déconnexion</button>
     } @else {
       <a routerLink="/login" class="btn-outline">Se connecter</a>
       <a routerLink="/register" class="btn-primary">S'inscrire</a>

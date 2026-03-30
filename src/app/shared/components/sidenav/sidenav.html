@@ -1,0 +1,86 @@
+<nav class="sidenav" [class.sidenav--expanded]="expanded()">
+
+  <!-- Toggle -->
+  <button class="sidenav__toggle" (click)="toggle()" title="Menu">
+    <span class="sidenav__icon">☰</span>
+    @if (expanded()) { <span class="sidenav__label">Sparklib</span> }
+  </button>
+
+  <div class="sidenav__body">
+
+    <!-- Home -->
+    <a class="sidenav__item" routerLink="/" routerLinkActive="sidenav__item--active" [routerLinkActiveOptions]="{exact: true}">
+      <span class="sidenav__icon">🏠</span>
+      @if (expanded()) { <span class="sidenav__label">Accueil</span> }
+    </a>
+
+    <!-- Mes clubs -->
+    <div class="sidenav__section">
+      <div class="sidenav__item sidenav__item--section">
+        <span class="sidenav__icon">⬡</span>
+        @if (expanded()) { <span class="sidenav__label">Mes clubs</span> }
+      </div>
+
+      @if (expanded()) {
+        <div class="sidenav__clubs">
+          @for (uc of userClubs(); track uc.id) {
+            <div class="sidenav__club">
+              <button
+                class="sidenav__club-name"
+                [class.sidenav__club-name--active]="currentClub()?.id === uc.id"
+                (click)="toggleClub(uc.id); selectClub(uc)"
+              >
+                <span class="sidenav__club-chevron">
+                  {{ openClubId() === uc.id ? '▾' : '▸' }}
+                </span>
+                <span class="sidenav__club-logo">{{ clubInitials(uc.club.name) }}</span>
+                {{ uc.club.name }}
+              </button>
+
+              @if (openClubId() === uc.id) {
+                <div class="sidenav__club-sub">
+                  <a class="sidenav__subitem" routerLink="/dashboard">Mes activités</a>
+                  @if (isAdmin(uc.roles)) {
+                    <a class="sidenav__subitem" routerLink="/dashboard">Gestion</a>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <button class="sidenav__action" (click)="joinDialog.open()">
+            <span class="sidenav__icon sidenav__icon--sm">+</span>
+            <span class="sidenav__label">Rejoindre un club</span>
+          </button>
+          <button class="sidenav__action" (click)="createDialog.open()">
+            <span class="sidenav__icon sidenav__icon--sm">+</span>
+            <span class="sidenav__label">Créer un club</span>
+          </button>
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="sidenav__footer">
+    <button class="sidenav__item" title="Profil">
+      <span class="sidenav__icon">👤</span>
+      @if (expanded()) { <span class="sidenav__label">{{ user()?.firstName }} {{ user()?.lastName }}</span> }
+    </button>
+
+    <button class="sidenav__item" title="Changer de thème">
+      <span class="sidenav__icon">🌙</span>
+      @if (expanded()) { <span class="sidenav__label">Mode sombre</span> }
+    </button>
+
+    <button class="sidenav__item sidenav__item--logout" (click)="logout()" title="Déconnexion">
+      <span class="sidenav__icon">⏻</span>
+      @if (expanded()) { <span class="sidenav__label">Déconnexion</span> }
+    </button>
+  </div>
+
+</nav>
+
+<app-join-club-dialog #joinDialog />
+<app-create-club-dialog #createDialog />

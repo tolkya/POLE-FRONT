@@ -1,0 +1,23 @@
+// Layout global
+$header-height:     56px;
+$nav-collapsed:     56px;
+$nav-expanded:      240px;
+$transition:        0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+.app-main {
+  margin-top: $header-height;
+  margin-left: $nav-collapsed;
+  min-height: calc(100vh - #{$header-height});
+  transition: margin-left $transition;
+
+  &--expanded { margin-left: $nav-expanded; }
+}
+
+// Backdrop transparent pour fermer la sidenav au clic en dehors
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 89; // juste sous la sidenav (z-index: 90)
+  background: transparent;
+  cursor: default;
+}

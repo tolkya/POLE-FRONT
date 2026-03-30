@@ -1,0 +1,205 @@
+@use '../../../../styles/variables' as *;
+
+$nav-width-collapsed: 56px;
+$nav-width-expanded:  240px;
+$transition: width 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Couleurs spécifiques sidenav (fond violet)
+$nav-bg:          $color-primary;
+$nav-bg-hover:    $color-primary-dark;
+$nav-text:        rgba(255, 255, 255, 0.9);
+$nav-text-muted:  rgba(255, 255, 255, 0.55);
+$nav-border:      rgba(255, 255, 255, 0.12);
+$nav-active-bg:   rgba(255, 255, 255, 0.15);
+$nav-hover-bg:    rgba(255, 255, 255, 0.08);
+$nav-logout-bg:   rgba(220, 38, 38, 0.2);
+
+.sidenav {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  bottom: 0;
+  width: $nav-width-collapsed;
+  background: $nav-bg;
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: $transition;
+  z-index: 90;
+
+  &--expanded { width: $nav-width-expanded; }
+
+  // ── Toggle ────────────────────────────────────────────────────────────────
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-sm;
+    width: 100%;
+    min-height: 48px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid $nav-border;
+    cursor: pointer;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:hover { background: $nav-hover-bg; }
+  }
+
+  // ── Corps ────────────────────────────────────────────────────────────────
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: $space-xs 0;
+
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { background: $nav-border; border-radius: 2px; }
+  }
+
+  // ── Item générique ─────────────────────────────────────────────────────────
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-sm;
+    min-height: 44px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: $nav-text;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: background 0.15s;
+
+    &:hover { background: $nav-hover-bg; }
+    &--active { background: $nav-active-bg; color: white; font-weight: 600; }
+    &--section {
+      color: $nav-text-muted;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: default;
+      min-height: 32px;
+      &:hover { background: none; }
+    }
+    &--logout {
+      color: rgba(255, 255, 255, 0.8);
+      &:hover { background: $nav-logout-bg; color: white; }
+    }
+  }
+
+  // ── Icône ────────────────────────────────────────────────────────────────
+  &__icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+
+    &--sm { font-size: 0.9rem; }
+  }
+
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // ── Clubs ────────────────────────────────────────────────────────────────
+  &__section { border-top: 1px solid $nav-border; margin-top: $space-xs; }
+
+  &__clubs { padding: 0 $space-xs; }
+
+  &__club { margin-bottom: 2px; }
+
+  &__club-logo {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: $radius-sm;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0;
+  }
+
+  &__club-name {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    width: 100%;
+    padding: $space-xs $space-sm;
+    background: none;
+    border: none;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: $nav-text;
+    text-align: left;
+    transition: background 0.15s;
+
+    &:hover { background: $nav-hover-bg; }
+    &--active { color: white; font-weight: 600; }
+  }
+
+  &__club-chevron { font-size: 0.65rem; color: $nav-text-muted; width: 12px; flex-shrink: 0; }
+
+  &__club-sub {
+    padding-left: 36px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__subitem {
+    padding: 6px $space-sm;
+    font-size: 0.8rem;
+    color: $nav-text-muted;
+    text-decoration: none;
+    border-radius: $radius-sm;
+    transition: background 0.15s;
+
+    &:hover { background: $nav-hover-bg; color: $nav-text; }
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    width: 100%;
+    padding: $space-xs $space-sm;
+    background: none;
+    border: none;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: background 0.15s;
+
+    &:hover { background: $nav-hover-bg; color: white; }
+  }
+
+  // ── Footer ────────────────────────────────────────────────────────────────
+  &__footer {
+    border-top: 1px solid $nav-border;
+    padding: $space-xs 0;
+  }
+}
+
