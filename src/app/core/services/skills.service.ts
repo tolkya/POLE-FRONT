@@ -1,33 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
-import { SkillMediaTuto } from './skill-media-tutos.service';
+import { environment } from '../../../environments/environment';
+import { HydraCollection, Skill, SkillCreateDto, SkillUpdateDto } from '../models';
 
-export interface Skill {
-  id: number;
-  name: string;
-  description: string | null;
-  createdAt: string;
-  skillMediaTutos: SkillMediaTuto[];
-  createdBy: { id: number; firstName: string; lastName: string };
-}
-
-export type { SkillMediaTuto };
-
-export interface SkillCreateDto {
-  name: string;
-  description?: string;
-}
-
-interface HydraCollection<T> {
-  member: T[];
-  totalItems: number;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class SkillsService {
   constructor(private http: HttpClient) {}
 
@@ -48,7 +25,7 @@ export class SkillsService {
     );
   }
 
-  updateSkill(skillId: number, dto: Partial<SkillCreateDto>): Observable<Skill> {
+  updateSkill(skillId: number, dto: SkillUpdateDto): Observable<Skill> {
     return this.http.patch<Skill>(
       `${environment.api.baseUrl}/skills/${skillId}`,
       dto,

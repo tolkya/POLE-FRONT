@@ -1,31 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { HydraCollection, ClubMember } from '../models';
 
-export interface MemberUser {
-  id: number;
-  email: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface ClubMember {
-  id: number;
-  member: MemberUser;
-  roles: string[];
-  validatedAt: string | null;
-  createdAt: string;
-}
-
-interface HydraCollection<T> {
-  member: T[];
-  totalItems: number;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ClubMembersService {
   constructor(private http: HttpClient) {}
 

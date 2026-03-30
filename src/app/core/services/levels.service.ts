@@ -1,38 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { HydraCollection, Level, LevelCreateDto, LEVEL_VALUES } from '../models';
 
-export const LEVEL_VALUES = [
-  { label: 'Novice',        value: 'NOVICE' },
-  { label: 'Initiation',   value: 'INITIATION' },
-  { label: 'Débutant',     value: 'DEBUTANT' },
-  { label: 'Intermédiaire',value: 'INTERMEDIAIRE' },
-  { label: 'Confirmé',     value: 'CONFIRME' },
-  { label: 'Avancé',       value: 'AVANCE' },
-  { label: 'Master',       value: 'MASTER' },
-];
+export { LEVEL_VALUES };
 
-export interface Level {
-  id: number;
-  value: string;
-  description: string | null;
-  createdAt: string;
-}
-
-export interface LevelCreateDto {
-  value: string;
-  description?: string;
-}
-
-interface HydraCollection<T> {
-  member: T[];
-  totalItems: number;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class LevelsService {
   constructor(private http: HttpClient) {}
 

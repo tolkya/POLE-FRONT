@@ -1,20 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { SkillMediaTuto } from '../models';
 
-export interface SkillMediaTuto {
-  id: number;
-  mediaUrl: string | null;
-  mimetype: string | null;
-  originalName: string | null;
-  createdBy: { id: number; firstName: string; lastName: string };
-  createdAt: string;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class SkillMediaTutosService {
   constructor(private http: HttpClient) {}
 

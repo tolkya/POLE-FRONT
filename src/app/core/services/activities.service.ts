@@ -1,36 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { HydraCollection, Activity, ActivityType, ActivityCreateDto, ActivityUpdateDto } from '../models';
 
-export interface ActivityType {
-  id: number;
-  name: string;
-}
-
-export interface Activity {
-  id: number;
-  name: string;
-  description: string | null;
-  status: string;
-  activityType: ActivityType;
-  createdAt: string;
-}
-
-export interface ActivityCreateDto {
-  name: string;
-  description?: string;
-  activityType: string;
-}
-
-interface HydraCollection<T> {
-  member: T[];
-  totalItems: number;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class ActivitiesService {
   constructor(private http: HttpClient) {}
 
@@ -48,6 +22,14 @@ export class ActivitiesService {
       `${environment.api.baseUrl}/clubs/${clubId}/activities`,
       dto,
       { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    );
+  }
+
+  updateActivity(activityId: number, dto: ActivityUpdateDto): Observable<Activity> {
+    return this.http.patch<Activity>(
+      `${environment.api.baseUrl}/activities/${activityId}`,
+      dto,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/merge-patch+json' }) }
     );
   }
 
