@@ -1,12 +1,6 @@
 <div class="landing">
 
-  <header class="landing__header">
-    <a routerLink="/" class="landing__logo">Sparklib</a>
-    <nav class="landing__nav">
-      <a routerLink="/login" class="btn-outline">Se connecter</a>
-      <a routerLink="/register" class="btn-primary">S'inscrire</a>
-    </nav>
-  </header>
+  <app-header />
 
   <section class="landing__hero">
     <p class="landing__hero-eyebrow">La plateforme des clubs sportifs et créatifs</p>
@@ -40,9 +34,11 @@
           <li><span class="landing__check">✓</span> Statistiques et suivi en temps réel</li>
           <li><span class="landing__check">✓</span> Médias pédagogiques attachés aux compétences</li>
         </ul>
-        <a routerLink="/register/club-admin" class="btn-primary btn--lg">
-          M'inscrire et créer mon club
-        </a>
+        @if (auth.isLoggedIn()) {
+          <button class="btn-primary btn--lg" (click)="createDialog.open()">Créer un club</button>
+        } @else {
+          <a routerLink="/register/club-admin" class="btn-primary btn--lg">M'inscrire et créer mon club</a>
+        }
       </div>
     </div>
 
@@ -70,12 +66,17 @@
           <li><span class="landing__check landing__check--alt">✓</span> Ressources pédagogiques (vidéos, médias)</li>
           <li><span class="landing__check landing__check--alt">✓</span> Inscription validée par votre enseignant</li>
         </ul>
-        <a routerLink="/register" [queryParams]="{join: true}" class="btn-primary btn--lg landing__btn-discover">
-          M'inscrire et rejoindre mon club
-        </a>
+        @if (auth.isLoggedIn()) {
+          <button class="btn-primary btn--lg landing__btn-discover" (click)="joinDialog.open()">Rejoindre un club</button>
+        } @else {
+          <a routerLink="/register" [queryParams]="{join: true}" class="btn-primary btn--lg landing__btn-discover">M'inscrire et rejoindre mon club</a>
+        }
       </div>
     </div>
 
   </main>
+
+  <app-join-club-dialog #joinDialog />
+  <app-create-club-dialog #createDialog />
 
 </div>

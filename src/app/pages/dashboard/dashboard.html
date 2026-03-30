@@ -4,67 +4,12 @@
   [userClubs]="userClubs()"
   [activeClub]="currentClub()"
   (clubSelected)="selectClub($event)"
-  (joinClub)="openJoin()"
-  (createClub)="openCreate()"
+  (joinClub)="joinDialog.open()"
+  (createClub)="createDialog.open()"
 />
 
-<p-dialog
-  header="Rejoindre un club"
-  [(visible)]="showJoinForm"
-  [modal]="true"
-  [closable]="true"
-  [dismissableMask]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '420px' }"
->
-  <form [formGroup]="joinForm" (ngSubmit)="submitJoin()">
-    <div class="form-group">
-      <label>Code du club</label>
-      <input type="text" formControlName="clubCode" placeholder="cde_42" />
-    </div>
-    @if (joinError()) { <p class="error">{{ joinError() }}</p> }
-    <div class="form-actions">
-      <button type="button" class="btn-secondary" (click)="showJoinForm.set(false)">Annuler</button>
-      <button type="submit" class="btn-primary" [disabled]="joinForm.invalid || joinPending()">
-        {{ joinPending() ? 'Envoi...' : 'Rejoindre' }}
-      </button>
-    </div>
-  </form>
-</p-dialog>
-
-<p-dialog
-  header="Créer un club"
-  [(visible)]="showCreateForm"
-  [modal]="true"
-  [closable]="true"
-  [dismissableMask]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [style]="{ width: '420px' }"
->
-  <form [formGroup]="createForm" (ngSubmit)="submitCreate()">
-    <div class="form-group">
-      <label>Nom du club *</label>
-      <input type="text" formControlName="name" />
-    </div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" formControlName="email" />
-    </div>
-    <div class="form-group">
-      <label>Téléphone</label>
-      <input type="text" formControlName="phone" />
-    </div>
-    @if (createError()) { <p class="error">{{ createError() }}</p> }
-    <div class="form-actions">
-      <button type="button" class="btn-secondary" (click)="showCreateForm.set(false)">Annuler</button>
-      <button type="submit" class="btn-primary" [disabled]="createForm.invalid || createPending()">
-        {{ createPending() ? 'Création...' : 'Créer' }}
-      </button>
-    </div>
-  </form>
-</p-dialog>
+<app-join-club-dialog #joinDialog />
+<app-create-club-dialog #createDialog />
 
 <main class="workspace">
   @if (currentClub(); as club) {

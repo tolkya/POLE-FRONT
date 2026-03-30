@@ -1,7 +1,13 @@
 <header class="header">
-  <span class="header__brand">Sparklib</span>
-  <div class="header__user">
-    <span>{{ user()?.firstName }} {{ user()?.lastName }}</span>
-    <button class="header__logout" (click)="logout()">Déconnexion</button>
-  </div>
+  <a routerLink="/" class="header__brand">Sparklib</a>
+
+  <nav class="header__nav">
+    @if (isLoggedIn()) {
+      <span class="header__user-name">{{ user()?.firstName }} {{ user()?.lastName }}</span>
+      <button class="header__logout" (click)="logout()">Déconnexion</button>
+    } @else {
+      <a routerLink="/login" class="btn-outline">Se connecter</a>
+      <a routerLink="/register" class="btn-primary">S'inscrire</a>
+    }
+  </nav>
 </header>

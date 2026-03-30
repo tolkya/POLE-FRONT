@@ -6,35 +6,6 @@
   flex-direction: column;
   background: $color-bg;
 
-  // ── Header ────────────────────────────────────────────────────────────────
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: $space-md $space-xl;
-    background: $color-surface;
-    box-shadow: $shadow-sm;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    @media (max-width: $bp-sm) { padding: $space-sm $space-md; }
-  }
-
-  &__logo {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: $color-primary;
-    letter-spacing: -0.5px;
-    text-decoration: none;
-  }
-
-  &__nav {
-    display: flex;
-    align-items: center;
-    gap: $space-sm;
-  }
-
   // ── Héro centré ───────────────────────────────────────────────────────────────
   &__hero {
     text-align: center;
