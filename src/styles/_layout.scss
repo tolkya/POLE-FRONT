@@ -1,0 +1,60 @@
+@use 'variables' as *;
+
+// Conteneur principal centré
+.container {
+  width: 100%;
+  max-width: $bp-xl;
+  margin: 0 auto;
+  padding: 0 $space-lg;
+
+  @media (max-width: $bp-md) { padding: 0 $space-md; }
+}
+
+// Grille 2 colonnes égales
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-xl;
+
+  @media (max-width: $bp-md) { grid-template-columns: 1fr; }
+}
+
+// Grille 3 colonnes
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-lg;
+
+  @media (max-width: $bp-lg) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: $bp-sm) { grid-template-columns: 1fr; }
+}
+
+// Page plein écran centrée (login, register)
+.page-center {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-xl $space-md;
+  background: $color-bg;
+}
+
+// Layout page avec header fixe
+.page-with-header {
+  padding-top: 64px; // hauteur du header
+  min-height: 100vh;
+  background: $color-bg;
+}
+
+// Utilitaires
+.flex        { display: flex; }
+.flex-col    { display: flex; flex-direction: column; }
+.items-center{ align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-sm      { gap: $space-sm; }
+.gap-md      { gap: $space-md; }
+.gap-lg      { gap: $space-lg; }
+.mt-md       { margin-top: $space-md; }
+.mt-lg       { margin-top: $space-lg; }
+.mb-md       { margin-bottom: $space-md; }

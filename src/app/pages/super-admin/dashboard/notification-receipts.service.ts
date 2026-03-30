@@ -1,35 +1,22 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { HydraCollection, NotificationReceipt } from '../../../core/models';
 
-export interface NotificationEvent {
-  notifType: string;
-  context: Record<string, string> | null;
-  triggeredBy: { firstName: string; lastName: string } | null;
-  createdAt: string;
-}
-
-export interface NotificationReceipt {
-  id: number;
-  isRead: boolean;
-  createdAt: string;
-  event: NotificationEvent;
-}
-
-interface HydraCollection<T> {
-  'member': T[];
-}
+export type { NotificationReceipt };
 
 @Injectable({ providedIn: 'root' })
 export class NotificationReceiptsService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = `${environment.api.baseUrl}/notification-receipts`;
 
-  getAll(): Observable<HydraCollection<NotificationReceipt>> {
-    return this.http.get<HydraCollection<NotificationReceipt>>(this.baseUrl, {
-      headers: new HttpHeaders({ Accept: 'application/ld+json' }),
-    });
+  getAll(): Observable<NotificationReceipt[]> {
+    return this.http
+      .get<HydraCollection<NotificationReceipt>>(this.baseUrl, {
+        headers: new HttpHeaders({ Accept: 'application/ld+json' }),
+      })
+      .pipe(map((r) => r.member));
   }
 
   markAsRead(id: number): Observable<NotificationReceipt> {

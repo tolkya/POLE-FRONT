@@ -1,10 +1,12 @@
 import { Component, input, inject, signal, effect, untracked } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserClub } from '../../../core/services/user-clubs.service';
-import { ClubMembersService, ClubMember } from './club-members.service';
+import { ClubMembersService } from '../../../core/services/club-members.service';
+import { ClubMember } from '../../../core/models';
 import { ClubService, Club } from '../club.service';
 import { UserClubsManagementService, ClubRole } from './user-clubs-management.service';
-import { ActivitiesService, Activity } from './activities.service';
+import { ActivitiesService } from '../../../core/services/activities.service';
+import { Activity } from '../../../core/models';
 import { MembersTab } from './members-tab/members-tab';
 import { ActivitiesTab } from './activities-tab/activities-tab';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from 'primeng/tabs';

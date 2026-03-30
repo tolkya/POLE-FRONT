@@ -1,9 +1,10 @@
 import { Component, input, output, signal, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { switchMap } from 'rxjs';
-import { Level, LevelsService, LEVEL_VALUES } from '../levels.service';
-import { Skill, SkillsService, SkillCreateDto } from '../skills.service';
-import { SkillMediaTutosService } from '../skill-media-tutos.service';
+import { LevelsService, LEVEL_VALUES } from '../../../../../core/services/levels.service';
+import { SkillsService } from '../../../../../core/services/skills.service';
+import { Level, Skill, SkillCreateDto } from '../../../../../core/models';
+import { SkillMediaTutosService } from '../../../../../core/services/skill-media-tutos.service';
 import { SkillCard } from './skill-card/skill-card';
 
 @Component({

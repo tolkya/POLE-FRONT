@@ -1,0 +1,113 @@
+@use 'variables' as *;
+
+// ─── Layout commun à toutes les pages d'auth ────────────────────────────────
+// Utilisé par : login, register, register-club-admin
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $color-bg;
+
+  // ── Header ────────────────────────────────────────────────────────────────
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-md $space-xl;
+    background: $color-surface;
+    box-shadow: $shadow-sm;
+
+    @media (max-width: $bp-sm) { padding: $space-sm $space-md; }
+  }
+
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: $color-primary;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+
+  &__header-nav {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  // ── Zone centrale ─────────────────────────────────────────────────────────
+  &__body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $space-md $space-md;
+
+    @media (min-width: $bp-lg) { padding: $space-lg $space-md; }
+  }
+
+  // ── Box formulaire ────────────────────────────────────────────────────────
+  &__box {
+    background: $color-surface;
+    border-radius: $radius-xl;
+    padding: $space-lg $space-xl;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: $shadow-card;
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+
+    @media (max-width: $bp-sm) {
+      padding: $space-md;
+      border-radius: $radius-lg;
+    }
+  }
+
+  // ── Titre ─────────────────────────────────────────────────────────────────
+  &__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $color-text;
+    text-align: center;
+    margin: 0;
+  }
+
+  // ── Liens bas de formulaire ───────────────────────────────────────────────
+  &__links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: $space-sm;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    padding-top: $space-xs;
+
+    a {
+      color: $color-primary;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+
+  // ── Succès ────────────────────────────────────────────────────────────────
+  &__success {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: $color-success;
+    }
+
+    p { color: $color-text-muted; }
+
+    strong { color: $color-primary; font-size: 1.1rem; }
+  }
+}

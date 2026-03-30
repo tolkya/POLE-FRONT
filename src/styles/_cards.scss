@@ -4,7 +4,7 @@
   background: $color-surface;
   border: 1px solid $color-border;
   border-radius: $radius-lg;
-  padding: 24px;
+  padding: $space-lg;
   box-shadow: $shadow-card;
 }
 
@@ -12,11 +12,29 @@
   background: $color-surface;
   border: 1px solid $color-border;
   border-radius: $radius-lg;
-  padding: 24px;
+  padding: $space-lg;
 }
 
 .card--neutral {
-  background: $color-neutral-bg;
+  background: $color-surface-alt;
   border-radius: $radius-lg;
-  padding: 20px;
+  padding: $space-md;
+}
+
+.card--activity {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: $space-md;
+  box-shadow: $shadow-sm;
+  transition: box-shadow $transition-base;
+
+  &:hover { box-shadow: $shadow-md; }
+}
+
+.card--skill {
+  background: $color-surface-alt;
+  border: 1px solid $color-border-light;
+  border-radius: $radius-md;
+  padding: $space-md;
 }

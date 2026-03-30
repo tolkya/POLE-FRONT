@@ -2,7 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MultiSelect } from 'primeng/multiselect';
-import { ClubMember } from '../club-members.service';
+import { ClubMember } from '../../../../core/models';
 import { ClubRole, CLUB_ROLE_OPTIONS, CLUB_ROLE_LABELS } from '../user-clubs-management.service';
 
 @Component({

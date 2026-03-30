@@ -1,7 +1,10 @@
 @use 'styles/variables' as *;
+@use 'styles/typography';
+@use 'styles/layout';
 @use 'styles/forms';
 @use 'styles/buttons';
 @use 'styles/cards';
+@use 'styles/auth';
 
 *, *::before, *::after {
   box-sizing: border-box;

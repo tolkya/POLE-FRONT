@@ -1,0 +1,50 @@
+@use 'variables' as *;
+
+h1, h2, h3, h4 {
+  font-family: $font-heading;
+  color: $color-text;
+  margin: 0;
+  line-height: 1.25;
+}
+
+h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -1px; }
+h2 { font-size: 1.5rem;  font-weight: 700; }
+h3 { font-size: 1.2rem;  font-weight: 700; }
+h4 { font-size: 1rem;    font-weight: 600; }
+
+p {
+  margin: 0;
+  line-height: 1.6;
+  color: $color-text;
+}
+
+.text-muted   { color: $color-text-muted; }
+.text-sm      { font-size: $font-size-sm; }
+.text-xs      { font-size: $font-size-xs; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+  font-size: $font-size-xs;
+  font-weight: 600;
+
+  &--success { background: $color-success-bg; color: $color-success; }
+  &--warning { background: $color-warning-bg; color: $color-warning; }
+  &--info    { background: $color-info-bg;    color: $color-info; }
+  &--error   { background: $color-error-bg;   color: $color-error; }
+  &--neutral { background: $color-neutral-bg; color: $color-text-muted; }
+}
+
+.alert {
+  padding: $space-sm $space-md;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  margin-bottom: $space-md;
+
+  &--error   { background: $color-error-bg;   color: darken($color-error, 10%); }
+  &--success { background: $color-success-bg; color: $color-success; }
+  &--warning { background: $color-warning-bg; color: $color-warning; }
+  &--info    { background: $color-info-bg;    color: $color-info; }
+}

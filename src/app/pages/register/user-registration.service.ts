@@ -9,7 +9,7 @@ export interface UserRegistrationPayload {
   lastName: string;
   phone?: string;
   plainPassword: string;
-  clubCode: string;
+  clubCode?: string;
 }
 
 export interface UserRegistrationResponse {

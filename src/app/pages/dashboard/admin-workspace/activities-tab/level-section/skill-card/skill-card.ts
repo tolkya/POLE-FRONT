@@ -1,7 +1,9 @@
 import { Component, input, output, signal, inject, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Skill, SkillsService } from '../../skills.service';
-import { SkillMediaTuto, SkillMediaTutosService } from '../../skill-media-tutos.service';
+import { SkillsService } from '../../../../../../core/services/skills.service';
+import { Skill } from '../../../../../../core/models';
+import { SkillMediaTutosService } from '../../../../../../core/services/skill-media-tutos.service';
+import { SkillMediaTuto } from '../../../../../../core/models';
 import { environment } from '../../../../../../../environments/environment';
 
 @Component({

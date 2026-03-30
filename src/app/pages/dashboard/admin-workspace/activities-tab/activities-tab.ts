@@ -1,10 +1,12 @@
 import { Component, input, output, signal, inject, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { Activity, ActivityType, ActivitiesService, ActivityCreateDto } from '../activities.service';
-import { LevelsService, Level, LevelCreateDto, LEVEL_VALUES } from './levels.service';
-import { ActivityMembersService, ActivityMember, EnrollMemberDto } from './activity-members.service';
-import { ClubMembersService, ClubMember } from '../club-members.service';
+import { ActivitiesService } from '../../../../core/services/activities.service';
+import { Activity, ActivityType, ActivityCreateDto, Level, LevelCreateDto, LevelValue, UserActivity, EnrollMemberDto, UserActivityRole } from '../../../../core/models';
+import { LevelsService, LEVEL_VALUES } from '../../../../core/services/levels.service';
+import { ActivityMembersService } from '../../../../core/services/activity-members.service';
+import { ClubMembersService } from '../../../../core/services/club-members.service';
+import { ClubMember } from '../../../../core/models';
 import { UserClubsService } from '../../../../core/services/user-clubs.service';
 import { Auth } from '../../../../core/services/auth.service';
 import { LevelSection } from './level-section/level-section';
@@ -72,16 +74,16 @@ export class ActivitiesTab implements OnInit {
 
   // Formulaire ajout niveau
   readonly showLevelForm = signal(false);
-  readonly newLevelValue = signal<string | null>(null);
+  readonly newLevelValue = signal<LevelValue | null>(null);
   readonly newLevelDescription = signal('');
   readonly levelSaving = signal(false);
 
   // --- Inscrits (UserActivity) ---
-  readonly activityMembers = signal<ActivityMember[]>([]);
+  readonly activityMembers = signal<UserActivity[]>([]);
   readonly membersLoading = signal(false);
   readonly enrollError = signal<string | null>(null);
   readonly enrollMemberId = signal<number | null>(null);
-  readonly enrollRole = signal<string>('STUDENT');
+  readonly enrollRole = signal<UserActivityRole>('STUDENT');
   readonly enrollSaving = signal(false);
   readonly clubMembersForEnroll = signal<ClubMember[]>([]);
 

@@ -36,8 +36,8 @@ export class Dashboard implements OnInit {
   }
 
   private loadReceipts(): void {
-    this.notifService.getAll().subscribe((col) =>
-      this.receipts.set(col['member'])
+    this.notifService.getAll().subscribe((receipts) =>
+      this.receipts.set(receipts)
     );
   }
 

@@ -1,0 +1,33 @@
+@use '../../../../styles/variables' as *;
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.confirm-dialog {
+  background: $color-surface;
+  border-radius: $radius-lg;
+  padding: $space-xl;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: $shadow-lg;
+
+  &__message {
+    font-size: $font-size-base;
+    color: $color-text;
+    margin: 0 0 $space-lg;
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: $space-md;
+  }
+}
