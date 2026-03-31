@@ -12,7 +12,7 @@ export const dashboardGuard: CanActivateFn = () => {
   const loadAndCheck = () =>
     userClubsService.fetchUserClubs().pipe(
       map(() => true),
-      catchError(() => of(router.createUrlTree(['/'])))
+      catchError(() => of(router.createUrlTree(['/login'])))
     );
 
   const user = auth.currentUser();
@@ -31,6 +31,6 @@ export const dashboardGuard: CanActivateFn = () => {
       }
       return loadAndCheck();
     }),
-    catchError(() => of(router.createUrlTree(['/']),))
+    catchError(() => of(router.createUrlTree(['/login'])))
   );
 };
