@@ -5,11 +5,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { map, startWith } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserRegistrationService } from './user-registration.service';
-import { ClubAdminRegistration } from './club-admin-registration.service';
-import { Auth } from '../../core/services/auth.service';
+import { ClubAdminRegistrationService } from './club-admin-registration.service';
 import { EyeIcon } from '../../shared/components/eye-icon/eye-icon';
 import { passwordsMatch } from '../../shared/validators/passwords-match.validator';
 import { passwordStrength, PasswordCriteria } from '../../shared/validators/password-strength.validator';
+import { AuthService } from '../../core/services/auth.service';
 
 /** Les 3 modes possibles du formulaire d'inscription */
 type RegisterMode = 'simple' | 'join' | 'club-admin';
@@ -23,9 +23,9 @@ type RegisterMode = 'simple' | 'join' | 'club-admin';
 export class Register implements OnInit {
   private readonly fb          = inject(FormBuilder);
   private readonly userService = inject(UserRegistrationService);
-  private readonly clubService = inject(ClubAdminRegistration);
+  private readonly clubService = inject(ClubAdminRegistrationService);
   private readonly route       = inject(ActivatedRoute);
-  private readonly auth        = inject(Auth);
+  private readonly auth        = inject(AuthService);
 
   readonly mode           = signal<RegisterMode>('simple');
   readonly showPwd        = signal(false);

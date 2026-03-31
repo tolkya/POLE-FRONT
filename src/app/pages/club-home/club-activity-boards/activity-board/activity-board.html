@@ -1,0 +1,16 @@
+<section class="activity-board">
+  <div class="activity-board__header">
+    <h3 class="activity-board__title">{{ activityType().name }}</h3>
+    <span class="activity-board__count">{{ activities().length }}</span>
+  </div>
+
+  @if (activities().length === 0) {
+    <p class="activity-board__empty">Aucune activité dans cette discipline.</p>
+  } @else {
+    <div class="activity-board__grid">
+      @for (activity of activities(); track activity.id) {
+        <app-activity-card [activity]="activity" [userRole]="userRole()" />
+      }
+    </div>
+  }
+</section>

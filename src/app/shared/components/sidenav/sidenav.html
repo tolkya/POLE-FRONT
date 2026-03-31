@@ -42,9 +42,9 @@
 
               @if (openClubId() === uc.id) {
                 <div class="sidenav__club-sub">
-                  <a class="sidenav__subitem" routerLink="/dashboard">Mes activités</a>
+                  <a class="sidenav__subitem" [routerLink]="['/club', uc.club.id]">Mes activités</a>
                   @if (isAdmin(uc.roles)) {
-                    <a class="sidenav__subitem" routerLink="/dashboard">Gestion</a>
+                    <a class="sidenav__subitem" [routerLink]="['/club', uc.club.id]">Gestion</a>
                   }
                 </div>
               }

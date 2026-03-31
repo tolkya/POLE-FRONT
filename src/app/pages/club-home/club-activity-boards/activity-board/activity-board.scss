@@ -1,0 +1,47 @@
+@use 'variables' as *;
+
+:host { display: block; }
+
+.activity-board {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
+
+.activity-board__header {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
+.activity-board__title {
+  margin: 0;
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: var(--club-text-accent, $color-primary);
+}
+
+.activity-board__count {
+  background: var(--club-badge-bg, $color-primary-light);
+  color: var(--club-badge-text, $color-primary);
+  font-size: $font-size-xs;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: $radius-full;
+}
+
+.activity-board__empty {
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  font-style: italic;
+}
+
+.activity-board__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-md;
+
+  @media (max-width: $bp-sm) {
+    grid-template-columns: 1fr;
+  }
+}

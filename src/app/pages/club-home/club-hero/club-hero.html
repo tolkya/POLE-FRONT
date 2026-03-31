@@ -1,0 +1,131 @@
+<div class="hero">
+
+  <div class="hero__banner" [style.background]="themeColor">
+    <div class="hero__avatar-wrap">
+      @if (logoUrl) {
+        <p-avatar [image]="logoUrl" shape="square" size="xlarge" styleClass="hero__avatar" />
+      } @else {
+        <p-avatar [label]="initials" shape="square" size="xlarge" styleClass="hero__avatar" />
+      }
+    </div>
+
+    <div class="hero__banner-title">
+      <h1 class="hero__name">{{ club.name }}</h1>
+    </div>
+
+    <div class="hero__banner-actions">
+      @if (userRole) {
+        <p-tag [value]="userRole" [severity]="roleSeverity" [rounded]="true" />
+        <button class="hero__leave-btn" (click)="requestLeave()" title="Quitter ce club">
+          <i class="pi pi-sign-out"></i>
+          <span>Quitter</span>
+        </button>
+      } @else {
+        <button class="hero__join-btn" (click)="joinClub.emit()">
+          <i class="pi pi-user-plus"></i> S'inscrire
+        </button>
+      }
+    </div>
+  </div>
+
+  <div class="hero__body">
+    <div class="hero__body-grid">
+      <!-- Panneau Coordonnees -->
+      <section class="hero__panel hero__panel--info">
+        <p class="hero__panel-kicker">Coordonnees</p>
+
+        @if (addressLine1 || addressLine2) {
+          <div class="hero__contact-item">
+            <span class="hero__contact-icon"><i class="pi pi-map-marker"></i></span>
+            <div class="hero__contact-copy">
+              <span class="hero__contact-value">
+                @if (addressLine1) { <span>{{ addressLine1 }}</span> }
+                @if (addressLine2) { <span>{{ addressLine2 }}</span> }
+              </span>
+            </div>
+          </div>
+        }
+
+        @if (club.phone) {
+          <div class="hero__contact-item">
+            <span class="hero__contact-icon"><i class="pi pi-phone"></i></span>
+            <div class="hero__contact-copy">
+              <span class="hero__contact-value">{{ club.phone }}</span>
+            </div>
+          </div>
+        }
+
+        @if (club.email) {
+          <div class="hero__contact-item">
+            <span class="hero__contact-icon"><i class="pi pi-envelope"></i></span>
+            <div class="hero__contact-copy">
+              <span class="hero__contact-value">{{ club.email }}</span>
+            </div>
+          </div>
+        }
+      </section>
+
+      <!-- Panneau Description -->
+      <section class="hero__panel hero__panel--description">
+        <div class="hero__description-head">
+          <p class="hero__panel-kicker">Presentation</p>
+          @if (userRole === 'ADMIN') {
+            <div class="hero__admin-actions">
+              <p-button label="Modifier" icon="pi pi-pencil" [text]="true" size="small" severity="secondary" />
+              <p-button label="Theme" icon="pi pi-palette" [text]="true" size="small" severity="secondary" (onClick)="openColorPicker()" />
+            </div>
+          }
+        </div>
+
+        <p class="hero__description">
+          {{ club.description || 'Aucune description renseignee pour ce club.' }}
+        </p>
+      </section>
+    </div>
+
+    @if (activityTypes.length > 0) {
+      <div class="hero__tags-wrap">
+        <p class="hero__panel-kicker">Disciplines</p>
+        <div class="hero__tags">
+          @for (at of activityTypes; track at.id) {
+            <p-chip [label]="at.name" styleClass="hero__chip" />
+          }
+        </div>
+      </div>
+    }
+
+    @if (showColorPicker()) {
+      <div class="hero__color-picker">
+        <p class="hero__color-label">Couleur du theme</p>
+        <p-colorpicker [(ngModel)]="pendingColor" [inline]="true" />
+        <div class="hero__color-actions">
+          <p-button label="Appliquer" size="small" (onClick)="confirmTheme()" />
+          <p-button label="Annuler" size="small" [text]="true" severity="secondary" (onClick)="cancelTheme()" />
+        </div>
+      </div>
+    }
+  </div>
+
+</div>
+
+<!-- Dialogue de confirmation pour quitter le club -->
+<p-dialog
+  header="Quitter le club"
+  [(visible)]="showLeaveConfirm"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '400px' }"
+  [draggable]="false"
+>
+  <div class="leave-confirm">
+    <i class="pi pi-exclamation-triangle leave-confirm__icon"></i>
+    <p class="leave-confirm__text">
+      Êtes-vous sûr de vouloir quitter <strong>{{ club.name }}</strong> ?<br />
+      <span class="leave-confirm__sub">Vous devrez être ré-invité ou soumettre une nouvelle demande pour y accéder à nouveau.</span>
+    </p>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" [text]="true" severity="secondary" (onClick)="cancelLeave()" />
+    <p-button label="Quitter le club" icon="pi pi-sign-out" severity="danger" (onClick)="confirmLeave()" />
+  </ng-template>
+</p-dialog>

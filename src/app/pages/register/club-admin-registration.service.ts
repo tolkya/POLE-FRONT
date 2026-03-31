@@ -21,7 +21,7 @@ export interface ClubAdminRegistrationResponse {
 @Injectable({
   providedIn: 'root',
 })
-export class ClubAdminRegistration {
+export class ClubAdminRegistrationService {
   private readonly http = inject(HttpClient);
 
   register(payload: ClubAdminRegistrationPayload): Observable<ClubAdminRegistrationResponse> {

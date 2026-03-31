@@ -1,8 +1,3 @@
-@if (currentClub(); as club) {
-  <app-club-workspace [userClub]="club" />
-} @else if (userClubs().length === 0) {
-  <div class="empty-state">
-    <p>Vous n'êtes membre d'aucun club.</p>
-    <p>Rejoignez un club ou créez le vôtre depuis le menu à gauche.</p>
-  </div>
-}
+<div class="empty-state">
+  <p>Utilisez le menu à gauche pour accéder à votre club.</p>
+</div>

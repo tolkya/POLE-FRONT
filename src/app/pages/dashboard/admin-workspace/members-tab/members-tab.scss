@@ -28,8 +28,8 @@
   border-radius: 12px;
   font-size: 0.78rem;
   font-weight: 500;
-  background: $color-primary-light;
-  color: $color-primary;
+  background: var(--club-badge-bg, $color-primary-light);
+  color: var(--club-badge-text, $color-primary);
   margin-right: 4px;
 
   &--pending {

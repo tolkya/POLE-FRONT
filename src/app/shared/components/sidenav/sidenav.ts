@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Auth } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { UserClubsService } from '../../../core/services/user-clubs.service';
 import { SidenavService } from '../../../core/services/sidenav.service';
 import { JoinClubDialog } from '../join-club-dialog/join-club-dialog';
@@ -13,7 +13,7 @@ import { CreateClubDialog } from '../create-club-dialog/create-club-dialog';
   styleUrl: './sidenav.scss',
 })
 export class Sidenav implements OnInit {
-  private readonly auth             = inject(Auth);
+  private readonly auth             = inject(AuthService);
   private readonly userClubsService = inject(UserClubsService);
   readonly sidenavService           = inject(SidenavService);
 

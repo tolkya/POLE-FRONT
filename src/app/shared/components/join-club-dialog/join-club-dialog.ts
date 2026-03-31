@@ -1,4 +1,4 @@
-import { Component, inject, signal, Output, EventEmitter } from '@angular/core';
+import { Component, inject, signal, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { ClubService } from '../../../core/services/club.service';
@@ -18,8 +18,17 @@ export class JoinClubDialog {
   private readonly toast             = inject(ToastService);
 
   @Output() joined = new EventEmitter<void>();
+  @Output() visibleChange = new EventEmitter<boolean>();
 
-  readonly visible = signal(false);
+  @Input() set visible(v: boolean) {
+    if (v) {
+      this.form.reset();
+      this.error.set(null);
+    }
+    this.visible$.set(v);
+  }
+
+  readonly visible$ = signal(false);
   readonly pending = signal(false);
   readonly error   = signal<string | null>(null);
 
@@ -30,7 +39,8 @@ export class JoinClubDialog {
   open(): void {
     this.form.reset();
     this.error.set(null);
-    this.visible.set(true);
+    this.visible$.set(true);
+    this.visibleChange.emit(true);
   }
 
   submit(): void {
@@ -42,7 +52,8 @@ export class JoinClubDialog {
       next: () => {
         this.userClubsService.fetchUserClubs().subscribe();
         this.toast.success('Vous avez rejoint le club.');
-        this.visible.set(false);
+        this.visible$.set(false);
+        this.visibleChange.emit(false);
         this.pending.set(false);
         this.joined.emit();
       },

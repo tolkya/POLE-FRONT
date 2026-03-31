@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Auth } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ import { Auth } from '../../core/services/auth.service';
 })
 export class Login implements OnInit {
   private readonly fb     = inject(FormBuilder);
-  private readonly auth   = inject(Auth);
+  private readonly auth   = inject(AuthService);
   private readonly router = inject(Router);
 
   readonly form = this.fb.nonNullable.group({
@@ -25,16 +25,11 @@ export class Login implements OnInit {
   readonly serverError = signal<string | null>(null);
 
   ngOnInit(): void {
-    // Déjà connecté ? Rediriger directement sans afficher le formulaire
+    // Déjà connecté (getMe fait par app.ts au démarrage) ? Rediriger directement
     const user = this.auth.currentUser();
     if (user) {
       this.redirect(user.roles);
-      return;
     }
-    this.auth.getMe().subscribe({
-      next:  (user) => this.redirect(user.roles),
-      error: () => { /* pas connecté, on reste sur la page */ },
-    });
   }
 
   submit(): void {
@@ -68,7 +63,7 @@ export class Login implements OnInit {
     if (roles.includes('ROLE_SUPER_ADMIN')) {
       void this.router.navigate(['/dashboard/super-admin']);
     } else {
-      void this.router.navigate(['/dashboard']);
+      void this.router.navigate(['/']);
     }
   }
 }

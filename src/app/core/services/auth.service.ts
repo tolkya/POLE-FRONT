@@ -16,7 +16,7 @@ export interface User {
 @Injectable({
   providedIn: 'root',
 })
-export class Auth {
+export class AuthService {
   private readonly http   = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly toast  = inject(ToastService);

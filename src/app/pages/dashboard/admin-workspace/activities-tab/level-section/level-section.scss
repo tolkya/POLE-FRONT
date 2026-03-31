@@ -35,8 +35,8 @@
 .level-badge {
   display: inline-block;
   padding: 3px 12px;
-  background: $color-primary-light;
-  color: $color-primary;
+  background: var(--club-badge-bg, $color-primary-light);
+  color: var(--club-badge-text, $color-primary);
   border-radius: 20px;
   font-size: 0.82rem;
   font-weight: 700;
@@ -83,8 +83,8 @@
     transition: background $transition-base, color $transition-base;
 
     &:hover {
-      background: $color-primary-light;
-      color: $color-primary;
+      background: var(--club-primary-light, $color-primary-light);
+      color: var(--club-text-accent, $color-primary);
     }
   }
 }

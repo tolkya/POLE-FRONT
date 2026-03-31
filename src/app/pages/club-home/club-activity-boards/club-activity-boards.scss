@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+:host { display: block; }
+
+.boards {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+}
+
+.boards-loading {
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  font-style: italic;
+  padding: $space-md 0;
+}
+
+.boards-empty {
+  text-align: center;
+  padding: $space-xl 0;
+  color: $color-text-muted;
+}

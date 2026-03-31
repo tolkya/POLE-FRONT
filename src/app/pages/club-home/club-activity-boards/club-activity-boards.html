@@ -1,0 +1,17 @@
+@if (loading()) {
+  <p class="boards-loading">Chargement des activités…</p>
+} @else if (grouped().length === 0) {
+  <div class="boards-empty">
+    <p>Aucune activité dans ce club pour le moment.</p>
+  </div>
+} @else {
+  <div class="boards">
+    @for (group of grouped(); track group.type.id) {
+      <app-activity-board
+        [activityType]="group.type"
+        [activities]="group.items"
+        [userRole]="userRole()"
+      />
+    }
+  </div>
+}

@@ -1,0 +1,67 @@
+// ─── Variables CSS du thème club ─────────────────────────────────────────────
+// Injectées dynamiquement via HostBinding sur le composant ClubHome.
+// Tous les enfants héritent par cascade CSS.
+// Valeurs par défaut = violet Sparklib (#7c3aed).
+
+:root {
+  // Couleur principale et dérivées
+  --club-primary:            #7c3aed;
+  --club-primary-hover:      #6d28d9;
+  --club-primary-light:      rgba(124, 58, 237, 0.06);
+  --club-primary-subtle:     rgba(124, 58, 237, 0.12);
+  --club-primary-dark:       #5b21b6;
+  --club-on-primary:         #ffffff;
+
+  // Surfaces teintées
+  --club-surface:            #ffffff;
+  --club-surface-tinted:     rgba(124, 58, 237, 0.02);
+  --club-surface-accent:     rgba(124, 58, 237, 0.06);
+
+  // Bordures
+  --club-border:             rgba(124, 58, 237, 0.12);
+  --club-border-accent:      rgba(124, 58, 237, 0.22);
+
+  // Textes
+  --club-text-accent:        #7c3aed;
+  --club-text-on-light:      #5b21b6;
+
+  // Badges / Tags
+  --club-badge-bg:           rgba(124, 58, 237, 0.12);
+  --club-badge-text:         #5b21b6;
+
+  // Ombres
+  --club-shadow:             0 4px 24px rgba(124, 58, 237, 0.08);
+  --club-shadow-hover:       0 8px 32px rgba(124, 58, 237, 0.14);
+}
+
+// ─── Mixins réutilisables ────────────────────────────────────────────────────
+
+@mixin club-bg        { background-color: var(--club-primary); color: var(--club-on-primary); }
+@mixin club-bg-light  { background-color: var(--club-primary-light); }
+@mixin club-bg-subtle { background-color: var(--club-primary-subtle); }
+@mixin club-text      { color: var(--club-text-accent); }
+@mixin club-border    { border-color: var(--club-border-accent); }
+
+@mixin club-card {
+  background: var(--club-surface);
+  border: 1px solid var(--club-border);
+  box-shadow: var(--club-shadow);
+  transition: box-shadow 0.2s ease;
+  &:hover { box-shadow: var(--club-shadow-hover); }
+}
+
+@mixin club-badge {
+  background: var(--club-badge-bg);
+  color: var(--club-badge-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+@mixin club-section {
+  background: var(--club-surface-tinted);
+  border: 1px solid var(--club-border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}

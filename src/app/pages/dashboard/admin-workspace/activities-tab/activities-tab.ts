@@ -8,7 +8,7 @@ import { ActivityMembersService } from '../../../../core/services/activity-membe
 import { ClubMembersService } from '../../../../core/services/club-members.service';
 import { ClubMember } from '../../../../core/models';
 import { UserClubsService } from '../../../../core/services/user-clubs.service';
-import { Auth } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { LevelSection } from './level-section/level-section';
 import { Select } from 'primeng/select';
 import { Accordion, AccordionPanel, AccordionHeader, AccordionContent } from 'primeng/accordion';
@@ -32,7 +32,7 @@ export class ActivitiesTab implements OnInit {
   private readonly activityMembersService = inject(ActivityMembersService);
   private readonly clubMembersService = inject(ClubMembersService);
   private readonly userClubsService = inject(UserClubsService);
-  private readonly auth = inject(Auth);
+  private readonly auth = inject(AuthService);
 
   readonly clubId = input.required<number>();
   readonly activities = input.required<Activity[]>();

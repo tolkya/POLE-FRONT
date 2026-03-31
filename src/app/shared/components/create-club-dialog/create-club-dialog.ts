@@ -5,7 +5,7 @@ import { Dialog } from 'primeng/dialog';
 import { ClubService } from '../../../core/services/club.service';
 import { UserClubsService } from '../../../core/services/user-clubs.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { Auth } from '../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-create-club-dialog',
@@ -18,7 +18,7 @@ export class CreateClubDialog {
   private readonly clubService      = inject(ClubService);
   private readonly userClubsService = inject(UserClubsService);
   private readonly toast            = inject(ToastService);
-  private readonly auth             = inject(Auth);
+  private readonly auth             = inject(AuthService);
   private readonly router           = inject(Router);
 
   @Output() created = new EventEmitter<void>();

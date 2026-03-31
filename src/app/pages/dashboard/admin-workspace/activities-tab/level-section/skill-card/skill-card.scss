@@ -11,7 +11,7 @@
   transition: box-shadow $transition-base;
 
   &:hover {
-    box-shadow: $shadow-sm;
+    box-shadow: var(--club-shadow-hover, $shadow-sm);
   }
 
   &__header {

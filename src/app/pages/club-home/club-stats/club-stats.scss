@@ -1,0 +1,35 @@
+@use 'variables' as *;
+
+:host { display: block; }
+
+.club-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-md;
+
+  @media (max-width: $bp-sm) { grid-template-columns: 1fr; }
+}
+
+.club-stats__card {
+  background: var(--club-surface-tinted, $color-surface-alt);
+  border: 1px solid var(--club-border, $color-border);
+  border-radius: $radius-lg;
+  padding: $space-lg $space-md;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
+.club-stats__value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--club-text-accent, $color-primary);
+  line-height: 1;
+}
+
+.club-stats__label {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  font-weight: 500;
+}

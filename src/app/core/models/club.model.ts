@@ -33,6 +33,11 @@ export interface ClubUpdateDto {
   name?: string;
   email?: string;
   phone?: string;
+  street?: string;
+  postalCode?: string;
+  city?: string;
+  description?: string;
+  themeColor?: string;
 }
 
 export interface MemberUser {

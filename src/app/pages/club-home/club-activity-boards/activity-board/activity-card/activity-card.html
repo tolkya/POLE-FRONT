@@ -1,0 +1,14 @@
+<div class="activity-card">
+  <div class="activity-card__header">
+    <h4 class="activity-card__name">{{ activity().name }}</h4>
+    @if (isNew()) {
+      <span class="activity-card__new-tag">Nouveau</span>
+    }
+  </div>
+  @if (activity().description) {
+    <p class="activity-card__description">{{ activity().description }}</p>
+  }
+  <div class="activity-card__footer">
+    <span class="activity-card__status">{{ activity().status }}</span>
+  </div>
+</div>

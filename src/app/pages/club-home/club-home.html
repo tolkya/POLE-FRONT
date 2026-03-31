@@ -1,13 +1,7 @@
 @if (loading()) {
   <div class="club-home">
-    <div class="club-hero">
-      <p-skeleton shape="circle" size="80px" />
-      <div class="hero-info">
-        <p-skeleton width="200px" height="28px" />
-        <p-skeleton width="150px" height="16px" styleClass="mt-2" />
-      </div>
-    </div>
-    <div class="club-stats">
+    <p-skeleton height="160px" borderRadius="12px" />
+    <div class="club-home__stats-skeleton">
       <p-skeleton height="80px" />
       <p-skeleton height="80px" />
       <p-skeleton height="80px" />
@@ -15,67 +9,33 @@
   </div>
 } @else if (club()) {
   <div class="club-home">
+    <app-club-hero
+      [club]="club()!"
+      [activityTypes]="activityTypes()"
+      [userRole]="userRole()"
+      [logoUrl]="logoAbsoluteUrl()"
+      (themeColorChange)="onThemeChange($event)"
+      (leaveClub)="onLeaveClub()"
+      (joinClub)="onJoinClub()"
+    />
 
-    <!-- HERO -->
-    <div class="club-hero" [style.--theme-color]="themeColor()">
-      <div class="hero-top">
-        <!-- Logo ou initiales -->
-        <div class="club-logo" [style.background]="themeColor()">
-          @if (logoAbsoluteUrl()) {
-            <img [src]="logoAbsoluteUrl()" [alt]="club()!.name" />
-          } @else {
-            <span>{{ initials() }}</span>
-          }
-        </div>
+    <app-club-stats
+      [membersCount]="membersCount()"
+      [activitiesCount]="activitiesCount()"
+      [teachersCount]="teachersCount()"
+    />
 
-        <!-- Infos principal -->
-        <div class="hero-info">
-          <div class="hero-name-row">
-            <h1>{{ club()!.name }}</h1>
-            <p-tag [value]="roleTag().label" [severity]="roleTag().severity" [rounded]="true" />
-          </div>
-          @if (address()) {
-            <p class="hero-address"><i class="pi pi-map-marker"></i> {{ address() }}</p>
-          }
-          @if (club()!.phone) {
-            <p class="hero-phone"><i class="pi pi-phone"></i> {{ club()!.phone }}</p>
-          }
-          @if (club()!.description) {
-            <p class="hero-description">{{ club()!.description }}</p>
-          }
-        </div>
+    <app-club-activity-boards
+      [clubId]="club()!.id"
+      [userRole]="userRole()"
+      (activitiesCountChange)="onActivitiesCountChange($event)"
+    />
 
-        <!-- Actions admin -->
-        @if (isAdmin()) {
-          <div class="hero-actions">
-            <button class="btn-icon" title="Modifier les infos">
-              <i class="pi pi-pencil"></i>
-            </button>
-          </div>
-        }
-      </div>
-    </div>
-
-    <!-- STATS -->
-    <div class="club-stats">
-      <p-card styleClass="stat-card">
-        <div class="stat-value">—</div>
-        <div class="stat-label">Membres</div>
-      </p-card>
-      <p-card styleClass="stat-card">
-        <div class="stat-value">—</div>
-        <div class="stat-label">Activités</div>
-      </p-card>
-      <p-card styleClass="stat-card">
-        <div class="stat-value">—</div>
-        <div class="stat-label">Profs</div>
-      </p-card>
-    </div>
-
-    <!-- ACTIVITÉS — à implémenter en 3f.3/3f.4 -->
-    <div class="club-activities">
-      <p class="coming-soon">Les activités arrivent bientôt…</p>
-    </div>
-
+    <app-join-club-dialog
+      [visible]="showJoinDialog()"
+      (visibleChange)="showJoinDialog.set($event)"
+      (joined)="onJoined()"
+    />
   </div>
 }
+

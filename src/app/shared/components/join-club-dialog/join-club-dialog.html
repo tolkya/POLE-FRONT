@@ -1,6 +1,7 @@
 <p-dialog
   header="Rejoindre un club"
-  [(visible)]="visible"
+  [visible]="visible$()"
+  (visibleChange)="visible$.set($event); visibleChange.emit($event)"
   [modal]="true"
   [closable]="true"
   [dismissableMask]="true"
@@ -15,7 +16,7 @@
     </div>
     @if (error()) { <p class="error">{{ error() }}</p> }
     <div class="form-actions">
-      <button type="button" class="btn-secondary" (click)="visible.set(false)">Annuler</button>
+      <button type="button" class="btn-secondary" (click)="visible$.set(false); visibleChange.emit(false)">Annuler</button>
       <button type="submit" class="btn-primary" [disabled]="form.invalid || pending()">
         {{ pending() ? 'Envoi...' : 'Rejoindre' }}
       </button>

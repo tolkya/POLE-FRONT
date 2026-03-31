@@ -30,4 +30,10 @@ export class ClubService {
       { clubCode }
     );
   }
+
+  leaveClub(userClubId: number): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.api.baseUrl}/user-clubs/${userClubId}`
+    );
+  }
 }

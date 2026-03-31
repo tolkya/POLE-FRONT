@@ -8,6 +8,7 @@ import { definePreset } from '@primeuix/themes';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { errorInterceptor } from './core/interceptors/error-interceptor';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 const SparkLibPreset = definePreset(Aura, {
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, errorInterceptor])),
     provideAnimationsAsync(),
     MessageService,
     providePrimeNG({
