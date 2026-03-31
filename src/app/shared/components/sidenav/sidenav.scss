@@ -123,6 +123,12 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
 
   &__club { margin-bottom: 2px; }
 
+  &__club-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
   &__club-logo {
     flex-shrink: 0;
     width: 24px;
@@ -142,22 +148,31 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
     display: flex;
     align-items: center;
     gap: $space-xs;
-    width: 100%;
+    flex: 1;
     padding: $space-xs $space-sm;
-    background: none;
-    border: none;
     border-radius: $radius-sm;
     cursor: pointer;
     font-size: 0.875rem;
     color: $nav-text;
-    text-align: left;
+    text-decoration: none;
     transition: background 0.15s;
 
     &:hover { background: $nav-hover-bg; }
     &--active { color: white; font-weight: 600; }
   }
 
-  &__club-chevron { font-size: 0.65rem; color: $nav-text-muted; width: 12px; flex-shrink: 0; }
+  &__club-chevron {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.65rem;
+    color: $nav-text-muted;
+    padding: $space-xs;
+    border-radius: $radius-sm;
+
+    &:hover { background: $nav-hover-bg; }
+  }
 
   &__club-sub {
     padding-left: 36px;

@@ -7,6 +7,12 @@ export interface Club {
   clubCode: string;
   joinPolicy: 'AUTO_ACCEPT' | 'MANUAL_VALIDATION';
   createdAt: string;
+  logoUrl: string | null;
+  themeColor: string | null;
+  street: string | null;
+  postalCode: string | null;
+  city: string | null;
+  updatedAt: string | null;
 }
 
 export interface UserClub {

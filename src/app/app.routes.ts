@@ -20,9 +20,9 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/register/register').then((m) => m.Register),
   },
   {
-    path: 'clubs/:id',
-    // Placeholder Phase 2 — page publique d'un club
-    loadComponent: () => import('./pages/landing/landing').then((m) => m.Landing),
+    path: 'club/:id',
+    loadComponent: () => import('./pages/club-home/club-home').then((m) => m.ClubHome),
+    canActivate: [dashboardGuard],
   },
   {
     path: 'dashboard/super-admin',

@@ -25,17 +25,20 @@
         <div class="sidenav__clubs">
           @for (uc of userClubs(); track uc.id) {
             <div class="sidenav__club">
-              <button
-                class="sidenav__club-name"
-                [class.sidenav__club-name--active]="currentClub()?.id === uc.id"
-                (click)="toggleClub(uc.id); selectClub(uc)"
-              >
-                <span class="sidenav__club-chevron">
+              <div class="sidenav__club-header">
+                <a
+                  class="sidenav__club-name"
+                  [class.sidenav__club-name--active]="currentClub()?.id === uc.id"
+                  [routerLink]="['/club', uc.club.id]"
+                  (click)="selectClub(uc)"
+                >
+                  <span class="sidenav__club-logo">{{ clubInitials(uc.club.name) }}</span>
+                  {{ uc.club.name }}
+                </a>
+                <button class="sidenav__club-chevron" (click)="toggleClub(uc.id)">
                   {{ openClubId() === uc.id ? '▾' : '▸' }}
-                </span>
-                <span class="sidenav__club-logo">{{ clubInitials(uc.club.name) }}</span>
-                {{ uc.club.name }}
-              </button>
+                </button>
+              </div>
 
               @if (openClubId() === uc.id) {
                 <div class="sidenav__club-sub">

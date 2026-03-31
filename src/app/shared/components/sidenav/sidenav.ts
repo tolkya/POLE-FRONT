@@ -42,6 +42,8 @@ export class Sidenav implements OnInit {
 
   selectClub(userClub: any): void {
     this.userClubsService.selectClub(userClub);
+    // Ouvre automatiquement le sous-menu du club sélectionné
+    this.openClubId.set(userClub.id);
   }
 
   logout(): void {

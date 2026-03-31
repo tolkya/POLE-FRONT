@@ -5,11 +5,6 @@
 @if (auth.isLoggedIn()) {
   <app-sidenav />
 
-  <!-- Backdrop : clic en dehors de la sidenav pour la fermer -->
-  @if (sidenav.expanded()) {
-    <div class="app-backdrop" (click)="sidenav.close()"></div>
-  }
-
   <main class="app-main" [class.app-main--expanded]="sidenav.expanded()">
     <router-outlet />
   </main>
