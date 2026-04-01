@@ -12,7 +12,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       switch (error.status) {
         case 401:
-          router.navigate(['/login']);
+          if (!req.url.includes('/api/me')) {
+            router.navigate(['/login']);
+          }
           break;
         case 403:
           messages.add({ severity: 'error', summary: 'Accès refusé', detail: 'Vous n\'avez pas les droits nécessaires.' });
