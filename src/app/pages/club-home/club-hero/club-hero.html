@@ -73,7 +73,7 @@
           <p class="hero__panel-kicker">Presentation</p>
           @if (userRole === 'ADMIN') {
             <div class="hero__admin-actions">
-              <p-button label="Modifier" icon="pi pi-pencil" [text]="true" size="small" severity="secondary" />
+              <p-button label="Modifier" icon="pi pi-pencil" [text]="true" size="small" severity="secondary" (onClick)="editClub.emit()" />
               <p-button label="Theme" icon="pi pi-palette" [text]="true" size="small" severity="secondary" (onClick)="openColorPicker()" />
             </div>
           }

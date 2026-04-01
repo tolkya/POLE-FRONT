@@ -1,0 +1,52 @@
+<p-dialog
+  header="Modifier le club"
+  [visible]="visible()"
+  (onHide)="onHide()"
+  [modal]="true"
+  [style]="{ width: '520px' }"
+  [draggable]="false"
+>
+  <div class="edit-form">
+    <div class="edit-form__field">
+      <label>Nom du club</label>
+      <input pInputText [(ngModel)]="name" placeholder="Nom du club" />
+    </div>
+
+    <div class="edit-form__row">
+      <div class="edit-form__field">
+        <label>Téléphone</label>
+        <input pInputText [(ngModel)]="phone" placeholder="06 00 00 00 00" />
+      </div>
+      <div class="edit-form__field">
+        <label>Email</label>
+        <input pInputText [(ngModel)]="email" placeholder="contact@club.fr" type="email" />
+      </div>
+    </div>
+
+    <div class="edit-form__field">
+      <label>Adresse</label>
+      <input pInputText [(ngModel)]="street" placeholder="Rue" />
+    </div>
+
+    <div class="edit-form__row">
+      <div class="edit-form__field">
+        <label>Code postal</label>
+        <input pInputText [(ngModel)]="postalCode" placeholder="75000" />
+      </div>
+      <div class="edit-form__field">
+        <label>Ville</label>
+        <input pInputText [(ngModel)]="city" placeholder="Paris" />
+      </div>
+    </div>
+
+    <div class="edit-form__field">
+      <label>Description</label>
+      <textarea pTextarea [(ngModel)]="description" rows="4" placeholder="Présentation du club..."></textarea>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" [text]="true" severity="secondary" (onClick)="onHide()" />
+    <p-button label="Enregistrer" icon="pi pi-check" (onClick)="onSubmit()" />
+  </ng-template>
+</p-dialog>

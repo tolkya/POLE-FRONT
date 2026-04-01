@@ -4,18 +4,19 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { UserClubsService } from '../../core/services/user-clubs.service';
 import { ToastService } from '../../core/services/toast.service';
-import { Club } from '../../core/models/club.model';
+import { Club, ClubUpdateDto } from '../../core/models/club.model';
 import { JoinClubDialog } from '../../shared/components/join-club-dialog/join-club-dialog';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ClubHero } from './club-hero/club-hero';
 import { ClubActivityBoards } from './club-activity-boards/club-activity-boards';
+import { ClubEditDialog } from './club-edit-dialog/club-edit-dialog';
 import { environment } from '../../../environments/environment';
 import { ClubStats } from './club-stats/club-stats';
 import { ClubService, ClubStatsData } from '../../core/services/club.service';
 
 @Component({
   selector: 'app-club-home',
-  imports: [CommonModule, SkeletonModule, ClubHero, ClubStats, ClubActivityBoards, JoinClubDialog],
+  imports: [CommonModule, SkeletonModule, ClubHero, ClubStats, ClubActivityBoards, JoinClubDialog,  ClubEditDialog],
   templateUrl: './club-home.html',
   styleUrl: './club-home.scss',
 })
@@ -67,6 +68,8 @@ export class ClubHome implements OnInit, OnDestroy {
 
   /** Contrôle l'ouverture du dialog rejoindre (depuis le bouton S'inscrire du hero) */
   showJoinDialog = signal(false);
+
+  showEditDialog = signal(false);
 
   club = signal<Club | null>(null);
   loading = signal(true);
@@ -173,6 +176,23 @@ export class ClubHome implements OnInit, OnDestroy {
     if (!club) return;
     this.clubService.getClub(club.id).subscribe(c => this.club.set(c));
     this.userClubsService.fetchUserClubs().subscribe();
+  }
+
+  onEditClub(): void {
+  this.showEditDialog.set(true);
+}
+
+  onSaveClub(data: ClubUpdateDto): void {
+    const club = this.club();
+    if (!club) return;
+    this.showEditDialog.set(false);
+    this.clubService.updateClub(club.id, data).subscribe({
+      next: (updated) => {
+        this.club.set(updated);
+        this.toast.success('Club mis à jour.');
+      },
+      error: () => this.toast.error('Erreur lors de la mise à jour.'),
+    });
   }
 
   ngOnDestroy(): void {

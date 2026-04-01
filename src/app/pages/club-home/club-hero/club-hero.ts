@@ -28,6 +28,8 @@ export class ClubHero {
   /** Émis quand l'utilisateur non-membre veut s'inscrire */
   @Output() joinClub = new EventEmitter<void>();
 
+  @Output() editClub = new EventEmitter<void>();
+
   showColorPicker = signal(false);
   showLeaveConfirm = signal(false);
   pendingColor = '';

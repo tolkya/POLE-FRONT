@@ -17,6 +17,7 @@
       (themeColorChange)="onThemeChange($event)"
       (leaveClub)="onLeaveClub()"
       (joinClub)="onJoinClub()"
+      (editClub)="onEditClub()"
     />
 
     <app-club-stats
@@ -35,6 +36,13 @@
       [visible]="showJoinDialog()"
       (visibleChange)="showJoinDialog.set($event)"
       (joined)="onJoined()"
+    />
+
+    <app-club-edit-dialog
+      [club]="club()!"
+      [visible]="showEditDialog()"
+      (visibleChange)="showEditDialog.set($event)"
+      (save)="onSaveClub($event)"
     />
   </div>
 }
