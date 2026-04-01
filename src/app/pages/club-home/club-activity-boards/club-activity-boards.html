@@ -11,6 +11,8 @@
         [activityType]="group.type"
         [activities]="group.items"
         [userRole]="userRole()"
+        [myActivities]="myActivities()"
+        (joined)="refreshMyActivities()"
       />
     }
   </div>

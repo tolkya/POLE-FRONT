@@ -9,7 +9,12 @@
   } @else {
     <div class="activity-board__grid">
       @for (activity of activities(); track activity.id) {
-        <app-activity-card [activity]="activity" [userRole]="userRole()" />
+        <app-activity-card
+          [activity]="activity"
+          [userRole]="userRole()"
+          [myActivities]="myActivities()"
+          (joined)="onJoined()"
+        />
       }
     </div>
   }

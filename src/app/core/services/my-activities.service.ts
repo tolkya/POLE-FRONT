@@ -1,0 +1,31 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { map, Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { HydraCollection } from '../models';
+import { MyActivity } from '../models/user-activity.model';
+
+@Injectable({ providedIn: 'root' })
+export class MyActivitiesService {
+  private readonly http = inject(HttpClient);
+
+  readonly myActivities = signal<MyActivity[]>([]);
+
+  fetchMyActivities(clubId: number): Observable<MyActivity[]> {
+    return this.http
+      .get<HydraCollection<MyActivity>>(
+        `${environment.api.baseUrl}/me/activities?clubId=${clubId}`
+      )
+      .pipe(
+        tap(res => this.myActivities.set(res.member)),
+        map(res => res.member)
+      );
+  }
+
+  joinActivity(activityId: number): Observable<MyActivity> {
+    return this.http.post<MyActivity>(
+      `${environment.api.baseUrl}/activities/${activityId}/join`,
+      {}
+    );
+  }
+}
