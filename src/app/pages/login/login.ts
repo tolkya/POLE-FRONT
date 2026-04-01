@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../core/services/auth.service';
+import { UserClubsService } from '../../core/services/user-clubs.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class Login implements OnInit {
   private readonly fb     = inject(FormBuilder);
   private readonly auth   = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly userClubsService = inject(UserClubsService);
 
   readonly form = this.fb.nonNullable.group({
     email:    ['', [Validators.required, Validators.email]],
@@ -62,8 +64,19 @@ export class Login implements OnInit {
   private redirect(roles: string[]): void {
     if (roles.includes('ROLE_SUPER_ADMIN')) {
       void this.router.navigate(['/dashboard/super-admin']);
-    } else {
-      void this.router.navigate(['/']);
+      return;
     }
+    // Charge les clubs de l'utilisateur et redirige vers le premier
+    this.userClubsService.fetchUserClubs().subscribe({
+      next: () => {
+        const clubs = this.userClubsService.userClubs();
+        if (clubs.length > 0) {
+          void this.router.navigate(['/club', clubs[0].club.id]);
+        } else {
+          void this.router.navigate(['/']);
+        }
+      },
+      error: () => void this.router.navigate(['/']),
+    });
   }
 }
