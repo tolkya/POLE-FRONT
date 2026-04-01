@@ -74,7 +74,7 @@
           @if (userRole === 'ADMIN') {
             <div class="hero__admin-actions">
               <p-button label="Modifier" icon="pi pi-pencil" [text]="true" size="small" severity="secondary" (onClick)="editClub.emit()" />
-              <p-button label="Theme" icon="pi pi-palette" [text]="true" size="small" severity="secondary" (onClick)="openColorPicker()" />
+              <p-button label="Theme" icon="pi pi-palette" [text]="true" size="small" severity="secondary" (onClick)="openColorPicker($event)" />
             </div>
           }
         </div>
@@ -96,7 +96,7 @@
       </div>
     }
 
-    @if (showColorPicker()) {
+    <p-popover #colorPopover>
       <div class="hero__color-picker">
         <p class="hero__color-label">Couleur du theme</p>
         <p-colorpicker [(ngModel)]="pendingColor" [inline]="true" />
@@ -105,8 +105,7 @@
           <p-button label="Annuler" size="small" [text]="true" severity="secondary" (onClick)="cancelTheme()" />
         </div>
       </div>
-    }
-  </div>
+    </p-popover>
 
 </div>
 

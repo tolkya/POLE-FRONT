@@ -1,17 +1,19 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { ChipModule } from 'primeng/chip';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { PopoverModule } from 'primeng/popover';
+import { Popover } from 'primeng/popover';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { Club } from '../../../core/models/club.model';
 
 @Component({
   selector: 'app-club-hero',
-  imports: [CommonModule, AvatarModule, TagModule, ButtonModule, ChipModule, ColorPickerModule, DialogModule, FormsModule],
+  imports: [CommonModule, AvatarModule, TagModule, ButtonModule, ChipModule, ColorPickerModule, PopoverModule, DialogModule, FormsModule],
   templateUrl: './club-hero.html',
   styleUrl: './club-hero.scss',
 })
@@ -30,7 +32,8 @@ export class ClubHero {
 
   @Output() editClub = new EventEmitter<void>();
 
-  showColorPicker = signal(false);
+  @ViewChild('colorPopover') colorPopover!: Popover;
+
   showLeaveConfirm = signal(false);
   pendingColor = '';
 
@@ -81,18 +84,18 @@ export class ClubHero {
     this.showLeaveConfirm.set(false);
   }
 
-  openColorPicker(): void {
+  openColorPicker(event: Event): void {
     this.pendingColor = this.themeColor;
-    this.showColorPicker.set(true);
+    this.colorPopover.toggle(event);
   }
 
   confirmTheme(): void {
     const color = this.pendingColor.startsWith('#') ? this.pendingColor : '#' + this.pendingColor;
     this.themeColorChange.emit(color);
-    this.showColorPicker.set(false);
+    this.colorPopover.hide();
   }
 
   cancelTheme(): void {
-    this.showColorPicker.set(false);
+    this.colorPopover.hide();
   }
 }

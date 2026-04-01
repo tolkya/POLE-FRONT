@@ -238,15 +238,11 @@
 }
 
 .hero__color-picker {
-  margin-top: 1rem;
-  margin-left: calc(136px + 1.5rem);
-  padding: 1rem;
-  border-top: 1px solid $color-border-light;
-  border-radius: $radius-md;
-  background: rgba(124, 58, 237, .04);
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: fit-content;
 }
 
 .hero__color-label {
