@@ -16,10 +16,12 @@
     <div class="hero__banner-actions">
       @if (userRole) {
         <p-tag [value]="userRole" [severity]="roleSeverity" [rounded]="true" />
-        <button class="hero__leave-btn" (click)="requestLeave()" title="Quitter ce club">
-          <i class="pi pi-sign-out"></i>
-          <span>Quitter</span>
-        </button>
+        @if (userRole !== 'ADMIN') {
+          <button class="hero__leave-btn" (click)="requestLeave()" title="Quitter ce club">
+            <i class="pi pi-sign-out"></i>
+            <span>Quitter</span>
+          </button>
+        }
       } @else {
         <button class="hero__join-btn" (click)="joinClub.emit()">
           <i class="pi pi-user-plus"></i> S'inscrire
