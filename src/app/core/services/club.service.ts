@@ -4,6 +4,12 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Club, ClubCreateDto, ClubUpdateDto } from '../models';
 
+export interface ClubStatsData {
+  membersCount: number;
+  activitiesCount: number;
+  teachersCount: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ClubService {
   constructor(private http: HttpClient) {}
@@ -35,5 +41,9 @@ export class ClubService {
     return this.http.delete<void>(
       `${environment.api.baseUrl}/user-clubs/${userClubId}`
     );
+  }
+
+  getStats(id: number): Observable<ClubStatsData> {
+    return this.http.get<ClubStatsData>(`${environment.api.baseUrl}/clubs/${id}/stats`);
   }
 }

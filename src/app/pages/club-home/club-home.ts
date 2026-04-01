@@ -2,16 +2,16 @@ import { Component, inject, signal, computed, OnInit, OnDestroy, HostBinding } f
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ClubService } from '../../core/services/club.service';
 import { UserClubsService } from '../../core/services/user-clubs.service';
 import { ToastService } from '../../core/services/toast.service';
 import { Club } from '../../core/models/club.model';
 import { JoinClubDialog } from '../../shared/components/join-club-dialog/join-club-dialog';
 import { SkeletonModule } from 'primeng/skeleton';
 import { ClubHero } from './club-hero/club-hero';
-import { ClubStats } from './club-stats/club-stats';
 import { ClubActivityBoards } from './club-activity-boards/club-activity-boards';
 import { environment } from '../../../environments/environment';
+import { ClubStats } from './club-stats/club-stats';
+import { ClubService, ClubStatsData } from '../../core/services/club.service';
 
 @Component({
   selector: 'app-club-home',
@@ -121,6 +121,12 @@ export class ClubHome implements OnInit, OnDestroy {
         next: (club) => {
           this.club.set(club);
           this.loading.set(false);
+          this.clubService.getStats(club.id).subscribe({
+            next: (stats: ClubStatsData) => {
+              this.membersCount.set(stats.membersCount);
+              this.teachersCount.set(stats.teachersCount);
+            }
+          });
         },
         error: () => this.loading.set(false),
       });
