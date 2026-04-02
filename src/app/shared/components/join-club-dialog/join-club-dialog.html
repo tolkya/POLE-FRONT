@@ -1,25 +1,78 @@
 <p-dialog
-  header="Rejoindre un club"
   [visible]="visible$()"
-  (visibleChange)="visible$.set($event); visibleChange.emit($event)"
+  (visibleChange)="onVisibleChange($event)"
   [modal]="true"
   [closable]="true"
   [dismissableMask]="true"
   [draggable]="false"
   [resizable]="false"
-  [style]="{ width: '420px' }"
+  styleClass="jcd-dialog"
+  [style]="{ width: '560px', maxWidth: '95vw' }"
 >
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div class="form-group">
-      <label>Code du club</label>
-      <input type="text" formControlName="clubCode" placeholder="cde_42" />
-    </div>
-    @if (error()) { <p class="error">{{ error() }}</p> }
-    <div class="form-actions">
-      <button type="button" class="btn-secondary" (click)="visible$.set(false); visibleChange.emit(false)">Annuler</button>
-      <button type="submit" class="btn-primary" [disabled]="form.invalid || pending()">
-        {{ pending() ? 'Envoi...' : 'Rejoindre' }}
+
+  <!-- Header custom dans le body : titre gauche, code droite -->
+  <div class="jcd__header">
+    <span class="jcd__header-title">Rejoindre un club</span>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="jcd__code-form">
+      <input
+        type="text"
+        formControlName="clubCode"
+        placeholder="Vous avez un code ?"
+        class="jcd__code-input"
+        autocomplete="off"
+      />
+      <button type="submit" class="jcd__code-btn" [disabled]="form.invalid || pending()">
+        <i class="pi" [class.pi-arrow-right]="!pending()" [class.pi-spin]="pending()" [class.pi-spinner]="pending()"></i>
       </button>
-    </div>
-  </form>
+    </form>
+  </div>
+  @if (error()) {
+    <div class="jcd__error"><i class="pi pi-exclamation-circle"></i> {{ error() }}</div>
+  }
+
+  <!-- Search principal -->
+  @if (showContent()) {
+  <div class="jcd__search-wrap">
+    <p-autocomplete
+      #ac
+      [(ngModel)]="selectedClub"
+      [suggestions]="searchResults()"
+      (completeMethod)="onSearch($event)"
+      (onSelect)="onSelectClub($event.value)"
+      field="name"
+      [minLength]="2"
+      [delay]="400"
+      placeholder="Rechercher un club par nom..."
+      [showClear]="true"
+      (onClear)="onClear()"
+      [style]="{ width: '100%' }"
+      [inputStyle]="{ width: '100%', padding: '14px 16px', fontSize: '1rem', borderRadius: '10px', border: '2px solid #e5e7eb' }"
+      appendTo="body"
+    >
+      <ng-template #item let-club>
+        <div class="jcd__result">
+          <span class="jcd__result-logo">
+            @if (logoUrl(club.logoUrl)) {
+              <img [src]="logoUrl(club.logoUrl)" [alt]="club.name" />
+            } @else {
+              {{ club.name[0].toUpperCase() }}
+            }
+          </span>
+          <span class="jcd__result-info">
+            <span class="jcd__result-name">{{ club.name }}</span>
+            @if (club.city) {
+              <span class="jcd__result-city">{{ club.city }}</span>
+            }
+          </span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="empty">
+        @if (hasSearched()) {
+          <div class="jcd__empty">Aucun club trouvé</div>
+        }
+      </ng-template>
+    </p-autocomplete>
+  </div>
+  }
+
 </p-dialog>

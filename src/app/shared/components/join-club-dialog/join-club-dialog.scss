@@ -1,0 +1,124 @@
+@use '../../../../styles/variables' as *;
+
+.jcd {
+
+  // Notre header custom dans le body
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-md;
+    padding-bottom: $space-md;
+    border-bottom: 1px solid $color-border;
+    margin-bottom: $space-sm;
+  }
+
+  &__header-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: $color-text;
+    white-space: nowrap;
+  }
+
+  &__code-form {
+    display: flex;
+    gap: $space-xs;
+    align-items: center;
+  }
+
+  &__code-input {
+    width: 160px;
+    padding: 6px 10px;
+    border: 1.5px solid $color-border;
+    border-radius: $radius-md;
+    font-size: 0.82rem;
+    background: white;
+    outline: none;
+    transition: border-color 0.15s;
+    color: $color-text;
+
+    &:focus { border-color: $color-primary; }
+    &::placeholder { color: $color-text-light; font-size: 0.78rem; }
+  }
+
+  &__code-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: $color-primary;
+    color: white;
+    border: none;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: background 0.15s;
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) { background: $color-primary-dark; }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    color: $color-error;
+    font-size: 0.8rem;
+    padding: $space-xs 0 0;
+    i { font-size: 0.8rem; }
+  }
+
+  // Barre de recherche principale
+  &__search-wrap {
+    padding: $space-sm 0;
+  }
+
+  // Résultats autocomplete
+  &__result {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    padding: $space-xs 0;
+  }
+
+  &__result-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-sm;
+    background: $color-primary-light;
+    color: $color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__result-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__result-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $color-text;
+  }
+
+  &__result-city {
+    font-size: 0.75rem;
+    color: $color-text-muted;
+  }
+
+  &__empty {
+    padding: $space-sm $space-md;
+    color: $color-text-muted;
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+}

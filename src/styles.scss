@@ -17,3 +17,7 @@ body {
   background: $color-bg;
   color: $color-text;
 }
+
+// Dialog rejoindre un club — masquer le header natif PrimeNG
+.jcd-dialog .p-dialog-header { display: none; }
+.jcd-dialog .p-dialog-content { padding-top: 1.25rem; }
