@@ -163,9 +163,24 @@ export class ClubHome implements OnInit, OnDestroy {
     });
   }
 
-  /** S'inscrire au club — ouvre le dialog rejoindre */
+  /** S'inscrire au club — inscription directe sans dialog (on connaît déjà le club) */
   onJoinClub(): void {
-    this.showJoinDialog.set(true);
+    const club = this.club();
+    if (!club) return;
+    this.clubService.joinClub(club.clubCode).subscribe({
+      next: () => {
+        this.toast.success('Inscription en attente de validation.');
+        this.clubService.getClub(club.id).subscribe(c => this.club.set(c));
+        this.userClubsService.fetchUserClubs().subscribe();
+      },
+      error: (err) => {
+        if (err.status === 409) {
+          this.toast.error('Vous êtes déjà membre de ce club.');
+        } else {
+          this.toast.error('Impossible de rejoindre ce club.');
+        }
+      },
+    });
   }
 
   /** Callback après inscription réussie via le dialog */
