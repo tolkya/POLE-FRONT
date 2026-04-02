@@ -17,43 +17,38 @@
       <a [routerLink]="['/club', clubId()]">Découvrir les activités</a>
     </div>
   } @else {
-
-    @if (approved().length > 0) {
+    @for (group of groupedByType(); track group.typeName) {
       <section class="my-activities__section">
         <h2 class="my-activities__section-title">
-          <i class="pi pi-check-circle"></i> Activités confirmées
+          {{ group.typeName }}
         </h2>
         <div class="my-activities__grid">
-          @for (item of approved(); track item.id) {
-            <div class="my-activities__card my-activities__card--approved">
-              <div class="my-activities__card-name">{{ item.activity.name }}</div>
-              <div class="my-activities__card-meta">
-                <span class="my-activities__badge my-activities__badge--approved">Inscrit</span>
-                <span class="my-activities__role">{{ item.role === 'STUDENT' ? 'Élève' : 'Enseignant' }}</span>
+          @for (item of group.items; track item.id) {
+            @if (item.status === 'APPROVED') {
+              <a class="my-activities__card my-activities__card--approved"
+                [routerLink]="['/club', clubId(), 'my-activities', item.activity.id]">
+                <div class="my-activities__card-header">
+                  <span class="my-activities__card-name">{{ item.activity.name }}</span>
+                  <span class="my-activities__role">{{ item.role === 'STUDENT' ? 'Élève' : 'Enseignant' }}</span>
+                </div>
+                <div class="my-activities__card-footer">
+                  <span class="my-activities__badge my-activities__badge--approved">Inscrit</span>
+                  <i class="pi pi-arrow-right my-activities__arrow"></i>
+                </div>
+              </a>
+            } @else {
+              <div class="my-activities__card my-activities__card--pending">
+                <div class="my-activities__card-header">
+                  <span class="my-activities__card-name">{{ item.activity.name }}</span>
+                </div>
+                <div class="my-activities__card-footer">
+                  <span class="my-activities__badge my-activities__badge--pending">En attente</span>
+                </div>
               </div>
-            </div>
+            }
           }
         </div>
       </section>
     }
-
-    @if (pending().length > 0) {
-      <section class="my-activities__section">
-        <h2 class="my-activities__section-title">
-          <i class="pi pi-clock"></i> En attente de validation
-        </h2>
-        <div class="my-activities__grid">
-          @for (item of pending(); track item.id) {
-            <div class="my-activities__card my-activities__card--pending">
-              <div class="my-activities__card-name">{{ item.activity.name }}</div>
-              <div class="my-activities__card-meta">
-                <span class="my-activities__badge my-activities__badge--pending">En attente</span>
-              </div>
-            </div>
-          }
-        </div>
-      </section>
-    }
-
   }
 </div>

@@ -19,12 +19,17 @@ export class MyActivities implements OnInit {
 
   readonly activities = this.myActivitiesService.myActivities;
 
-  readonly approved = computed(() =>
-    this.activities().filter(a => a.status === 'APPROVED')
-  );
-  readonly pending = computed(() =>
-    this.activities().filter(a => a.status === 'PENDING')
-  );
+  readonly groupedByType = computed(() => {
+    const map = new Map<string, { typeName: string; items: MyActivity[] }>();
+    for (const item of this.activities()) {
+      const typeName = item.activity.activityType.name;
+      if (!map.has(typeName)) {
+        map.set(typeName, { typeName, items: [] });
+      }
+      map.get(typeName)!.items.push(item);
+    }
+    return Array.from(map.values());
+  });
 
   ngOnInit(): void {
     this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe({

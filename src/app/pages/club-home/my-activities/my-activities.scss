@@ -74,23 +74,37 @@
     padding: $space-md;
     border: 2px solid transparent;
     box-shadow: $shadow-sm;
-    transition: transform 0.15s, box-shadow 0.15s;
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    text-decoration: none;
+    color: inherit;
 
-    &--approved { border-color: rgba($color-success, 0.3); }
-    &--pending  { border-color: rgba($color-warning, 0.3); }
-    &:hover     { transform: translateY(-2px); box-shadow: $shadow-md; }
+    &--approved {
+      border-color: rgba($color-success, 0.3);
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      &:hover { transform: translateY(-2px); box-shadow: $shadow-md; }
+    }
+    &--pending { border-color: rgba($color-warning, 0.3); }
+  }
+
+  &__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-sm;
   }
 
   &__card-name {
     font-weight: 600;
     font-size: 1rem;
-    margin-bottom: $space-sm;
   }
 
-  &__card-meta {
+  &__card-footer {
     display: flex;
     align-items: center;
-    gap: $space-sm;
+    justify-content: space-between;
   }
 
   &__badge {
@@ -104,6 +118,12 @@
   }
 
   &__role {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+    white-space: nowrap;
+  }
+
+  &__arrow {
     font-size: 0.8rem;
     color: $color-text-muted;
   }
