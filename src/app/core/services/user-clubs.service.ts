@@ -6,6 +6,8 @@ import { environment } from '../../../environments/environment';
 export interface ClubSummary {
   id: number;
   name: string;
+  themeColor: string | null;
+  logoUrl: string | null;
 }
 
 export interface UserClub {

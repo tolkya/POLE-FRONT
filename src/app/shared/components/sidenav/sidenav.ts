@@ -5,6 +5,7 @@ import { UserClubsService } from '../../../core/services/user-clubs.service';
 import { SidenavService } from '../../../core/services/sidenav.service';
 import { JoinClubDialog } from '../join-club-dialog/join-club-dialog';
 import { CreateClubDialog } from '../create-club-dialog/create-club-dialog';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-sidenav',
@@ -23,6 +24,20 @@ export class Sidenav implements OnInit {
   readonly expanded    = this.sidenavService.expanded;
 
   readonly openClubId = signal<number | null>(null);
+
+  clubStyles(themeColor: string | null): Record<string, string> {
+    const hex = themeColor ?? '#7c3aed';
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return {
+      '--cc':        hex,
+      '--cc-hover':  `rgba(${r},${g},${b},0.18)`,
+      '--cc-active': `rgba(${r},${g},${b},0.28)`,
+      '--cc-border': `rgba(${r},${g},${b},0.45)`,
+      '--cc-text':   hex,
+    };
+  }
 
   ngOnInit(): void {
     if (this.userClubs().length === 0) {
@@ -52,5 +67,11 @@ export class Sidenav implements OnInit {
 
   clubInitials(name: string): string {
     return name.split(' ').slice(0, 2).map((w: string) => w[0]).join('').toUpperCase();
+  }
+
+  clubLogoUrl(logoUrl: string | null): string | null {
+    if (!logoUrl) return null;
+    if (logoUrl.startsWith('http')) return logoUrl;
+    return environment.api.baseUrl.replace('/api', '') + logoUrl;
   }
 }

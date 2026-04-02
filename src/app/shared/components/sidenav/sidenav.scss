@@ -30,28 +30,14 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
 
   &--expanded { width: $nav-width-expanded; }
 
-  // ── Toggle ────────────────────────────────────────────────────────────────
-  &__toggle {
-    display: flex;
-    align-items: center;
-    gap: $space-sm;
-    padding: $space-sm;
-    width: 100%;
-    min-height: 48px;
-    background: none;
-    border: none;
+  // ── Zone fixe haute ────────────────────────────────────────────────────────
+  &__fixed-top {
+    flex-shrink: 0;
     border-bottom: 1px solid $nav-border;
-    cursor: pointer;
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-
-    &:hover { background: $nav-hover-bg; }
+    padding-bottom: $space-xs;
   }
 
-  // ── Corps ────────────────────────────────────────────────────────────────
+  // ── Corps scrollable (clubs uniquement) ────────────────────────────────────
   &__body {
     flex: 1;
     overflow-y: auto;
@@ -66,8 +52,8 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
   &__item {
     display: flex;
     align-items: center;
-    gap: $space-sm;
-    padding: $space-sm;
+    gap: 0;
+    padding: 0;
     min-height: 44px;
     width: 100%;
     background: none;
@@ -100,14 +86,14 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
   // ── Icône ────────────────────────────────────────────────────────────────
   &__icon {
     flex-shrink: 0;
-    width: 32px;
-    height: 32px;
+    width: $nav-width-collapsed;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
 
-    &--sm { font-size: 0.9rem; }
+    &--sm { font-size: 0.9rem; width: auto; padding: 0 $space-xs; }
   }
 
   &__label {
@@ -117,11 +103,15 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
   }
 
   // ── Clubs ────────────────────────────────────────────────────────────────
-  &__section { border-top: 1px solid $nav-border; margin-top: $space-xs; }
-
   &__clubs { padding: 0 $space-xs; }
 
-  &__club { margin-bottom: 2px; }
+  &__club {
+    margin-bottom: 4px;
+    border-radius: $radius-md;
+    background: var(--cc, rgba(255,255,255,0.12));
+    border-left: 3px solid var(--cc, rgba(255,255,255,0.35));
+    overflow: hidden;
+  }
 
   &__club-header {
     display: flex;
@@ -131,10 +121,11 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
 
   &__club-logo {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: $radius-sm;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--cc, rgba(255,255,255,0.2));
+    border: 1px solid white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -142,6 +133,13 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
     font-weight: 700;
     color: white;
     letter-spacing: 0;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   &__club-name {
@@ -157,8 +155,12 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
     text-decoration: none;
     transition: background 0.15s;
 
-    &:hover { background: $nav-hover-bg; }
-    &--active { color: white; font-weight: 600; }
+    &:hover { background: var(--cc-hover, $nav-hover-bg); }
+    &--active {
+      background: var(--cc-active, rgba(255,255,255,0.15));
+      color: white;
+      font-weight: 600;
+    }
   }
 
   &__club-chevron {
@@ -166,18 +168,23 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 0.65rem;
-    color: $nav-text-muted;
+    font-size: 0.75rem;
+    color: $nav-text;
     padding: $space-xs;
     border-radius: $radius-sm;
+    opacity: 0.8;
 
-    &:hover { background: $nav-hover-bg; }
+    &:hover { background: var(--cc-hover, $nav-hover-bg); opacity: 1; }
   }
+
 
   &__club-sub {
     padding-left: 36px;
     display: flex;
     flex-direction: column;
+    border-left: 2px solid var(--cc-border, rgba(255,255,255,0.15));
+    margin-left: 18px;
+    margin-bottom: $space-xs;
   }
 
   &__subitem {
@@ -187,28 +194,104 @@ $nav-logout-bg:   rgba(220, 38, 38, 0.2);
     text-decoration: none;
     border-radius: $radius-sm;
     transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
 
-    &:hover { background: $nav-hover-bg; color: $nav-text; }
+    &:hover { background: var(--cc-hover, $nav-hover-bg); color: white; }
+  }
+
+  &__actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: $space-sm;
+    padding-top: $space-sm;
+    border-top: 1px solid $nav-border;
   }
 
   &__action {
     display: flex;
     align-items: center;
-    gap: $space-xs;
+    gap: $space-sm;
     width: 100%;
     padding: $space-xs $space-sm;
-    background: none;
-    border: none;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
     border-radius: $radius-sm;
     cursor: pointer;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     transition: background 0.15s;
 
-    &:hover { background: $nav-hover-bg; color: white; }
+    &:hover { background: $nav-hover-bg; color: white; border-color: rgba(255,255,255,0.3); }
+  }
+    // ── Mode réduit : pastilles clubs ─────────────────────────────────────────
+  &__clubs-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-xs 0;
+    width: 100%;
+  }
+
+  &__mini-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-top: $space-sm;
+    padding-top: $space-sm;
+    border-top: 1px solid $nav-border;
+    width: 100%;
+  }
+
+  &__club-mini {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-sm;
+    background: var(--cc, rgba(255,255,255,0.15));
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    letter-spacing: 0;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:hover { opacity: 0.8; }
+    &--active { outline: 2px solid var(--cc, rgba(255,255,255,0.5)); outline-offset: 2px; }
+  }
+
+  &__mini-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-sm;
+    background: none;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.15s;
+
+    &:hover { background: $nav-hover-bg; color: white; border-color: rgba(255,255,255,0.6); }
   }
 
   // ── Footer ────────────────────────────────────────────────────────────────

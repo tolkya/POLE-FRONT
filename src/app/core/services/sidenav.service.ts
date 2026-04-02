@@ -17,6 +17,14 @@ export class SidenavService {
     this.saveState(false);
   }
 
+    expand(): void {
+    this.expanded.set(true);
+  }
+
+  collapse(): void {
+    this.expanded.set(false);
+  }
+
   private loadState(): boolean {
     const stored = localStorage.getItem(STORAGE_KEY);
     // Si jamais stocké → ouverte par défaut
