@@ -1,40 +1,45 @@
 <div class="activity-card">
 
-  @if (activity().medias.length > 0) {
     <div class="activity-card__image">
-      <img [src]="activity().medias[0].mediaUrl" [alt]="activity().name" />
+      @if (activity().medias.length > 0) {
+        <img [src]="activity().medias[0].mediaUrl" [alt]="activity().name" />
+      } @else {
+        <div class="activity-card__image-fallback">
+          {{ activity().name[0].toUpperCase() }}
+        </div>
+      }
     </div>
-  }
 
   <div class="activity-card__body">
     <div class="activity-card__header">
       <h4 class="activity-card__name">{{ activity().name }}</h4>
-      @if (isNew()) {
-        <span class="activity-card__new-tag">Nouveau</span>
-      }
+      <div class="activity-card__header-right">
+        @if (isNew()) {
+          <span class="activity-card__new-tag">Nouveau</span>
+        }
+        @if (enrollmentStatus() === 'APPROVED') {
+          <span class="activity-card__badge activity-card__badge--approved">Inscrit</span>
+        } @else if (enrollmentStatus() === 'PENDING') {
+          <span class="activity-card__badge activity-card__badge--pending">En attente</span>
+        } @else if (canJoin()) {
+          <button class="activity-card__join-btn" (click)="join()">
+            <i class="pi pi-user-plus"></i> M'inscrire
+          </button>
+        }
+      </div>
     </div>
 
     @if (activity().description) {
       <p class="activity-card__description">{{ activity().description }}</p>
     }
 
-    @if (activity().levels.length > 0) {
-      <div class="activity-card__levels">
-        @for (level of activity().levels; track level.id) {
-          <span class="activity-card__level-badge">{{ level.value }}</span>
-        }
-      </div>
-    }
-
     <div class="activity-card__footer">
-      @if (enrollmentStatus() === 'APPROVED') {
-        <span class="activity-card__badge activity-card__badge--approved">Inscrit</span>
-      } @else if (enrollmentStatus() === 'PENDING') {
-        <span class="activity-card__badge activity-card__badge--pending">En attente</span>
-      } @else if (canJoin()) {
-        <button class="activity-card__join-btn" (click)="join()">
-          <i class="pi pi-user-plus"></i> M'inscrire
-        </button>
+      @if (activity().levels.length > 0) {
+        <div class="activity-card__levels">
+          @for (level of activity().levels; track level.id) {
+            <span class="activity-card__level-badge">{{ level.value | levelLabel }}</span>
+          }
+        </div>
       }
     </div>
   </div>

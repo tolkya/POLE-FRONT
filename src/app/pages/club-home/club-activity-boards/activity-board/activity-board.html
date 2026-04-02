@@ -1,7 +1,16 @@
 <section class="activity-board">
   <div class="activity-board__header">
-    <h3 class="activity-board__title">{{ activityType().name }}</h3>
-    <span class="activity-board__count">{{ activities().length }}</span>
+    @if (activityType().medias.length > 0) {
+      <div class="activity-board__header-img">
+        <img [src]="activityType().medias[0].mediaUrl" [alt]="activityType().name" />
+      </div>
+    }
+    <div class="activity-board__header-content">
+      <h3 class="activity-board__title">{{ activityType().name }}</h3>
+      @if (activityType().description) {
+        <p class="activity-board__description">{{ activityType().description }}</p>
+      }
+    </div>
   </div>
 
   @if (activities().length === 0) {

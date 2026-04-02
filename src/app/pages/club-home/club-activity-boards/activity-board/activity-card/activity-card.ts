@@ -4,10 +4,11 @@ import { Activity } from '../../../../../core/models';
 import { MyActivity, UserActivityStatus } from '../../../../../core/models/user-activity.model';
 import { MyActivitiesService } from '../../../../../core/services/my-activities.service';
 import { ToastService } from '../../../../../core/services/toast.service';
+import { LevelLabelPipe } from '../../../../../shared/pipes/level-label.pipe';
 
 @Component({
   selector: 'app-activity-card',
-  imports: [CommonModule],
+  imports: [CommonModule, LevelLabelPipe],
   templateUrl: './activity-card.html',
   styleUrl: './activity-card.scss',
 })
