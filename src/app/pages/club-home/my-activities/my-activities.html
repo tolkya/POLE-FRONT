@@ -1,1 +1,59 @@
-<p>my-activities works!</p>
+<div class="my-activities">
+  <header class="my-activities__header">
+    <a class="my-activities__back" [routerLink]="['/club', clubId()]">
+      <i class="pi pi-arrow-left"></i>
+    </a>
+    <h1 class="my-activities__title">Mes activités</h1>
+  </header>
+
+  @if (loading()) {
+    <div class="my-activities__loading">
+      <i class="pi pi-spin pi-spinner"></i>
+    </div>
+  } @else if (activities().length === 0) {
+    <div class="my-activities__empty">
+      <i class="pi pi-inbox"></i>
+      <p>Vous n'êtes inscrit à aucune activité.</p>
+      <a [routerLink]="['/club', clubId()]">Découvrir les activités</a>
+    </div>
+  } @else {
+
+    @if (approved().length > 0) {
+      <section class="my-activities__section">
+        <h2 class="my-activities__section-title">
+          <i class="pi pi-check-circle"></i> Activités confirmées
+        </h2>
+        <div class="my-activities__grid">
+          @for (item of approved(); track item.id) {
+            <div class="my-activities__card my-activities__card--approved">
+              <div class="my-activities__card-name">{{ item.activity.name }}</div>
+              <div class="my-activities__card-meta">
+                <span class="my-activities__badge my-activities__badge--approved">Inscrit</span>
+                <span class="my-activities__role">{{ item.role === 'STUDENT' ? 'Élève' : 'Enseignant' }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+    @if (pending().length > 0) {
+      <section class="my-activities__section">
+        <h2 class="my-activities__section-title">
+          <i class="pi pi-clock"></i> En attente de validation
+        </h2>
+        <div class="my-activities__grid">
+          @for (item of pending(); track item.id) {
+            <div class="my-activities__card my-activities__card--pending">
+              <div class="my-activities__card-name">{{ item.activity.name }}</div>
+              <div class="my-activities__card-meta">
+                <span class="my-activities__badge my-activities__badge--pending">En attente</span>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+  }
+</div>

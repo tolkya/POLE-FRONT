@@ -1,0 +1,110 @@
+@use '../../../../styles/variables' as *;
+
+:host { display: block; }
+
+.my-activities {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: $space-lg;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    margin-bottom: $space-xl;
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-md;
+    background: rgba(0,0,0,0.06);
+    color: $color-text;
+    text-decoration: none;
+    transition: background 0.15s;
+    &:hover { background: rgba(0,0,0,0.12); }
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  &__loading, &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-md;
+    padding: $space-xl;
+    color: $color-text-muted;
+    font-size: 1rem;
+
+    i { font-size: 2.5rem; opacity: 0.4; }
+    a { color: $color-primary; text-decoration: none; font-weight: 600; }
+  }
+
+  &__section { margin-bottom: $space-xl; }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $color-text-muted;
+    margin-bottom: $space-md;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    i { font-size: 1rem; }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: $space-md;
+  }
+
+  &__card {
+    background: white;
+    border-radius: $radius-lg;
+    padding: $space-md;
+    border: 2px solid transparent;
+    box-shadow: $shadow-sm;
+    transition: transform 0.15s, box-shadow 0.15s;
+
+    &--approved { border-color: rgba($color-success, 0.3); }
+    &--pending  { border-color: rgba($color-warning, 0.3); }
+    &:hover     { transform: translateY(-2px); box-shadow: $shadow-md; }
+  }
+
+  &__card-name {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: $space-sm;
+  }
+
+  &__card-meta {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__badge {
+    padding: 2px 10px;
+    border-radius: $radius-full;
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    &--approved { background: $color-success-bg; color: $color-success; }
+    &--pending  { background: $color-warning-bg; color: $color-warning; }
+  }
+
+  &__role {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+  }
+}
