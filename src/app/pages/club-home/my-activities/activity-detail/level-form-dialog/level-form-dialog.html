@@ -1,0 +1,54 @@
+<p-dialog
+  [visible]="visible$()"
+  (visibleChange)="onHide()"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '480px' }"
+  [header]="isEdit ? 'Modifier le niveau' : 'Ajouter un niveau'"
+>
+  @if (showContent()) {
+    <div class="level-form">
+      <!-- Sélecteur de valeur (désactivé en édition) -->
+      @if (!isEdit) {
+        <div class="level-form__field">
+          <label class="level-form__label">Niveau *</label>
+          <p-select
+            [options]="levelValues"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Choisir un niveau"
+            [ngModel]="selectedValue()"
+            (ngModelChange)="selectedValue.set($event)"
+            styleClass="w-full"
+          />
+        </div>
+      }
+
+      <!-- Description -->
+      <div class="level-form__field">
+        <label class="level-form__label">Description <span class="level-form__optional">(facultatif)</span></label>
+        <textarea
+          pTextarea
+          rows="3"
+          placeholder="Décrivez ce niveau..."
+          [ngModel]="description()"
+          (ngModelChange)="description.set($event)"
+          class="level-form__textarea"
+        ></textarea>
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Annuler" severity="secondary" (click)="onHide()" [disabled]="saving()"></button>
+    <button pButton
+      [label]="isEdit ? 'Enregistrer' : 'Créer'"
+      [loading]="saving()"
+      [disabled]="!isValid"
+      (click)="onSave()"
+    ></button>
+  </ng-template>
+</p-dialog>

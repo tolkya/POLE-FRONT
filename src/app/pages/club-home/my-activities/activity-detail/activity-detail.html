@@ -35,6 +35,15 @@
     </div>
   } @else {
     <section class="activity-detail__levels">
+
+      @if (canManageContent()) {
+        <div class="activity-detail__toolbar">
+          <button pButton severity="secondary" size="small" (click)="openLevelCreate()">
+            <i class="pi pi-plus"></i> Ajouter un niveau
+          </button>
+        </div>
+      }
+
       <p-accordion [multiple]="true">
         @for (level of levels(); track level.id) {
           <p-accordion-panel [value]="level.id.toString()" (click)="onLevelOpen(level.id)">
@@ -42,6 +51,16 @@
               <span class="level-tab__label">{{ levelLabel(level.value) }}</span>
               @if (level.description) {
                 <span class="level-tab__desc">{{ level.description }}</span>
+              }
+              @if (canEditLevel(level)) {
+                <div class="level-tab__actions" (click)="$event.stopPropagation()">
+                  <button class="level-tab__btn" title="Modifier" (click)="openLevelEdit(level, $event)">
+                    <i class="pi pi-pencil"></i>
+                  </button>
+                  <button class="level-tab__btn level-tab__btn--danger" title="Supprimer" (click)="deleteLevel(level, $event)">
+                    <i class="pi pi-trash"></i>
+                  </button>
+                </div>
               }
             </p-accordion-header>
             <p-accordion-content>
@@ -90,6 +109,15 @@
     </section>
   }
 </div>
+
+<!-- ── Level form dialog ─────────────────────────────────────────────────── -->
+<app-level-form-dialog
+  [visible]="levelFormVisible()"
+  (visibleChange)="levelFormVisible.set($event)"
+  [level]="levelFormTarget()"
+  [saving]="levelFormSaving()"
+  (save)="onLevelFormSave($event)"
+/>
 
 <!-- ── Lightbox ──────────────────────────────────────────────────────────── -->
 <p-dialog

@@ -1,0 +1,30 @@
+:host { display: block; }
+
+.level-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  &__optional {
+    font-weight: 400;
+    color: var(--text-color-secondary);
+    font-size: 0.8rem;
+  }
+
+  &__textarea {
+    width: 100%;
+    resize: vertical;
+  }
+}

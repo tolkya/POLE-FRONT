@@ -101,6 +101,12 @@
   &__levels {
     padding: 1.5rem;
   }
+
+  &__toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
 }
 
 .level-tab {
@@ -115,6 +121,36 @@
     color: var(--text-color-secondary);
     margin-left: 0.75rem;
     font-weight: 400;
+  }
+
+  // Boutons edit/delete sur le header du level
+  &__actions {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+    padding-right: 0.5rem;
+  }
+
+  &__btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.35rem 0.5rem;
+    border-radius: $radius-sm;
+    color: var(--text-color-secondary);
+    font-size: 0.8rem;
+    transition: background 0.15s ease, color 0.15s ease;
+    line-height: 1;
+
+    &:hover {
+      background: var(--surface-ground);
+      color: var(--text-color);
+    }
+
+    &--danger:hover {
+      background: rgba($color-error, 0.1);
+      color: $color-error;
+    }
   }
 }
 

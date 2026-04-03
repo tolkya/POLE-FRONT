@@ -32,4 +32,12 @@ export class LevelsService {
       `${environment.api.baseUrl}/levels/${levelId}`
     );
   }
+
+  patchLevel(levelId: number, description: string | null): Observable<Level> {
+    return this.http.patch<Level>(
+      `${environment.api.baseUrl}/levels/${levelId}`,
+      { description },
+      { headers: new HttpHeaders({ 'Content-Type': 'application/merge-patch+json' }) }
+    );
+  }
 }

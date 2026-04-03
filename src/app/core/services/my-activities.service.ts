@@ -28,4 +28,11 @@ export class MyActivitiesService {
       {}
     );
   }
+
+  /** Retourne true si l'utilisateur est TEACHER sur l'activité donnée */
+  isTeacherOf(activityId: number): boolean {
+    return this.myActivities().some(
+      a => a.activity.id === activityId && a.role === 'TEACHER'
+    );
+  }
 }
