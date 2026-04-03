@@ -72,3 +72,24 @@ $bp-xl:  1280px;
 // ─── Transitions ─────────────────────────────────────────────────────────────
 $transition-base:    0.15s ease;
 $transition-smooth:  0.25s ease;
+
+// ─── Mode sombre — overrides CSS variables ───────────────────────────────────
+// Activé quand la classe `.dark` est sur <html>
+// PrimeNG gère ses composants tout seul via darkModeSelector: '.dark'
+// On redéfinit uniquement nos surfaces et textes custom
+
+html.dark {
+  --color-bg:           #0f0f14;
+  --color-surface:      #1a1a24;
+  --color-surface-alt:  #1f1f2e;
+  --color-border:       rgba(255, 255, 255, 0.1);
+  --color-text:         #e8e8f0;
+  --color-text-muted:   #9090aa;
+
+  // Surfaces PrimeNG custom (utilisées dans nos composants via var())
+  --surface-ground:     #0f0f14;
+  --surface-card:       #1a1a24;
+  --surface-border:     rgba(255, 255, 255, 0.1);
+  --text-color:         #e8e8f0;
+  --text-color-secondary: #9090aa;
+}

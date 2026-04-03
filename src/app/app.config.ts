@@ -39,7 +39,7 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: {
         preset: SparkLibPreset,
-        options: { darkModeSelector: false },
+        options: { darkModeSelector: '.dark' },
       },
     }),
   ],

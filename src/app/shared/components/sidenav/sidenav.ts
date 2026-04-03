@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { UserClubsService } from '../../../core/services/user-clubs.service';
 import { SidenavService } from '../../../core/services/sidenav.service';
+import { ThemeService } from '../../../core/services/theme.service';
 import { JoinClubDialog } from '../join-club-dialog/join-club-dialog';
 import { CreateClubDialog } from '../create-club-dialog/create-club-dialog';
 import { environment } from '../../../../environments/environment';
@@ -17,11 +18,13 @@ export class Sidenav implements OnInit {
   private readonly auth             = inject(AuthService);
   private readonly userClubsService = inject(UserClubsService);
   readonly sidenavService           = inject(SidenavService);
+  readonly themeService             = inject(ThemeService);
 
   readonly user        = this.auth.currentUser;
   readonly userClubs   = this.userClubsService.userClubs;
   readonly currentClub = this.userClubsService.currentClub;
   readonly expanded    = this.sidenavService.expanded;
+  readonly darkMode    = this.themeService.darkMode;
 
   readonly openClubId = signal<number | null>(null);
 
