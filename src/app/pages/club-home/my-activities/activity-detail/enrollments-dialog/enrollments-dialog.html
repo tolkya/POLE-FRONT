@@ -1,0 +1,94 @@
+<p-dialog
+  [visible]="visible$()"
+  (visibleChange)="close()"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Gestion des inscriptions"
+  [style]="{ width: '600px' }"
+>
+  @if (showContent()) {
+    @if (loading()) {
+      <div class="enrollments__loading">
+        <i class="pi pi-spin pi-spinner"></i> Chargement...
+      </div>
+    } @else {
+      <p-tabs value="0">
+        <p-tablist>
+          <p-tab value="0">
+            En attente
+            @if (pending().length > 0) {
+              <p-tag [value]="pending().length.toString()" severity="warn" styleClass="enrollments__badge" />
+            }
+          </p-tab>
+          <p-tab value="1">
+            Inscrits
+            @if (approved().length > 0) {
+              <p-tag [value]="approved().length.toString()" severity="success" styleClass="enrollments__badge" />
+            }
+          </p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <!-- En attente -->
+          <p-tabpanel value="0">
+            @if (pending().length === 0) {
+              <p class="enrollments__empty">Aucune inscription en attente.</p>
+            } @else {
+              <ul class="enrollments__list">
+                @for (ua of pending(); track ua.id) {
+                  <li class="enrollments__item">
+                    <div class="enrollments__member">
+                      <span class="enrollments__name">{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
+                      <span class="enrollments__date">{{ ua.createdAt | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="enrollments__actions">
+                      <button pButton severity="success" size="small"
+                        [loading]="processingId() === ua.id"
+                        (click)="approve(ua)">
+                        <i class="pi pi-check"></i>
+                      </button>
+                      <button pButton severity="danger" size="small"
+                        [loading]="processingId() === ua.id"
+                        (click)="reject(ua)">
+                        <i class="pi pi-times"></i>
+                      </button>
+                    </div>
+                  </li>
+                }
+              </ul>
+            }
+          </p-tabpanel>
+
+          <!-- Inscrits APPROVED -->
+          <p-tabpanel value="1">
+            @if (approved().length === 0) {
+              <p class="enrollments__empty">Aucun membre inscrit.</p>
+            } @else {
+              <ul class="enrollments__list">
+                @for (ua of approved(); track ua.id) {
+                  <li class="enrollments__item">
+                    <div class="enrollments__member">
+                      <span class="enrollments__name">{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
+                      <span class="enrollments__date">Depuis le {{ ua.createdAt | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="enrollments__actions">
+                      <button pButton severity="secondary" size="small"
+                        [loading]="processingId() === ua.id"
+                        (click)="remove(ua)"
+                        title="Retirer">
+                        <i class="pi pi-user-minus"></i>
+                      </button>
+                    </div>
+                  </li>
+                }
+              </ul>
+            }
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
+    }
+  }
+</p-dialog>

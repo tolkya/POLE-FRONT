@@ -15,6 +15,11 @@
           <span class="activity-detail__badge activity-detail__badge--pending">En attente de validation</span>
         }
       </div>
+      @if (canManageContent()) {
+        <button pButton severity="secondary" size="small" class="activity-detail__enroll-btn" (click)="enrollmentsVisible.set(true)">
+          <i class="pi pi-users"></i> Inscriptions
+        </button>
+      }
     }
   </header>
 
@@ -70,9 +75,10 @@
                 </div>
               } @else if (skillsByLevel().get(level.id)) {
                 @let skills = skillsByLevel().get(level.id)!;
-                @if (skills.length === 0) {
+                @if (skills.length === 0 && !canManageContent()) {
                   <p class="level-skills__empty">Aucune compétence définie.</p>
-                } @else {
+                }
+                @if (skills.length > 0) {
                   <div class="level-skills__grid">
                     @for (skill of skills; track skill.id; let i = $index) {
                       @let medias = validMedias(skill);
@@ -80,6 +86,16 @@
                         <div class="skill-card__header">
                           <span class="skill-card__index">{{ i + 1 }}</span>
                           <h3 class="skill-card__name">{{ skill.name }}</h3>
+                          @if (canEditSkill(skill)) {
+                            <div class="skill-card__actions">
+                              <button class="level-tab__btn" title="Modifier" (click)="openSkillEdit(skill)">
+                                <i class="pi pi-pencil"></i>
+                              </button>
+                              <button class="level-tab__btn level-tab__btn--danger" title="Supprimer" (click)="deleteSkill(skill, level.id)">
+                                <i class="pi pi-trash"></i>
+                              </button>
+                            </div>
+                          }
                         </div>
                         @if (skill.description) {
                           <p class="skill-card__description">{{ skill.description }}</p>
@@ -97,8 +113,27 @@
                             }
                           </div>
                         }
+                        @if (canEditMedia(skill)) {
+                          <div class="skill-card__upload">
+                            <label class="skill-card__upload-btn" [class.skill-card__upload-btn--loading]="uploadingSkillId() === skill.id">
+                              @if (uploadingSkillId() === skill.id) {
+                                <i class="pi pi-spin pi-spinner"></i> Envoi...
+                              } @else {
+                                <i class="pi pi-upload"></i> Ajouter un média
+                              }
+                              <input type="file" accept="image/*,video/*" hidden (change)="onFileSelected($event, skill)" [disabled]="uploadingSkillId() !== null" />
+                            </label>
+                          </div>
+                        }
                       </div>
                     }
+                  </div>
+                }
+                @if (canManageContent()) {
+                  <div class="level-skills__add">
+                    <button pButton severity="secondary" size="small" (click)="openSkillCreate(level.id)">
+                      <i class="pi pi-plus"></i> Ajouter une compétence
+                    </button>
                   </div>
                 }
               }
@@ -117,6 +152,20 @@
   [level]="levelFormTarget()"
   [saving]="levelFormSaving()"
   (save)="onLevelFormSave($event)"
+/>
+
+<app-skill-form-dialog
+  [visible]="skillFormVisible()"
+  (visibleChange)="skillFormVisible.set($event)"
+  [skill]="skillFormTarget()"
+  [saving]="skillFormSaving()"
+  (save)="onSkillFormSave($event)"
+/>
+
+<app-enrollments-dialog
+  [activityId_]="activityId()"
+  [visible]="enrollmentsVisible()"
+  (visibleChange)="enrollmentsVisible.set($event)"
 />
 
 <!-- ── Lightbox ──────────────────────────────────────────────────────────── -->
@@ -177,6 +226,19 @@
       <!-- Compteur -->
       @if (lightboxMedias().length > 1) {
         <p class="lightbox__counter">{{ lightboxIndex() + 1 }} / {{ lightboxMedias().length }}</p>
+      }
+
+      <!-- Suppression (Teacher/Admin uniquement, sur son propre média) -->
+      @if (lightboxSkill(); as skill) {
+        @if (lightboxCurrent(); as media) {
+          @if (canEditSkill(skill) && media.createdBy && isCurrentUser(media.createdBy.id) || isAdmin()) {
+            <div class="lightbox__delete">
+              <button pButton severity="danger" size="small" (click)="deleteMedia(media.id, skill)">
+                <i class="pi pi-trash"></i> Supprimer ce média
+              </button>
+            </div>
+          }
+        }
       }
     </div>
   }

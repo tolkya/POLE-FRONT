@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MyActivitiesService } from '../../../../core/services/my-activities.service';
 import { LevelsService } from '../../../../core/services/levels.service';
 import { SkillsService } from '../../../../core/services/skills.service';
+import { SkillMediaTutosService } from '../../../../core/services/skill-media-tutos.service';
 import { UserClubsService } from '../../../../core/services/user-clubs.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Level, LEVEL_VALUES } from '../../../../core/models/level.model';
@@ -12,11 +13,13 @@ import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { LevelFormDialog } from './level-form-dialog/level-form-dialog';
+import { SkillFormDialog } from './skill-form-dialog/skill-form-dialog';
+import { EnrollmentsDialog } from './enrollments-dialog/enrollments-dialog';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-activity-detail',
-  imports: [RouterLink, AccordionModule, ButtonModule, DialogModule, LevelFormDialog],
+  imports: [RouterLink, AccordionModule, ButtonModule, DialogModule, LevelFormDialog, SkillFormDialog, EnrollmentsDialog],
   templateUrl: './activity-detail.html',
   styleUrl: './activity-detail.scss',
 })
@@ -26,6 +29,7 @@ export class ActivityDetail implements OnInit {
   private readonly myActivitiesService = inject(MyActivitiesService);
   private readonly levelsService = inject(LevelsService);
   private readonly skillsService = inject(SkillsService);
+  private readonly skillMediaTutosService = inject(SkillMediaTutosService);
   private readonly userClubsService = inject(UserClubsService);
   private readonly authService = inject(AuthService);
 
@@ -41,6 +45,7 @@ export class ActivityDetail implements OnInit {
   readonly lightboxVisible = signal(false);
   readonly lightboxMedias = signal<SkillMediaTuto[]>([]);
   readonly lightboxIndex = signal(0);
+  readonly lightboxSkill = signal<Skill | null>(null); // skill affiché dans la lightbox
 
   readonly lightboxCurrent = computed(() =>
     this.lightboxMedias()[this.lightboxIndex()] ?? null
@@ -102,6 +107,152 @@ export class ActivityDetail implements OnInit {
     });
   }
 
+  // ── Skill form dialog ─────────────────────────────────────────────────────
+  readonly skillFormVisible = signal(false);
+  readonly skillFormSaving  = signal(false);
+  readonly skillFormTarget  = signal<Skill | null>(null);  // null = création
+  readonly skillFormLevelId = signal<number | null>(null); // level cible pour la création
+
+  openSkillCreate(levelId: number): void {
+    this.skillFormLevelId.set(levelId);
+    this.skillFormTarget.set(null);
+    this.skillFormVisible.set(true);
+  }
+
+  openSkillEdit(skill: Skill): void {
+    this.skillFormTarget.set(skill);
+    this.skillFormVisible.set(true);
+  }
+
+  onSkillFormSave(data: { name: string; description: string | null }): void {
+    this.skillFormSaving.set(true);
+    const target = this.skillFormTarget();
+    const dto = { name: data.name, description: data.description ?? undefined };
+
+    if (target) {
+      // Édition : PATCH
+      this.skillsService.updateSkill(target.id, dto).subscribe({
+        next: (updated) => {
+          this.skillsByLevel.update(map => {
+            // Trouve le level qui contient ce skill et met à jour
+            for (const [levelId, skills] of map) {
+              const idx = skills.findIndex(s => s.id === updated.id);
+              if (idx !== -1) {
+                const newSkills = [...skills];
+                newSkills[idx] = updated;
+                map.set(levelId, newSkills);
+                break;
+              }
+            }
+            return new Map(map);
+          });
+          this.skillFormVisible.set(false);
+        },
+        complete: () => this.skillFormSaving.set(false),
+        error:    () => this.skillFormSaving.set(false),
+      });
+    } else {
+      // Création : POST
+      const levelId = this.skillFormLevelId()!;
+      this.skillsService.createSkill(levelId, dto).subscribe({
+        next: (created) => {
+          this.skillsByLevel.update(map => {
+            const existing = map.get(levelId) ?? [];
+            map.set(levelId, [...existing, created]);
+            return new Map(map);
+          });
+          this.skillFormVisible.set(false);
+        },
+        complete: () => this.skillFormSaving.set(false),
+        error:    () => this.skillFormSaving.set(false),
+      });
+    }
+  }
+
+  deleteSkill(skill: Skill, levelId: number): void {
+    if (!confirm(`Supprimer la compétence "${skill.name}" ? Cette action est irréversible.`)) return;
+    this.skillsService.deleteSkill(skill.id).subscribe({
+      next: () => {
+        this.skillsByLevel.update(map => {
+          const skills = map.get(levelId) ?? [];
+          map.set(levelId, skills.filter(s => s.id !== skill.id));
+          return new Map(map);
+        });
+      },
+    });
+  }
+
+  // ── Enrollments dialog ─────────────────────────────────────────────
+  readonly enrollmentsVisible = signal(false);
+
+  // ── Upload / suppression médias ───────────────────────────────────────────
+  readonly uploadingSkillId = signal<number | null>(null);
+
+  onFileSelected(event: Event, skill: Skill): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    // Réinitialise la valeur pour permettre de re-sélectionner le même fichier
+    input.value = '';
+
+    this.uploadingSkillId.set(skill.id);
+    this.skillMediaTutosService.upload(skill.id, file).subscribe({
+      next: (tuto) => {
+        this.skillsByLevel.update(map => {
+          for (const [levelId, skills] of map) {
+            const idx = skills.findIndex(s => s.id === skill.id);
+            if (idx !== -1) {
+              const newSkills = [...skills];
+              newSkills[idx] = {
+                ...newSkills[idx],
+                skillMediaTutos: [...newSkills[idx].skillMediaTutos, tuto],
+              };
+              map.set(levelId, newSkills);
+              break;
+            }
+          }
+          return new Map(map);
+        });
+        // Met à jour la lightbox si elle est ouverte sur ce skill
+        if (this.lightboxVisible() && this.lightboxMedias().some(m => skill.skillMediaTutos.includes(m))) {
+          this.lightboxMedias.update(list => [...list, tuto]);
+        }
+      },
+      complete: () => this.uploadingSkillId.set(null),
+      error:    () => this.uploadingSkillId.set(null),
+    });
+  }
+
+  deleteMedia(tutoId: number, skill: Skill): void {
+    if (!confirm('Supprimer ce média ? Cette action est irréversible.')) return;
+    this.skillMediaTutosService.delete(tutoId).subscribe({
+      next: () => {
+        this.skillsByLevel.update(map => {
+          for (const [levelId, skills] of map) {
+            const idx = skills.findIndex(s => s.id === skill.id);
+            if (idx !== -1) {
+              const newSkills = [...skills];
+              newSkills[idx] = {
+                ...newSkills[idx],
+                skillMediaTutos: newSkills[idx].skillMediaTutos.filter(m => m.id !== tutoId),
+              };
+              map.set(levelId, newSkills);
+              break;
+            }
+          }
+          return new Map(map);
+        });
+        // Met à jour la lightbox si elle est ouverte
+        this.lightboxMedias.update(list => list.filter(m => m.id !== tutoId));
+        if (this.lightboxMedias().length === 0) {
+          this.lightboxVisible.set(false);
+        } else if (this.lightboxIndex() >= this.lightboxMedias().length) {
+          this.lightboxIndex.set(this.lightboxMedias().length - 1);
+        }
+      },
+    });
+  }
+
   readonly myActivityEntry = computed<MyActivity | undefined>(() =>
     this.myActivitiesService.myActivities().find(a => a.activity.id === this.activityId())
   );
@@ -141,7 +292,7 @@ export class ActivityDetail implements OnInit {
     return this.canEditSkill(skill);
   }
 
-  private isCurrentUser(userId: number): boolean {
+  isCurrentUser(userId: number): boolean {
     return this.authService.currentUser()?.id === userId;
   }
 
@@ -155,6 +306,7 @@ export class ActivityDetail implements OnInit {
     skill.skillMediaTutos.filter(t => t.mediaUrl);
 
   openLightbox(skill: Skill, index: number): void {
+    this.lightboxSkill.set(skill);
     this.lightboxMedias.set(this.validMedias(skill));
     this.lightboxIndex.set(index);
     this.lightboxVisible.set(true);

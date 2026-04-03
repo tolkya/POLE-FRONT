@@ -1,0 +1,49 @@
+<p-dialog
+  [visible]="visible$()"
+  (visibleChange)="onHide()"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '480px' }"
+  [header]="isEdit ? 'Modifier la compétence' : 'Ajouter une compétence'"
+>
+  @if (showContent()) {
+    <div class="skill-form">
+      <div class="skill-form__field">
+        <label class="skill-form__label">Nom *</label>
+        <input
+          pInputText
+          type="text"
+          placeholder="Nom de la compétence"
+          [ngModel]="name()"
+          (ngModelChange)="name.set($event)"
+          class="skill-form__input"
+        />
+      </div>
+
+      <div class="skill-form__field">
+        <label class="skill-form__label">Description <span class="skill-form__optional">(facultatif)</span></label>
+        <textarea
+          pTextarea
+          rows="3"
+          placeholder="Décrivez cette compétence..."
+          [ngModel]="description()"
+          (ngModelChange)="description.set($event)"
+          class="skill-form__textarea"
+        ></textarea>
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <button pButton label="Annuler" severity="secondary" (click)="onHide()" [disabled]="saving()"></button>
+    <button pButton
+      [label]="isEdit ? 'Enregistrer' : 'Créer'"
+      [loading]="saving()"
+      [disabled]="!isValid"
+      (click)="onSave()"
+    ></button>
+  </ng-template>
+</p-dialog>
