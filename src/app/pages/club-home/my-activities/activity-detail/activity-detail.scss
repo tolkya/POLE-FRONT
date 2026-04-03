@@ -1,0 +1,357 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+}
+
+.activity-detail {
+  min-height: 100vh;
+  background: var(--surface-ground);
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--surface-card);
+    border-bottom: 1px solid var(--surface-border);
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--surface-ground);
+    color: var(--text-color);
+    text-decoration: none;
+    flex-shrink: 0;
+    margin-top: 0.25rem;
+    transition: background 0.2s;
+
+    &:hover { background: var(--surface-hover); }
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__type {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--club-primary, #{$color-primary});
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    &--pending {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+  }
+
+  &__loading,
+  &__pending,
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--text-color-secondary);
+
+    i { font-size: 2.5rem; }
+
+    a {
+      color: var(--club-primary, #{$color-primary});
+      font-weight: 600;
+      text-decoration: none;
+    }
+  }
+
+  &__levels {
+    padding: 1.5rem;
+  }
+}
+
+.level-tab {
+  &__label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--club-text-accent, var(--text-color));
+  }
+
+  &__desc {
+    font-size: $font-size-sm;
+    color: var(--text-color-secondary);
+    margin-left: 0.75rem;
+    font-weight: 400;
+  }
+}
+
+.level-skills {
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--text-color-secondary);
+  }
+
+  &__empty {
+    color: var(--text-color-secondary);
+    font-style: italic;
+    padding: 1rem 0;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 0.25rem 0 0.5rem;
+  }
+}
+
+// ─── Skill card ──────────────────────────────────────────────────────────────
+
+.skill-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-radius: $radius-lg;
+  background: var(--club-surface, var(--surface-card));
+  border: 1px solid var(--club-border, var(--surface-border));
+  box-shadow: var(--club-shadow, #{$shadow-sm});
+  transition: box-shadow $transition-smooth, border-color $transition-smooth;
+
+  &:hover {
+    box-shadow: var(--club-shadow-hover, #{$shadow-md});
+    border-color: var(--club-border-accent, var(--surface-border));
+  }
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  &__index {
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--club-primary-light, #{$color-primary-light});
+    color: var(--club-text-accent, #{$color-primary});
+    font-size: $font-size-xs;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1.3;
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--text-color-secondary);
+    font-size: $font-size-sm;
+    line-height: 1.6;
+  }
+
+  // ── Cover média ────────────────────────────────────────────────────────────
+  &__cover {
+    position: relative;
+    height: 180px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--surface-ground);
+    border: 1px solid var(--club-border, var(--surface-border));
+
+    &:hover .skill-card__cover-media {
+      transform: scale(1.03);
+    }
+
+    &:hover .skill-card__overflow-badge {
+      background: rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  &__cover-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  // icône play centré sur la vignette vidéo
+  &__cover-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+    color: #fff;
+    font-size: 2.5rem;
+    pointer-events: none;
+  }
+
+  // badge "+N" bas-droite
+  &__overflow-badge {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: $radius-full;
+    transition: background 0.2s ease;
+    pointer-events: none;
+  }
+}
+
+// ─── Lightbox dialog ─────────────────────────────────────────────────────────
+// Les overrides PrimeNG sont dans styles.scss (.lightbox-dialog)
+
+.lightbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1rem 1.5rem;
+  background: transparent;
+
+  // ── Stage (média principal + flèches) ─────────────────────────────────────
+  &__stage {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 300px;
+    max-height: 60vh;
+  }
+
+  &__media {
+    flex: 1;
+    min-width: 0;
+    max-height: 60vh;
+    border-radius: $radius-md;
+    object-fit: contain;
+    display: block;
+  }
+
+  // flèches nav
+  &__nav {
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.12);
+    border: none;
+    color: #fff;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    z-index: 1;
+
+    &:hover { background: rgba(255, 255, 255, 0.25); }
+  }
+
+  // ── Strip vignettes ───────────────────────────────────────────────────────
+  &__strip {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    max-width: 100%;
+
+    &::-webkit-scrollbar { height: 4px; }
+    &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+  }
+
+  &__thumb {
+    flex-shrink: 0;
+    width: 64px;
+    height: 48px;
+    border-radius: $radius-sm;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    background: rgba(255,255,255,0.08);
+    transition: border-color 0.15s ease, opacity 0.15s ease;
+    opacity: 0.6;
+
+    &--active {
+      border-color: var(--club-primary, #{$color-primary});
+      opacity: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__thumb-video {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #1a1a2e;
+    color: rgba(255,255,255,0.8);
+    font-size: 1.25rem;
+  }
+
+  // ── Compteur ──────────────────────────────────────────────────────────────
+  &__counter {
+    margin: 0;
+    color: rgba(255,255,255,0.5);
+    font-size: $font-size-sm;
+  }
+}

@@ -21,3 +21,30 @@ body {
 // Dialog rejoindre un club — masquer le header natif PrimeNG
 .jcd-dialog .p-dialog-header { display: none; }
 .jcd-dialog .p-dialog-content { padding-top: 1.25rem; }
+
+// Lightbox media — entièrement transparent, seul le mask sombre reste
+.lightbox-dialog {
+  &.p-dialog {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .p-dialog-header {
+    background: transparent !important;
+    border: none !important;
+    color: #fff !important;
+
+    * { --p-button-text-secondary-color: rgba(255,255,255,0.8); }
+
+    .p-button:hover {
+      background: rgba(255,255,255,0.15) !important;
+    }
+  }
+
+  .p-dialog-content {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+}

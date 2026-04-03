@@ -30,6 +30,11 @@ export const routes: Routes = [
     canActivate: [dashboardGuard],
   },
   {
+    path: 'club/:id/my-activities/:activityId',
+    loadComponent: () => import('./pages/club-home/my-activities/activity-detail/activity-detail').then((m) => m.ActivityDetail),
+    canActivate: [dashboardGuard],
+  },
+  {
     path: 'dashboard/super-admin',
     loadComponent: () =>
       import('./pages/super-admin/dashboard/dashboard').then(
