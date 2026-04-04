@@ -26,6 +26,7 @@
           @for (item of group.items; track item.id) {
             @if (item.status === 'APPROVED') {
               <a class="my-activities__card my-activities__card--approved"
+                [id]="'activity-' + item.activity.id"
                 [routerLink]="['/club', clubId(), 'my-activities', item.activity.id]">
                 <div class="my-activities__card-header">
                   <span class="my-activities__card-name">{{ item.activity.name }}</span>
@@ -37,7 +38,8 @@
                 </div>
               </a>
             } @else {
-              <div class="my-activities__card my-activities__card--pending">
+              <div class="my-activities__card my-activities__card--pending"
+                [id]="'activity-' + item.activity.id">
                 <div class="my-activities__card-header">
                   <span class="my-activities__card-name">{{ item.activity.name }}</span>
                 </div>

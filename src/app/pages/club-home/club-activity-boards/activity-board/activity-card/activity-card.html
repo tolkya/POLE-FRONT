@@ -1,4 +1,6 @@
-<div class="activity-card">
+<div class="activity-card"
+  [class.activity-card--clickable]="isEnrolled()"
+  (click)="onCardClick()">
 
     <div class="activity-card__image">
       @if (activity().medias.length > 0) {
@@ -22,7 +24,7 @@
         } @else if (enrollmentStatus() === 'PENDING') {
           <span class="activity-card__badge activity-card__badge--pending">En attente</span>
         } @else if (canJoin()) {
-          <button class="activity-card__join-btn" (click)="join()">
+          <button class="activity-card__join-btn" (click)="$event.stopPropagation(); join()">
             <i class="pi pi-user-plus"></i> M'inscrire
           </button>
         }

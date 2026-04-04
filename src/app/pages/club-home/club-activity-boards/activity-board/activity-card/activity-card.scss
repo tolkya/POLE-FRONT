@@ -13,6 +13,16 @@
   overflow: hidden;
   height: 100%;
 
+  &--clickable {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: var(--club-shadow-hover, $shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--club-primary, $color-primary);
+    }
+  }
+
   &:hover {
     box-shadow: var(--club-shadow-hover, $shadow-md);
     transform: translateY(-1px);

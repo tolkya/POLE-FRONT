@@ -1,5 +1,6 @@
 import { Component, input, output, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Activity } from '../../../../../core/models';
 import { MyActivity, UserActivityStatus } from '../../../../../core/models/user-activity.model';
 import { MyActivitiesService } from '../../../../../core/services/my-activities.service';
@@ -15,6 +16,8 @@ import { LevelLabelPipe } from '../../../../../shared/pipes/level-label.pipe';
 export class ActivityCard {
   private readonly myActivitiesService = inject(MyActivitiesService);
   private readonly toast = inject(ToastService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   readonly activity     = input.required<Activity>();
   readonly userRole     = input<string | null>(null);
@@ -37,8 +40,22 @@ export class ActivityCard {
   readonly joined = output<void>();
 
   readonly canJoin = computed(() =>
-    this.userRole() === 'MEMBRE' && this.enrollmentStatus() === null
+    this.userRole() !== null &&
+    this.userRole() !== 'ADMIN' &&
+    this.enrollmentStatus() === null
   );
+
+  /** True si l'utilisateur est inscrit (APPROVED ou PENDING) → clic navigue vers Mes activités */
+  readonly isEnrolled = computed(() => this.enrollmentStatus() !== null);
+
+  onCardClick(): void {
+    if (!this.isEnrolled()) return;
+    const clubId = this.route.snapshot.paramMap.get('id');
+    this.router.navigate(
+      ['/club', clubId, 'my-activities'],
+      { fragment: `activity-${this.activity().id}` }
+    );
+  }
 
   join(): void {
     this.myActivitiesService.joinActivity(this.activity().id).subscribe({

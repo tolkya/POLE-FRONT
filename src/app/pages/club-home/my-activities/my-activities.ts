@@ -33,8 +33,19 @@ export class MyActivities implements OnInit {
 
   ngOnInit(): void {
     this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe({
-      complete: () => this.loading.set(false),
+      complete: () => {
+        this.loading.set(false);
+        this.scrollToFragment();
+      },
       error: () => this.loading.set(false),
     });
+  }
+
+  private scrollToFragment(): void {
+    const fragment = this.route.snapshot.fragment;
+    if (!fragment) return;
+    setTimeout(() => {
+      document.getElementById(fragment)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   }
 }
