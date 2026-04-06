@@ -22,12 +22,13 @@ export class ClubMembersService {
 
   constructor(private http: HttpClient) {}
 
-  getMembers(clubId: number, filters?: { role?: string; search?: string; page?: number }): Observable<MembersPage> {
+  getMembers(clubId: number, filters?: { role?: string; search?: string; page?: number; limit?: number }): Observable<MembersPage> {
     let url = `${environment.api.baseUrl}/clubs/${clubId}/members`;
     const params: string[] = [];
     if (filters?.role)   params.push(`role=${encodeURIComponent(filters.role)}`);
     if (filters?.search) params.push(`search=${encodeURIComponent(filters.search)}`);
     if (filters?.page)   params.push(`page=${filters.page}`);
+    if (filters?.limit)  params.push(`limit=${filters.limit}`);
     if (params.length)   url += '?' + params.join('&');
 
     return this.http

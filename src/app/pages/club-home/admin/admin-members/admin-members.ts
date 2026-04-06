@@ -32,7 +32,7 @@ export class AdminMembers implements OnInit {
   loading    = signal(true);
   total      = signal(0);
   page       = signal(1);
-  readonly limit = 20;
+  limit      = signal(20);
 
   search     = signal('');
   roleFilter = signal('');
@@ -51,6 +51,7 @@ export class AdminMembers implements OnInit {
       search: this.search() || undefined,
       role:   this.roleFilter() || undefined,
       page:   this.page(),
+      limit:  this.limit(),
     }).subscribe({
       next: (res) => {
         this.members.set(res.members);
@@ -61,8 +62,12 @@ export class AdminMembers implements OnInit {
     });
   }
 
-  onPageChange(event: { page?: number }): void {
+  onPageChange(event: { page?: number; rows?: number }): void {
     this.page.set((event.page ?? 0) + 1);
+    if (event.rows && event.rows !== this.limit()) {
+      this.limit.set(event.rows);
+      this.page.set(1);
+    }
     this.loadMembers();
   }
   onFilterChange(): void {

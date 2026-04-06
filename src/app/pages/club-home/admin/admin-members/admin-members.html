@@ -67,11 +67,11 @@
 
 </div>
   <p-paginator
-    [rows]="limit"
+    [rows]="limit()"
     [totalRecords]="total()"
-    [first]="(page() - 1) * limit"
+    [first]="(page() - 1) * limit()"
     (onPageChange)="onPageChange($event)"
-    [rowsPerPageOptions]="[]"
+    [rowsPerPageOptions]="[5,10,20,50]"
   />
 <app-member-role-dialog
   [member]="selectedMember()"
