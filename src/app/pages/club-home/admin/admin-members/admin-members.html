@@ -1,1 +1,85 @@
-<p>Tableau de bord — club {{ clubId() }}</p>
+<div class="admin-members">
+
+  <div class="admin-members__filters">
+    <input
+      pInputText
+      type="text"
+      placeholder="Rechercher..."
+      [ngModel]="search()"
+      (ngModelChange)="search.set($event); onFilterChange()"
+      class="admin-members__search"
+    />
+    <p-select
+      [options]="roleOptions"
+      optionLabel="label"
+      optionValue="value"
+      [ngModel]="roleFilter()"
+      (ngModelChange)="roleFilter.set($event); onFilterChange()"
+      placeholder="Filtrer par rôle"
+    />
+  </div>
+
+  @if (loading()) {
+    <p class="admin-members__loading">Chargement...</p>
+  } @else if (members().length === 0) {
+    <p class="admin-members__empty">Aucun membre trouvé.</p>
+  } @else {
+    <div class="admin-members__table">
+      <div class="admin-members__header-row">
+        <span>Membre</span>
+        <span>Rôles</span>
+        <span>Statut</span>
+        <span>Actions</span>
+      </div>
+
+      @for (m of members(); track m.id) {
+        <div class="admin-members__row" [class.admin-members__row--pending]="isPending(m)">
+          <div class="admin-members__identity">
+            <span class="admin-members__name">{{ m.member.firstName }} {{ m.member.lastName }}</span>
+            <span class="admin-members__email">{{ m.member.email }}</span>
+          </div>
+
+          <div class="admin-members__roles">
+            @for (role of m.roles; track role) {
+              <p-tag [value]="getRoleLabel(role)" severity="secondary" />
+            }
+          </div>
+
+          <div class="admin-members__status">
+            @if (isPending(m)) {
+              <p-tag value="En attente" severity="warn" />
+            } @else {
+              <p-tag value="Validé" severity="success" />
+            }
+          </div>
+
+          <div class="admin-members__actions">
+            @if (isPending(m)) {
+              <p-button icon="pi pi-check" severity="success" [text]="true" (click)="validateMember(m)" pTooltip="Valider" />
+            }
+            <p-button icon="pi pi-shield" severity="secondary" [text]="true" (click)="openRoleDialog(m)" pTooltip="Modifier les rôles" />
+            <p-button icon="pi pi-trash" severity="danger" [text]="true" (click)="confirmExclude(m)" pTooltip="Exclure" />
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>
+@if (total() > limit) {
+  <p-paginator
+    [rows]="limit"
+    [totalRecords]="total()"
+    [first]="(page() - 1) * limit"
+    (onPageChange)="onPageChange($event)"
+    [rowsPerPageOptions]="[]"
+  />
+}
+<app-member-role-dialog
+  [member]="selectedMember()"
+  [visible]="showRoleDialog()"
+  (visibleChange)="showRoleDialog.set($event)"
+  (save)="onSaveRoles($event)"
+/>
+
+<p-confirmDialog />

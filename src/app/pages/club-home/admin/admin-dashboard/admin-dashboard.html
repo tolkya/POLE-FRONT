@@ -1,1 +1,44 @@
-<p>Tableau de bord — club {{ clubId() }}</p>
+@if (loading()) {
+  <div class="admin-dash__loading">Chargement...</div>
+} @else if (stats()) {
+  <div class="admin-dash">
+
+    <div class="admin-dash__stats">
+      <div class="admin-dash__stat">
+        <span class="admin-dash__stat-value">{{ stats()!.membersCount }}</span>
+        <span class="admin-dash__stat-label">Membres</span>
+      </div>
+      <div class="admin-dash__stat">
+        <span class="admin-dash__stat-value">{{ stats()!.teachersCount }}</span>
+        <span class="admin-dash__stat-label">Professeurs</span>
+      </div>
+      <div class="admin-dash__stat">
+        <span class="admin-dash__stat-value">{{ stats()!.activitiesCount }}</span>
+        <span class="admin-dash__stat-label">Activités</span>
+      </div>
+    </div>
+
+    @if (stats()!.pendingEnrollments > 0 || stats()!.pendingMembers > 0) {
+      <div class="admin-dash__alerts">
+        <h3 class="admin-dash__alerts-title">Actions requises</h3>
+
+        @if (stats()!.pendingEnrollments > 0) {
+        <div class="admin-dash__alert">
+            <i class="pi pi-clock"></i>
+            <span>{{ stats()!.pendingEnrollments }} demande(s) d'inscription à valider</span>
+            <button class="admin-dash__alert-btn" (click)="goToTab('2')">Voir</button>
+        </div>
+        }
+
+        @if (stats()!.pendingMembers > 0) {
+        <div class="admin-dash__alert">
+            <i class="pi pi-user-plus"></i>
+            <span>{{ stats()!.pendingMembers }} membre(s) en attente de validation</span>
+            <button class="admin-dash__alert-btn" (click)="goToTab('1')">Voir</button>
+        </div>
+        }
+      </div>
+    }
+
+  </div>
+}

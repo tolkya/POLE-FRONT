@@ -1,0 +1,35 @@
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="onHide()"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  header="Modifier les rôles"
+  [style]="{ width: '400px' }"
+>
+  @if (member()) {
+    <div class="role-dialog">
+      <p class="role-dialog__name">
+        {{ member()!.member.firstName }} {{ member()!.member.lastName }}
+      </p>
+
+      <div class="role-dialog__options">
+        @for (opt of roleOptions; track opt.value) {
+          <div class="role-dialog__option">
+            <p-checkbox
+              [value]="opt.value"
+              [(ngModel)]="selectedRoles"
+              [inputId]="'role-' + opt.value"
+            />
+            <label [for]="'role-' + opt.value">{{ opt.label }}</label>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" severity="secondary" (click)="onHide()" />
+    <p-button label="Enregistrer" (click)="onSave()" />
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,72 @@
+@use 'variables' as *;
+
+:host { display: block; }
+
+.admin-dash {
+  padding: $space-lg 0;
+
+    &__loading { color: $color-text-muted; }
+
+    &__stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $space-md;
+        margin-bottom: $space-xl;
+    }
+
+    &__stat {
+        background: $color-surface;
+        border: 1px solid $color-border;
+        border-radius: $radius-lg;
+        padding: $space-lg;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $space-xs;
+    }
+
+    &__stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $color-primary;
+    }
+
+    &__stat-label {
+        font-size: 0.875rem;
+        color: $color-text-muted;
+    }
+
+    &__alerts { margin-top: $space-lg; }
+
+    &__alerts-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 $space-md;
+        color: $color-text;
+    }
+
+    &__alert {
+        display: flex;
+        align-items: center;
+        gap: $space-sm;
+        padding: $space-md;
+        background: $color-warning-bg;
+        border-left: 3px solid $color-warning;
+        border-radius: $radius-md;
+        margin-bottom: $space-sm;
+        color: $color-text;
+
+        i { color: $color-warning; }
+    }
+    &__alert-btn {
+        margin-left: auto;
+        background: none;
+        border: 1px solid $color-warning;
+        color: $color-warning;
+        border-radius: $radius-sm;
+        padding: 2px $space-sm;
+        cursor: pointer;
+        font-size: 0.8rem;
+        &:hover { background: $color-warning-bg; }
+    }
+}

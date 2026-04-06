@@ -1,0 +1,25 @@
+@use 'variables' as *;
+
+:host { display: block; }
+
+.role-dialog {
+  &__name {
+    font-weight: 600;
+    margin: 0 0 $space-md;
+    color: $color-text;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+
+    label { cursor: pointer; color: $color-text; }
+  }
+}

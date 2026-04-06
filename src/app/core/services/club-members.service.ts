@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { HydraCollection, ClubMember } from '../models';
 import { ClubRole } from '../models/club-role.model';
@@ -16,11 +17,12 @@ export class ClubMembersService {
 
   constructor(private http: HttpClient) {}
 
-  getMembers(clubId: number, filters?: { role?: string; search?: string }): Observable<ClubMember[]> {
+  getMembers(clubId: number, filters?: { role?: string; search?: string; page?: number }): Observable<ClubMember[]> {
     let url = `${environment.api.baseUrl}/clubs/${clubId}/members`;
     const params: string[] = [];
     if (filters?.role)   params.push(`role=${encodeURIComponent(filters.role)}`);
     if (filters?.search) params.push(`search=${encodeURIComponent(filters.search)}`);
+    if (filters?.page)   params.push(`page=${filters.page}`);
     if (params.length)   url += '?' + params.join('&');
 
     return this.http

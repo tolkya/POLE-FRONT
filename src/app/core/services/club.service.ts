@@ -10,6 +10,15 @@ export interface ClubStatsData {
   teachersCount: number;
 }
 
+export interface ClubAdminStats {
+  membersCount: number;
+  teachersCount: number;
+  activitiesCount: number;
+  pendingEnrollments: number;
+  pendingMembers: number;
+  unreadNotifications: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ClubService {
   constructor(private http: HttpClient) {}
@@ -54,5 +63,9 @@ export class ClubService {
       `${environment.api.baseUrl}/clubs/${clubId}/logo`,
       formData
     );
+  }
+
+  getAdminStats(clubId: number): Observable<ClubAdminStats> {
+    return this.http.get<ClubAdminStats>(`${environment.api.baseUrl}/clubs/${clubId}/admin-stats`);
   }
 }

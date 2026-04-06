@@ -19,6 +19,7 @@ export class AdminPanel implements OnInit {
   private readonly userClubsService = inject(UserClubsService);
 
   clubId = signal<number>(0);
+  activeTab = signal<string>('0');
 
   private myUserClub = computed(() => {
     const id = this.clubId();
@@ -36,5 +37,8 @@ export class AdminPanel implements OnInit {
     if (!this.isAdmin()) {
       this.router.navigate(['/club', id]);
     }
+  }
+  onTabChange(tab: string): void {
+    this.activeTab.set(tab);
   }
 }

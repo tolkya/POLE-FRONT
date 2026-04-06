@@ -1,0 +1,75 @@
+@use 'variables' as *;
+
+:host { display: block; }
+
+.admin-members {
+  padding: $space-lg 0;
+
+  &__filters {
+    display: flex;
+    gap: $space-md;
+    margin-bottom: $space-lg;
+    flex-wrap: wrap;
+  }
+
+  &__search { flex: 1; min-width: 200px; }
+
+  &__loading, &__empty {
+    color: $color-text-muted;
+    padding: $space-lg 0;
+  }
+
+  &__table {
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    overflow: hidden;
+  }
+
+  &__header-row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    padding: $space-sm $space-md;
+    background: $color-surface;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1fr 1fr;
+    padding: $space-sm $space-md;
+    align-items: center;
+    border-bottom: 1px solid $color-border;
+    transition: background 0.15s;
+
+    &:last-child { border-bottom: none; }
+    &:hover { background: $color-surface; }
+    &--pending { background: rgba(255, 165, 0, 0.04); }
+  }
+
+  &__identity {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name { font-weight: 500; color: $color-text; }
+  &__email { font-size: 0.8rem; color: $color-text-muted; }
+
+  &__roles {
+    display: flex;
+    gap: $space-xs;
+    flex-wrap: wrap;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-xs;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}

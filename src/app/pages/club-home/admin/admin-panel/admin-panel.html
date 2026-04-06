@@ -3,7 +3,7 @@
     <h1 class="admin-panel__title">Gestion du club</h1>
   </div>
 
-  <p-tabs value="0">
+  <p-tabs [value]="activeTab()">
     <p-tablist>
       <p-tab value="0">Tableau de bord</p-tab>
       <p-tab value="1">Membres</p-tab>
@@ -12,7 +12,7 @@
     </p-tablist>
     <p-tabpanels>
       <p-tabpanel value="0">
-        <app-admin-dashboard [clubId]="clubId()" />
+        <app-admin-dashboard [clubId]="clubId()" (tabChange)="onTabChange($event)" />
       </p-tabpanel>
       <p-tabpanel value="1">
         <app-admin-members [clubId]="clubId()" />
