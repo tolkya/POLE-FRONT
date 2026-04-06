@@ -1,3 +1,13 @@
+import { ClubRole } from './club-role.model';
+
+export interface UserClub {
+  id: number;
+  club: Club;
+  roles: ClubRole[];
+  validatedAt: string | null;
+  createdAt: string;
+}
+
 export interface Club {
   id: number;
   name: string;
@@ -15,13 +25,6 @@ export interface Club {
   updatedAt: string | null;
 }
 
-export interface UserClub {
-  id: number;
-  club: Club;
-  roles: string[];
-  validatedAt: string | null;
-  createdAt: string;
-}
 
 export interface ClubCreateDto {
   name: string;
@@ -50,7 +53,7 @@ export interface MemberUser {
 export interface ClubMember {
   id: number;
   member: MemberUser;
-  roles: string[];
+  roles: ClubRole[];
   validatedAt: string | null;
   createdAt: string;
 }

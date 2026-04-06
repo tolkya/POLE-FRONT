@@ -46,4 +46,13 @@ export class ClubService {
   getStats(id: number): Observable<ClubStatsData> {
     return this.http.get<ClubStatsData>(`${environment.api.baseUrl}/clubs/${id}/stats`);
   }
+
+  uploadLogo(clubId: number, file: File): Observable<Club> {
+    const formData = new FormData();
+    formData.append('logoFile', file);
+    return this.http.post<Club>(
+      `${environment.api.baseUrl}/clubs/${clubId}/logo`,
+      formData
+    );
+  }
 }
