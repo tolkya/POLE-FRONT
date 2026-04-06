@@ -35,6 +35,11 @@ export const routes: Routes = [
     canActivate: [dashboardGuard],
   },
   {
+    path: 'club/:id/admin',
+    loadComponent: () => import('./pages/club-home/admin/admin-panel/admin-panel').then((m) => m.AdminPanel),
+    canActivate: [dashboardGuard],
+  },
+  {
     path: 'dashboard/super-admin',
     loadComponent: () =>
       import('./pages/super-admin/dashboard/dashboard').then(

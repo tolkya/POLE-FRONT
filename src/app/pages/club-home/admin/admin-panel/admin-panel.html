@@ -1,0 +1,28 @@
+<div class="admin-panel">
+  <div class="admin-panel__header">
+    <h1 class="admin-panel__title">Gestion du club</h1>
+  </div>
+
+  <p-tabs value="0">
+    <p-tablist>
+      <p-tab value="0">Tableau de bord</p-tab>
+      <p-tab value="1">Membres</p-tab>
+      <p-tab value="2">Activités</p-tab>
+      <p-tab value="3">Paramètres</p-tab>
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <app-admin-dashboard [clubId]="clubId()" />
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <app-admin-members [clubId]="clubId()" />
+      </p-tabpanel>
+      <p-tabpanel value="2">
+        <app-admin-activities [clubId]="clubId()" />
+      </p-tabpanel>
+      <p-tabpanel value="3">
+        <app-admin-settings [clubId]="clubId()" />
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

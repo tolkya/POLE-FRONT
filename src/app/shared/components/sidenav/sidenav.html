@@ -85,9 +85,9 @@
                   <i class="pi pi-list"></i> Mes activités
                 </a>
                 @if (isAdmin(uc.roles)) {
-                  <a class="sidenav__subitem" [routerLink]="['/club', uc.club.id]">
-                    <i class="pi pi-cog"></i> Gestion
-                  </a>
+                <a class="sidenav__subitem" [routerLink]="['/club', uc.club.id, 'admin']" routerLinkActive="sidenav__subitem--active">
+                  <i class="pi pi-cog"></i> Gestion
+                </a>
                 }
               </div>
             }

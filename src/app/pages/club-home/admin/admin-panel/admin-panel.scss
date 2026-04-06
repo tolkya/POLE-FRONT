@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+}
+
+.admin-panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $space-lg;
+
+  &__header {
+    margin-bottom: $space-lg;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: $color-primary;
+    margin: 0;
+  }
+}
