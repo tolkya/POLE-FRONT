@@ -66,7 +66,6 @@
   }
 
 </div>
-@if (total() > limit) {
   <p-paginator
     [rows]="limit"
     [totalRecords]="total()"
@@ -74,7 +73,6 @@
     (onPageChange)="onPageChange($event)"
     [rowsPerPageOptions]="[]"
   />
-}
 <app-member-role-dialog
   [member]="selectedMember()"
   [visible]="showRoleDialog()"

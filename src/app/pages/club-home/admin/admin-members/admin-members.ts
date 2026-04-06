@@ -52,9 +52,9 @@ export class AdminMembers implements OnInit {
       role:   this.roleFilter() || undefined,
       page:   this.page(),
     }).subscribe({
-      next: (members) => {
-        this.members.set(members);
-        this.total.set(members.length);
+      next: (res) => {
+        this.members.set(res.members);
+        this.total.set(res.total);
         this.loading.set(false);
       },
       error: () => { this.loading.set(false); },

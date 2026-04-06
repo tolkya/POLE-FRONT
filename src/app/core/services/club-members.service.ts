@@ -3,12 +3,17 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { HydraCollection, ClubMember } from '../models';
 import { ClubRole } from '../models/club-role.model';
+import { ClubMember } from '../models';
 
 export interface UserClubPatchDto {
   roles?: ClubRole[];
   validatedAt?: string | null;
+}
+
+export interface MembersPage {
+  members: ClubMember[];
+  total: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +22,7 @@ export class ClubMembersService {
 
   constructor(private http: HttpClient) {}
 
-  getMembers(clubId: number, filters?: { role?: string; search?: string; page?: number }): Observable<ClubMember[]> {
+  getMembers(clubId: number, filters?: { role?: string; search?: string; page?: number }): Observable<MembersPage> {
     let url = `${environment.api.baseUrl}/clubs/${clubId}/members`;
     const params: string[] = [];
     if (filters?.role)   params.push(`role=${encodeURIComponent(filters.role)}`);
@@ -26,8 +31,11 @@ export class ClubMembersService {
     if (params.length)   url += '?' + params.join('&');
 
     return this.http
-      .get<HydraCollection<ClubMember>>(url, { headers: new HttpHeaders({ Accept: 'application/ld+json' }) })
-      .pipe(map((r) => r.member));
+      .get<any>(url, { headers: new HttpHeaders({ Accept: 'application/ld+json' }) })
+      .pipe(map((r) => ({
+        members: r['member'] ?? r['hydra:member'] ?? [],
+        total:   r['totalItems'] ?? r['hydra:totalItems'] ?? 0,
+      })));
   }
 
   patchUserClub(userClubId: number, dto: UserClubPatchDto): Observable<void> {
