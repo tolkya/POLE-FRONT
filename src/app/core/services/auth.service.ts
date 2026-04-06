@@ -50,7 +50,7 @@ export class AuthService {
       switchMap(() => this.getMe()),
       tap(() => {
         this.toast.success(successMsg, 'Bienvenue\u00a0!');
-        void this.router.navigate(['/dashboard']);
+        void this.router.navigate(['/']);
       }),
     );
   }

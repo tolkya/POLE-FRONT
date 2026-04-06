@@ -55,7 +55,7 @@ export class CreateClubDialog {
         this.visible.set(false);
         this.pending.set(false);
         this.created.emit();
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/']);
       },
       error: () => {
         this.pending.set(false);

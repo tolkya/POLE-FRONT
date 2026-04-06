@@ -1,8 +1,0 @@
-@if (isAdmin()) {
-  <app-admin-workspace [userClub]="userClub()" />
-} @else {
-  <div class="member-placeholder">
-    <h3>{{ userClub().club.name }}</h3>
-    <p>Dashboard membre — disponible au Bloc 9.</p>
-  </div>
-}

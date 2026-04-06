@@ -47,11 +47,5 @@ export const routes: Routes = [
       ),
     canActivate: [superAdminGuard],
   },
-  {
-    path: 'dashboard',
-    loadComponent: () =>
-      import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
-    canActivate: [dashboardGuard],
-  },
   { path: '**', redirectTo: '' },
 ];
