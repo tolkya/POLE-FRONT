@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { ClubRole } from '../models/club-role.model';
-import { ClubMember } from '../models';
+import { ClubMember, HydraCollection } from '../models';
 
 export interface UserClubPatchDto {
   roles?: ClubRole[];
@@ -32,10 +32,10 @@ export class ClubMembersService {
     if (params.length)   url += '?' + params.join('&');
 
     return this.http
-      .get<any>(url, { headers: new HttpHeaders({ Accept: 'application/ld+json' }) })
+      .get<HydraCollection<ClubMember>>(url, { headers: new HttpHeaders({ Accept: 'application/ld+json' }) })
       .pipe(map((r) => ({
-        members: r['member'] ?? r['hydra:member'] ?? [],
-        total:   r['totalItems'] ?? r['hydra:totalItems'] ?? 0,
+        members: r.member ?? [],
+        total:   r.totalItems ?? 0,
       })));
   }
 

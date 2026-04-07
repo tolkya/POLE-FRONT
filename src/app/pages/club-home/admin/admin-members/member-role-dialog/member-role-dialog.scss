@@ -2,6 +2,10 @@
 
 :host { display: block; }
 
+:host ::ng-deep .p-dialog.role-dialog-container {
+  width: min(400px, 90vw);
+}
+
 .role-dialog {
   &__name {
     font-weight: 600;

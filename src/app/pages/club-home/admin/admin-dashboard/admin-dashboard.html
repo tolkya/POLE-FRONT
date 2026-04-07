@@ -1,5 +1,10 @@
 @if (loading()) {
   <div class="admin-dash__loading">Chargement...</div>
+} @else if (error()) {
+  <div class="admin-dash__error">
+    <i class="pi pi-exclamation-triangle"></i>
+    Impossible de charger les statistiques. Veuillez recharger la page.
+  </div>
 } @else if (stats()) {
   <div class="admin-dash">
 
@@ -23,19 +28,19 @@
         <h3 class="admin-dash__alerts-title">Actions requises</h3>
 
         @if (stats()!.pendingEnrollments > 0) {
-        <div class="admin-dash__alert">
+          <div class="admin-dash__alert">
             <i class="pi pi-clock"></i>
             <span>{{ stats()!.pendingEnrollments }} demande(s) d'inscription à valider</span>
             <button class="admin-dash__alert-btn" (click)="goToTab('2')">Voir</button>
-        </div>
+          </div>
         }
 
         @if (stats()!.pendingMembers > 0) {
-        <div class="admin-dash__alert">
+          <div class="admin-dash__alert">
             <i class="pi pi-user-plus"></i>
             <span>{{ stats()!.pendingMembers }} membre(s) en attente de validation</span>
             <button class="admin-dash__alert-btn" (click)="goToTab('1')">Voir</button>
-        </div>
+          </div>
         }
       </div>
     }

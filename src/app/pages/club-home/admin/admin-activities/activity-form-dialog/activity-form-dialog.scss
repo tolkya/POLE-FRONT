@@ -1,0 +1,82 @@
+@use 'variables' as *;
+
+:host {
+  display: block;
+}
+
+:host ::ng-deep .p-dialog.activity-form-container {
+  width: min(480px, 92vw);
+}
+
+.afd {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: $color-text;
+  }
+
+  &__readonly {
+    font-size: 0.95rem;
+    color: $color-text-muted;
+    padding: $space-xs 0;
+    font-style: italic;
+  }
+
+  &__new-type-btn {
+    align-self: flex-start;
+    margin-top: $space-xs;
+    background: none;
+    border: 1px dashed var(--club-primary, $color-primary);
+    color: var(--club-primary, $color-primary);
+    border-radius: $radius-sm;
+    padding: $space-xs $space-sm;
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+
+  &:hover { background: var(--club-primary-light, #ede9fe); }
+  }
+
+  &__new-type-panel {
+    background: var(--surface-ground, #f9fafb);
+    border: 1px solid var(--surface-border, #e5e7eb);
+    border-radius: $radius-md;
+    padding: $space-md;
+  }
+
+  &__new-type-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $color-text;
+    margin: 0 0 $space-sm;
+  }
+
+  &__new-type-form {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+  }
+
+  &__select,
+  &__input,
+  &__textarea {
+    width: 100%;
+  }
+
+  &__error {
+    font-size: 0.8rem;
+    color: $color-error;
+  }
+}

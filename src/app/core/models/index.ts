@@ -5,3 +5,4 @@ export * from './level.model';
 export * from './skill.model';
 export * from './user-activity.model';
 export * from './notification.model';
+export * from './club-role.model';

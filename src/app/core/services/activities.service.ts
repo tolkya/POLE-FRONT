@@ -56,4 +56,12 @@ export class ActivitiesService {
       )
       .pipe(map((r) => r.member));
   }
+
+  createActivityType(dto: { name: string; description?: string }): Observable<ActivityType> {
+    return this.http.post<ActivityType>(
+      `${environment.api.baseUrl}/activity-types`,
+      dto,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    );
+  }
 }

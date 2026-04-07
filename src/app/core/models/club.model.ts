@@ -5,7 +5,7 @@ export interface UserClub {
   club: Club;
   roles: ClubRole[];
   validatedAt: string | null;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Club {

@@ -2,20 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { UserClub } from '../models';
 
-export interface ClubSummary {
-  id: number;
-  name: string;
-  themeColor: string | null;
-  logoUrl: string | null;
-}
-
-export interface UserClub {
-  id: number;
-  club: ClubSummary;
-  roles: string[];
-  validatedAt: string | null;
-}
 
 @Injectable({
   providedIn: 'root',

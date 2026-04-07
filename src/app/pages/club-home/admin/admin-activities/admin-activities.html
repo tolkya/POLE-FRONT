@@ -1,1 +1,111 @@
-<p>Tableau de bord — club {{ clubId() }}</p>
+@if (loading()) {
+  <div class="admin-act__loading">Chargement...</div>
+} @else if (error()) {
+  <div class="admin-act__error">
+    <i class="pi pi-exclamation-triangle"></i>
+    Impossible de charger les activités. Veuillez recharger la page.
+  </div>
+} @else {
+  <div class="admin-act">
+
+    <div class="admin-act__header">
+      <h2 class="admin-act__title">Activités du club</h2>
+      <button class="btn-primary" (click)="openCreate()">
+        <i class="pi pi-plus"></i> Ajouter une activité
+      </button>
+    </div>
+
+    @if (groupedActivities().length === 0) {
+      <div class="admin-act__empty">
+        <i class="pi pi-inbox"></i>
+        <p>Aucune activité pour l'instant.</p>
+      </div>
+    }
+
+    @for (group of groupedActivities(); track group.type.id) {
+      <section class="admin-act__group">
+        <h3 class="admin-act__group-title">{{ group.type.name }}</h3>
+
+        @for (activity of group.activities; track activity.id) {
+          <div class="admin-act__item">
+            <div class="admin-act__item-left">
+              @if (activityImageUrl(activity); as imgUrl) {
+                <img class="admin-act__thumb" [src]="imgUrl" [alt]="activity.name" />
+              } @else {
+                <div class="admin-act__thumb admin-act__thumb--fallback">
+                  {{ activity.name[0].toUpperCase() }}
+                </div>
+              }
+              <div class="admin-act__item-meta">
+                <span class="admin-act__item-name">{{ activity.name }}</span>
+                <span
+                  class="admin-act__item-status"
+                  [class.admin-act__item-status--suspended]="activity.status === 'SUSPENDED'"
+                >
+                  {{ activity.status === 'ACTIVE' ? 'Active' : 'Suspendue' }}
+                </span>
+              </div>
+            </div>
+
+            <div class="admin-act__item-actions">
+              <button
+                class="btn-ghost admin-act__pending-btn"
+                [class.admin-act__pending-btn--active]="expandedId() === activity.id"
+                (click)="togglePending(activity.id)"
+                title="Demandes en attente"
+              >
+                <i class="pi pi-clock"></i>
+                @if (getPending(activity.id).length > 0) {
+                  <span class="admin-act__badge">{{ getPending(activity.id).length }}</span>
+                }
+              </button>
+              <button class="btn-ghost" (click)="openEdit(activity)" title="Modifier">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button class="btn-ghost btn-ghost--danger" (click)="confirmDelete(activity)" title="Supprimer">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+
+          @if (expandedId() === activity.id) {
+            <div class="admin-act__pending">
+              @if (getPending(activity.id).length === 0) {
+                <p class="admin-act__pending-empty">Aucune demande en attente pour cette activité.</p>
+              } @else {
+                @for (ua of getPending(activity.id); track ua.id) {
+                  <div class="admin-act__pending-item">
+                    <span class="admin-act__pending-name">
+                      {{ ua.member.firstName }} {{ ua.member.lastName }}
+                    </span>
+                    <div class="admin-act__pending-actions">
+                      <button class="btn-success" (click)="approveMember(ua.id, activity.id)">
+                        <i class="pi pi-check"></i> Approuver
+                      </button>
+                      <button class="btn-danger" (click)="rejectMember(ua.id, activity.id)">
+                        <i class="pi pi-times"></i> Refuser
+                      </button>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          }
+        }
+      </section>
+    }
+
+  </div>
+}
+
+<app-activity-form-dialog
+  [visible]="showDialog()"
+  (visibleChange)="showDialog.set($event)"
+  [activity]="editingActivity()"
+  [allActivityTypes]="allActivityTypes()"
+  (create)="onDialogCreate($event)"
+  (update)="onDialogUpdate($event)"
+  (typeCreated)="onTypeCreated($event)"
+/>
+
+<p-confirm-dialog />

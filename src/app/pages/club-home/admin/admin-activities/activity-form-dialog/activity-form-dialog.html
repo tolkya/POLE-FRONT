@@ -1,0 +1,107 @@
+<p-dialog
+  [visible]="visible()"
+  (visibleChange)="onHide()"
+  [header]="title"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  styleClass="activity-form-container"
+>
+  <form [formGroup]="form" class="afd">
+
+    <div class="afd__field">
+      <label class="afd__label">Discipline</label>
+      @if (isEditMode) {
+        <span class="afd__readonly">{{ activity()?.activityType?.name }}</span>
+      } @else {
+        <p-select
+          inputId="activityTypeId"
+          formControlName="activityTypeId"
+          [options]="typeOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Choisir une discipline..."
+          styleClass="afd__select"
+        />
+        @if (form.get('activityTypeId')?.invalid && form.get('activityTypeId')?.touched) {
+          <span class="afd__error">La discipline est requise</span>
+        }
+        <button type="button" class="afd__new-type-btn" (click)="toggleNewTypeForm()">
+          @if (showNewTypeForm()) {
+            <i class="pi pi-times"></i> Annuler
+          } @else {
+            <i class="pi pi-plus"></i> Nouvelle discipline
+          }
+        </button>
+      }
+    </div>
+
+    @if (showNewTypeForm()) {
+      <div class="afd__new-type-panel">
+        <p class="afd__new-type-title">Créer une nouvelle discipline</p>
+        <form [formGroup]="newTypeForm" class="afd__new-type-form">
+          <div class="afd__field">
+            <label class="afd__label" for="typeName">Nom de la discipline *</label>
+            <input
+              pInputText
+              id="typeName"
+              formControlName="name"
+              placeholder="ex: Lyra, Tissu aérien, Contemporain..."
+              class="afd__input"
+            />
+          </div>
+          <div class="afd__field">
+            <label class="afd__label" for="typeDesc">Description</label>
+            <textarea
+              pTextarea
+              id="typeDesc"
+              formControlName="description"
+              placeholder="Description facultative..."
+              rows="2"
+              class="afd__textarea"
+            ></textarea>
+          </div>
+          <p-button
+            label="Créer la discipline"
+            [loading]="creatingType()"
+            [disabled]="newTypeForm.invalid"
+            (click)="submitNewType()"
+            size="small"
+          />
+        </form>
+      </div>
+    }
+
+    <div class="afd__field">
+      <label class="afd__label" for="name">Nom de l'activité *</label>
+      <input
+        pInputText
+        id="name"
+        formControlName="name"
+        placeholder="ex: Heels débutant, Classique avancé..."
+        class="afd__input"
+      />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <span class="afd__error">Le nom est requis</span>
+      }
+    </div>
+
+    <div class="afd__field">
+      <label class="afd__label" for="description">Description</label>
+      <textarea
+        pTextarea
+        id="description"
+        formControlName="description"
+        placeholder="Description facultative..."
+        rows="3"
+        class="afd__textarea"
+      ></textarea>
+    </div>
+
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button label="Annuler" severity="secondary" (click)="onHide()" />
+    <p-button label="Enregistrer" (click)="onSave()" [disabled]="form.invalid" />
+  </ng-template>
+</p-dialog>

@@ -7,6 +7,7 @@ import { ThemeService } from '../../../core/services/theme.service';
 import { JoinClubDialog } from '../join-club-dialog/join-club-dialog';
 import { CreateClubDialog } from '../create-club-dialog/create-club-dialog';
 import { environment } from '../../../../environments/environment';
+import { UserClub } from '../../../core/models';
 
 @Component({
   selector: 'app-sidenav',
@@ -58,7 +59,7 @@ export class Sidenav implements OnInit {
     return roles.includes('ADMIN');
   }
 
-  selectClub(userClub: any): void {
+  selectClub(userClub: UserClub): void {
     this.userClubsService.selectClub(userClub);
     // Ouvre automatiquement le sous-menu du club sélectionné
     this.openClubId.set(userClub.id);
