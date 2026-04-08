@@ -41,6 +41,7 @@ export interface ClubUpdateDto {
   city?: string;
   description?: string;
   themeColor?: string;
+  joinPolicy?: 'AUTO_ACCEPT' | 'MANUAL_VALIDATION';
 }
 
 export interface MemberUser {

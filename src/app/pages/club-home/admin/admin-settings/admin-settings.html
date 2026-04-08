@@ -1,1 +1,160 @@
-<p>Paramètres du club — à venir</p>
+@if (loading()) {
+  <div class="settings__loading">Chargement...</div>
+} @else if (error()) {
+  <div class="settings__error">
+    <i class="pi pi-exclamation-triangle"></i>
+    Impossible de charger les paramètres. Veuillez recharger la page.
+  </div>
+} @else if (club()) {
+  <div class="settings">
+
+    <!-- Section Informations -->
+    <section class="settings__section">
+      <h2 class="settings__section-title">Informations du club</h2>
+      <form [formGroup]="infoForm" class="settings__form">
+
+        <div class="settings__field">
+          <label class="settings__label" for="name">Nom du club *</label>
+          <input pInputText id="name" formControlName="name" class="settings__input" />
+          @if (infoForm.get('name')?.invalid && infoForm.get('name')?.touched) {
+            <span class="settings__error-msg">Le nom est requis</span>
+          }
+        </div>
+
+        <div class="settings__field">
+          <label class="settings__label" for="description">Description</label>
+          <textarea pTextarea id="description" formControlName="description"
+            rows="3" class="settings__input"></textarea>
+        </div>
+
+        <div class="settings__row">
+          <div class="settings__field">
+            <label class="settings__label" for="email">Email</label>
+            <input pInputText id="email" formControlName="email" type="email" class="settings__input" />
+          </div>
+          <div class="settings__field">
+            <label class="settings__label" for="phone">Téléphone</label>
+            <input pInputText id="phone" formControlName="phone" class="settings__input" />
+          </div>
+        </div>
+
+        <div class="settings__row">
+          <div class="settings__field settings__field--grow">
+            <label class="settings__label" for="street">Rue</label>
+            <input pInputText id="street" formControlName="street" class="settings__input" />
+          </div>
+          <div class="settings__field settings__field--sm">
+            <label class="settings__label" for="postalCode">Code postal</label>
+            <input pInputText id="postalCode" formControlName="postalCode" class="settings__input" />
+          </div>
+          <div class="settings__field">
+            <label class="settings__label" for="city">Ville</label>
+            <input pInputText id="city" formControlName="city" class="settings__input" />
+          </div>
+        </div>
+
+        <div class="settings__actions">
+          <p-button
+            label="Enregistrer les informations"
+            [loading]="savingInfo()"
+            [disabled]="infoForm.invalid"
+            (click)="saveInfo()"
+          />
+        </div>
+      </form>
+    </section>
+
+    <!-- Section Apparence -->
+    <section class="settings__section">
+      <h2 class="settings__section-title">Apparence</h2>
+
+      <div class="settings__logo">
+        <p class="settings__label">Logo actuel</p>
+        <div class="settings__logo-preview">
+          @if (logoPreview()) {
+            <img [src]="logoPreview()!" alt="Aperçu du nouveau logo" class="settings__logo-img" />
+            <span class="settings__logo-badge">Aperçu — non encore enregistré</span>
+          } @else if (logoUrl()) {
+            <img [src]="logoUrl()!" [alt]="club()!.name" class="settings__logo-img" />
+          } @else {
+            <div class="settings__logo-placeholder">
+              {{ club()!.name[0].toUpperCase() }}
+            </div>
+          }
+        </div>
+
+        <div class="settings__logo-actions">
+          <label class="btn-secondary settings__logo-label" for="logoInput">
+            <i class="pi pi-upload"></i>
+            Choisir un fichier
+          </label>
+          <input
+            id="logoInput"
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/svg+xml"
+            class="settings__logo-input"
+            (change)="onLogoSelected($event)"
+          />
+          @if (logoFile()) {
+            <p-button
+              label="Enregistrer le logo"
+              [loading]="savingLogo()"
+              (click)="uploadLogo()"
+            />
+            <p-button
+              label="Annuler"
+              severity="secondary"
+              (click)="cancelLogo()"
+            />
+          }
+        </div>
+        <p class="settings__hint">Formats : JPG, PNG, WebP, SVG — max 2 Mo</p>
+      </div>
+    </section>
+
+    <!-- Section Inscription -->
+    <section class="settings__section">
+      <h2 class="settings__section-title">Inscription</h2>
+
+      <div class="settings__field">
+        <p class="settings__label">Politique d'inscription</p>
+        <p-selectButton
+          [options]="policyOptions"
+          [ngModel]="club()!.joinPolicy"
+          (ngModelChange)="savePolicy($event)"
+          optionLabel="label"
+          optionValue="value"
+        />
+        <p class="settings__hint">
+          @if (club()!.joinPolicy === 'AUTO_ACCEPT') {
+            Les nouveaux membres sont acceptés automatiquement.
+          } @else {
+            Les nouvelles inscriptions nécessitent votre validation.
+          }
+        </p>
+      </div>
+
+      <div class="settings__field">
+        <p class="settings__label">Code d'invitation</p>
+        <div class="settings__code">
+          <span class="settings__code-value">{{ club()!.clubCode }}</span>
+          <p-button
+            icon="pi pi-copy"
+            label="Copier"
+            severity="secondary"
+            size="small"
+            (click)="copyCode()"
+          />
+        </div>
+        <p class="settings__hint">Partagez ce code pour que des membres rejoignent votre club.</p>
+      </div>
+    </section>
+
+    <!-- Section Zone dangereuse (V2) -->
+    <section class="settings__section settings__section--danger">
+      <h2 class="settings__section-title settings__section-title--danger">Zone dangereuse</h2>
+      <p class="settings__hint">La suppression et le transfert de club seront disponibles dans une prochaine version.</p>
+    </section>
+
+  </div>
+}
