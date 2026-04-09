@@ -20,29 +20,29 @@
       (navigateToSettings)="onEditClub()"
     />
 
-    <app-club-stats
-      [membersCount]="membersCount()"
-      [activitiesCount]="activitiesCount()"
-      [teachersCount]="teachersCount()"
-    />
+    @if (isMember() || club()!.joinPolicy === 'AUTO_ACCEPT') {
+      <app-club-stats
+        [membersCount]="membersCount()"
+        [activitiesCount]="activitiesCount()"
+        [teachersCount]="teachersCount()"
+      />
 
-    <app-club-activity-boards
-      [clubId]="club()!.id"
-      [userRole]="userRole()"
-      (activitiesCountChange)="onActivitiesCountChange($event)"
-    />
+      <app-club-activity-boards
+        [clubId]="club()!.id"
+        [userRole]="userRole()"
+        (activitiesCountChange)="onActivitiesCountChange($event)"
+      />
+    } @else {
+      <div class="club-home__private-notice">
+        <i class="pi pi-lock"></i>
+        <p>Club privé — inscrivez-vous pour accéder au contenu.</p>
+      </div>
+    }
 
     <app-join-club-dialog
       [visible]="showJoinDialog()"
       (visibleChange)="showJoinDialog.set($event)"
       (joined)="onJoined()"
-    />
-
-    <app-club-edit-dialog
-      [club]="club()!"
-      [visible]="showEditDialog()"
-      (visibleChange)="showEditDialog.set($event)"
-      (save)="onSaveClub($event)"
     />
   </div>
 }
