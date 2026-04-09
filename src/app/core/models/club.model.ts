@@ -22,6 +22,7 @@ export interface Club {
   street: string | null;
   postalCode: string | null;
   city: string | null;
+  country: string | null;
   updatedAt: string | null;
 }
 
@@ -42,6 +43,7 @@ export interface ClubUpdateDto {
   description?: string;
   themeColor?: string;
   joinPolicy?: 'AUTO_ACCEPT' | 'MANUAL_VALIDATION';
+  country?: string;
 }
 
 export interface MemberUser {

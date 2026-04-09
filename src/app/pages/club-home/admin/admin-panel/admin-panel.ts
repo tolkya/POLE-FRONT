@@ -46,6 +46,8 @@ export class AdminPanel implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.clubId.set(id);
+    const tab = this.route.snapshot.queryParamMap.get('tab');
+    if (tab) this.activeTab.set(tab);
   }
 
   onTabChange(tab: string): void {

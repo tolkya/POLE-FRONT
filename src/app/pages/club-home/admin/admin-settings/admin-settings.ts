@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } 
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
+import { ColorPickerModule } from 'primeng/colorpicker';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { Club } from '../../../../core/models';
 import { ClubService } from '../../../../core/services/club.service';
@@ -12,7 +13,7 @@ import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-admin-settings',
-  imports: [ReactiveFormsModule, InputTextModule, TextareaModule, ButtonModule, SelectButtonModule, FormsModule],
+  imports: [ReactiveFormsModule, InputTextModule, ColorPickerModule, TextareaModule, ButtonModule, SelectButtonModule, FormsModule],
   templateUrl: './admin-settings.html',
   styleUrl: './admin-settings.scss',
 })
@@ -32,6 +33,8 @@ export class AdminSettings implements OnInit {
   savingInfo   = signal(false);
   savingLogo   = signal(false);
   savingPolicy = signal(false);
+  savingColor  = signal(false);
+  pendingColor = signal<string>('');
 
   // Aperçu logo avant envoi
   logoPreview = signal<string | null>(null);
@@ -54,6 +57,7 @@ export class AdminSettings implements OnInit {
       street:      [''],
       postalCode:  [''],
       city:        [''],
+      country:     [''],
     });
   }
 
@@ -69,8 +73,10 @@ export class AdminSettings implements OnInit {
           street:      club.street ?? '',
           postalCode:  club.postalCode ?? '',
           city:        club.city ?? '',
+          country:     club.country ?? '',
         });
         this.loading.set(false);
+        this.pendingColor.set(club.themeColor ?? '#7c3aed');
       },
       error: () => { this.error.set(true); this.loading.set(false); },
     });
@@ -89,6 +95,7 @@ export class AdminSettings implements OnInit {
       street:      val.street      || undefined,
       postalCode:  val.postalCode  || undefined,
       city:        val.city        || undefined,
+      country:     val.country || undefined,
     }).subscribe({
       next: (club) => {
         this.club.set(club);
@@ -167,6 +174,20 @@ export class AdminSettings implements OnInit {
     if (!code) return;
     navigator.clipboard.writeText(code).then(() => {
       this.toast.success('Code copié dans le presse-papier');
+    });
+  }
+
+  saveColor(): void {
+    this.savingColor.set(true);
+    this.clubService.updateClub(this.clubId(), { themeColor: this.pendingColor() }).subscribe({
+      next: (club) => {
+        this.club.set(club);
+        this.toast.success('Couleur mise à jour');
+        this.savingColor.set(false);
+        // Force club-home à recharger le club pour mettre à jour le thème visuel
+        this.userClubsService.fetchUserClubs().subscribe();
+      },
+      error: () => { this.toast.error('Erreur lors de la sauvegarde'); this.savingColor.set(false); },
     });
   }
 }

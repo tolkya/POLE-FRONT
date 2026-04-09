@@ -28,6 +28,11 @@
         </button>
       }
     </div>
+    @if (userRole === 'ADMIN') {
+      <button class="hero__settings-btn" (click)="navigateToSettings.emit()" title="Paramètres du club">
+        <i class="pi pi-cog"></i>
+      </button>
+    }
   </div>
 
   <div class="hero__body">
@@ -71,14 +76,7 @@
       <section class="hero__panel hero__panel--description">
         <div class="hero__description-head">
           <p class="hero__panel-kicker">Presentation</p>
-          @if (userRole === 'ADMIN') {
-            <div class="hero__admin-actions">
-              <p-button label="Modifier" icon="pi pi-pencil" [text]="true" size="small" severity="secondary" (onClick)="editClub.emit()" />
-              <p-button label="Theme" icon="pi pi-palette" [text]="true" size="small" severity="secondary" (onClick)="openColorPicker($event)" />
-            </div>
-          }
         </div>
-
         <p class="hero__description">
           {{ club.description || 'Aucune description renseignee pour ce club.' }}
         </p>
@@ -95,29 +93,17 @@
         </div>
       </div>
     }
+  </div>
 
-    <p-popover #colorPopover>
-      <div class="hero__color-picker">
-        <p class="hero__color-label">Couleur du theme</p>
-        <p-colorpicker [(ngModel)]="pendingColor" [inline]="true" />
-        <div class="hero__color-actions">
-          <p-button label="Appliquer" size="small" (onClick)="confirmTheme()" />
-          <p-button label="Annuler" size="small" [text]="true" severity="secondary" (onClick)="cancelTheme()" />
-        </div>
-      </div>
-    </p-popover>
-
-</div>
-
-<!-- Dialogue de confirmation pour quitter le club -->
-<p-dialog
-  header="Quitter le club"
-  [(visible)]="showLeaveConfirm"
-  [modal]="true"
-  [closable]="true"
-  [style]="{ width: '400px' }"
-  [draggable]="false"
->
+  <!-- Dialogue de confirmation pour quitter le club -->
+  <p-dialog
+    header="Quitter le club"
+    [(visible)]="showLeaveConfirm"
+    [modal]="true"
+    [closable]="true"
+    [style]="{ width: '400px' }"
+    [draggable]="false"
+  >
   <div class="leave-confirm">
     <i class="pi pi-exclamation-triangle leave-confirm__icon"></i>
     <p class="leave-confirm__text">

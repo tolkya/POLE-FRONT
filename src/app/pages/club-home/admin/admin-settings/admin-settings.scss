@@ -10,6 +10,7 @@
   flex-direction: column;
   gap: $space-xl;
 
+  // États chargement / erreur
   &__loading,
   &__error {
     display: flex;
@@ -24,16 +25,12 @@
 
   &__error { color: $color-error; }
 
+  // Carte section
   &__section {
     background: var(--surface-card, #fff);
     border: 1px solid var(--surface-border, #e5e7eb);
     border-radius: $radius-lg;
     padding: $space-lg;
-
-    &--danger {
-      border-color: rgba($color-error, 0.3);
-      background: rgba($color-error, 0.03);
-    }
   }
 
   &__section-title {
@@ -43,17 +40,42 @@
     margin: 0 0 $space-md;
     padding-bottom: $space-sm;
     border-bottom: 2px solid var(--club-primary, $color-primary);
-
-    &--danger {
-      border-color: $color-error;
-      color: $color-error;
-    }
   }
 
+  // Formulaire informations
   &__form {
     display: flex;
     flex-direction: column;
     gap: $space-md;
+  }
+
+  &__field--half {
+    max-width: 50%;
+
+    @media (max-width: #{$bp-sm}) {
+      max-width: 100%;
+    }
+  }
+
+  &__two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-lg;
+    align-items: start;
+
+    @media (max-width: #{$bp-md}) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+
+    &--right {
+      justify-content: space-between;
+    }
   }
 
   &__row {
@@ -70,9 +92,6 @@
     display: flex;
     flex-direction: column;
     gap: $space-xs;
-
-    &--grow { grid-column: span 2; }
-    &--sm   { max-width: 140px; }
   }
 
   &__label {
@@ -102,13 +121,25 @@
     padding-top: $space-sm;
   }
 
-  // Logo
-  &__logo {
+  // Apparence — 2 colonnes côte à côte
+  &__appearance-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $space-lg;
+    align-items: start;
+
+    @media (max-width: #{$bp-sm}) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__appearance-col {
     display: flex;
     flex-direction: column;
     gap: $space-sm;
   }
 
+  // Logo
   &__logo-preview {
     position: relative;
     width: fit-content;
@@ -166,7 +197,28 @@
   }
 
   &__logo-input {
-    display: none; // masqué, déclenché par le label
+    display: none;
+  }
+
+  // Couleur
+  &__color-preview {
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-md;
+    border: 2px solid var(--surface-border, #e5e7eb);
+    transition: background 0.2s;
+  }
+
+  &__color-row {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+  }
+
+  &__color-value {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: $color-text-muted;
   }
 
   // Code d'invitation

@@ -25,7 +25,8 @@ export class ClubHome implements OnInit, OnDestroy {
   // Tous les composants enfants héritent de ces variables par cascade
   @HostBinding('style')
   get hostStyles(): Record<string, string> {
-    const hex = this.club()?.themeColor ?? '#7c3aed';
+    // myUserClub().club.themeColor est mis à jour dès que fetchUserClubs() est appelé (ex: depuis admin-settings)
+    const hex = this.myUserClub()?.club.themeColor ?? this.club()?.themeColor ?? '#7c3aed';
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -194,8 +195,8 @@ export class ClubHome implements OnInit, OnDestroy {
   }
 
   onEditClub(): void {
-  this.showEditDialog.set(true);
-}
+    void this.router.navigate(['/club', this.club()!.id, 'admin'], { queryParams: { tab: '3' } });
+  }
 
   onSaveClub(data: ClubUpdateDto): void {
     const club = this.club();
