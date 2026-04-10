@@ -7,6 +7,7 @@ import { ActivityMembersService } from '../../../../../core/services/activity-me
 import { ToastService } from '../../../../../core/services/toast.service';
 import { UserActivity } from '../../../../../core/models/user-activity.model';
 import { DatePipe } from '@angular/common';
+import { MyActivitiesService } from '../../../../../core/services/my-activities.service';
 
 @Component({
   selector: 'app-enrollments-dialog',
@@ -28,6 +29,12 @@ export class EnrollmentsDialog {
 
   @Input() set activityId_(v: number) { this.activityId = v; }
 
+  @Input() isAdmin = false;
+
+  readonly teachers = computed(() => this.members().filter(m => m.status === 'APPROVED' && m.role === 'TEACHER'));
+  readonly students = computed(() => this.members().filter(m => m.status === 'APPROVED' && m.role === 'STUDENT'));
+
+
   @Input() set visible(v: boolean) {
     if (v) {
       this.showContent.set(true);
@@ -39,7 +46,6 @@ export class EnrollmentsDialog {
   readonly visibleChange = output<boolean>();
 
   readonly pending  = computed(() => this.members().filter(m => m.status === 'PENDING'));
-  readonly approved = computed(() => this.members().filter(m => m.status === 'APPROVED'));
 
   private loadMembers(): void {
     this.loading.set(true);

@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MyActivitiesService } from '../../../core/services/my-activities.service';
 import { MyActivity } from '../../../core/models/user-activity.model';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-my-activities',
@@ -12,6 +13,8 @@ import { MyActivity } from '../../../core/models/user-activity.model';
 export class MyActivities implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly myActivitiesService = inject(MyActivitiesService);
+
+  private readonly toast = inject(ToastService);
 
   readonly loading = signal(true);
 
@@ -47,5 +50,37 @@ export class MyActivities implements OnInit {
     setTimeout(() => {
       document.getElementById(fragment)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 100);
+  }
+  
+  onCancel(item: MyActivity): void {
+    this.myActivitiesService.cancelRequest(item.id).subscribe({
+      next: () => {
+        this.toast.success('Demande annulée');
+        this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe();
+      },
+      error: () => this.toast.error('Erreur'),
+    });
+  }
+
+  onLeave(event: Event, item: MyActivity): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.myActivitiesService.leaveActivity(item.id).subscribe({
+      next: () => {
+        this.toast.success('Vous avez quitté l\'activité');
+        this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe();
+      },
+      error: () => this.toast.error('Erreur'),
+    });
+  }
+
+  onReRequest(item: MyActivity): void {
+    this.myActivitiesService.reRequestActivity(item.id).subscribe({
+      next: () => {
+        this.toast.success('Demande renvoyée');
+        this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe();
+      },
+      error: () => this.toast.error('Erreur'),
+    });
   }
 }

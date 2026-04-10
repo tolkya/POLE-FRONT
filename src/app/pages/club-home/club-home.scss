@@ -19,6 +19,17 @@
   gap: 1rem;
 }
 
+.club-home__private-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-xl;
+  color: $color-text-muted;
+  text-align: center;
+  i { font-size: 2rem; }
+}
+
 @media (max-width: 600px) {
   .club-home__stats-skeleton { grid-template-columns: 1fr; }
 }

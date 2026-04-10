@@ -23,9 +23,7 @@
     margin: 0;
   }
 
-  &__empty,
-  &__loading,
-  &__error {
+  &__empty, &__loading, &__error {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,7 +31,6 @@
     padding: $space-xl;
     color: $color-text-muted;
     text-align: center;
-
     i { font-size: 2rem; }
   }
 
@@ -52,53 +49,85 @@
     border-bottom: 2px solid var(--club-primary, $color-primary);
   }
 
+  // Ligne activité (header + body)
   &__item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: $space-md;
-    padding: $space-sm $space-md;
-    background: var(--surface-card, #fff);
     border: 1px solid var(--surface-border, #e5e7eb);
     border-radius: $radius-md;
     margin-bottom: $space-xs;
+    background: var(--surface-card, #fff);
+    overflow: hidden;
 
-    &-left {
-      display: flex;
-      align-items: center;
-      gap: $space-sm;
-      min-width: 0;
+    &--open {
+      border-color: var(--club-primary, $color-primary);
     }
+  }
 
-    &-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
+  &__item-header {
+    display: flex;
+    align-items: center;
+    gap: $space-md;
+    padding: $space-sm $space-md;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      background: var(--surface-hover, #f9fafb);
     }
+  }
 
-    &-name {
-      font-weight: 500;
-      color: $color-text;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  &__item-left {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    min-width: 0;
+    flex: 1;
+  }
 
-    &-status {
-      font-size: 0.75rem;
-      color: $color-success;
-      font-weight: 500;
+  &__item-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
 
-      &--suspended { color: $color-error; }
-    }
+  &__item-name {
+    font-weight: 500;
+    color: $color-text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-    &-actions {
-      display: flex;
-      align-items: center;
-      gap: $space-xs;
-      flex-shrink: 0;
-    }
+  &__item-status {
+    font-size: 0.75rem;
+    color: $color-success;
+    font-weight: 500;
+    &--suspended { color: $color-error; }
+  }
+
+  &__item-actions {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    flex-shrink: 0;
+  }
+
+  &__chevron {
+    font-size: 0.875rem;
+    color: $color-text-muted;
+    flex-shrink: 0;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    background: $color-error;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 999px;
+    white-space: nowrap;
   }
 
   &__thumb {
@@ -119,76 +148,77 @@
     }
   }
 
-  &__pending-btn {
-    position: relative;
-
-    &--active {
-      color: var(--club-primary, $color-primary);
-    }
+  // Corps du panel (inscrits)
+  &__item-body {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+    padding: $space-md;
+    border-top: 1px solid var(--surface-border, #e5e7eb);
+    background: var(--surface-ground, #f9fafb);
   }
 
-  &__badge {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: $color-error;
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    border-radius: 999px;
-    width: 16px;
-    height: 16px;
+  &__enrolled-section {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__enrolled-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-
-  &__pending {
-    background: var(--surface-ground, #f9fafb);
-    border: 1px solid var(--surface-border, #e5e7eb);
-    border-top: none;
-    border-radius: 0 0 $radius-md $radius-md;
-    padding: $space-sm $space-md;
+    justify-content: space-between;
     margin-bottom: $space-xs;
-
-    &-empty {
-      color: $color-text-muted;
-      font-size: 0.875rem;
-      margin: 0;
-      padding: $space-xs 0;
-    }
-
-    &-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: $space-sm;
-      padding: $space-xs 0;
-      border-bottom: 1px solid var(--surface-border, #e5e7eb);
-
-      &:last-child { border-bottom: none; }
-    }
-
-    &-name {
-      font-weight: 500;
-      color: $color-text;
-    }
-
-    &-actions {
-      display: flex;
-      gap: $space-xs;
-    }
   }
 
-  @media (max-width: #{$bp-sm}) {
-    &__item {
-      flex-wrap: wrap;
-    }
+  &__enrolled-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $color-text;
+  }
 
-    &__item-actions {
-      width: 100%;
-      justify-content: flex-end;
-    }
+  &__enrolled-empty {
+    font-size: 0.8rem;
+    color: $color-text-muted;
+    font-style: italic;
+    margin: 0;
+  }
+
+  &__enrolled-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-xs $space-sm;
+    background: var(--surface-card, #fff);
+    border: 1px solid var(--surface-border, #e5e7eb);
+    border-radius: $radius-sm;
+    font-size: 0.875rem;
+  }
+
+  &__add-form {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    flex-wrap: wrap;
+    padding: $space-sm;
+    background: var(--club-primary-light, rgba(124, 58, 237, 0.06));
+    border-radius: $radius-sm;
+    border: 1px solid var(--club-border, rgba(124, 58, 237, 0.12));
+  }
+
+  &__pending-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: $space-sm;
+    padding: $space-xs 0;
+    border-bottom: 1px solid var(--surface-border, #e5e7eb);
+    &:last-child { border-bottom: none; }
+  }
+
+  &__pending-actions {
+    display: flex;
+    gap: $space-xs;
   }
 }

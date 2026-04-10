@@ -27,70 +27,134 @@
         <h3 class="admin-act__group-title">{{ group.type.name }}</h3>
 
         @for (activity of group.activities; track activity.id) {
-          <div class="admin-act__item">
-            <div class="admin-act__item-left">
-              @if (activityImageUrl(activity); as imgUrl) {
-                <img class="admin-act__thumb" [src]="imgUrl" [alt]="activity.name" />
-              } @else {
-                <div class="admin-act__thumb admin-act__thumb--fallback">
-                  {{ activity.name[0].toUpperCase() }}
-                </div>
-              }
-              <div class="admin-act__item-meta">
-                <span class="admin-act__item-name">{{ activity.name }}</span>
-                <span
-                  class="admin-act__item-status"
-                  [class.admin-act__item-status--suspended]="activity.status === 'SUSPENDED'"
-                >
-                  {{ activity.status === 'ACTIVE' ? 'Active' : 'Suspendue' }}
-                </span>
-              </div>
-            </div>
+          <div class="admin-act__item" [class.admin-act__item--open]="isOpen(activity.id)">
 
-            <div class="admin-act__item-actions">
-              <button
-                class="btn-ghost admin-act__pending-btn"
-                [class.admin-act__pending-btn--active]="expandedId() === activity.id"
-                (click)="togglePending(activity.id)"
-                title="Demandes en attente"
-              >
-                <i class="pi pi-clock"></i>
-                @if (getPending(activity.id).length > 0) {
-                  <span class="admin-act__badge">{{ getPending(activity.id).length }}</span>
-                }
-              </button>
-              <button class="btn-ghost" (click)="openEdit(activity)" title="Modifier">
-                <i class="pi pi-pencil"></i>
-              </button>
-              <button class="btn-ghost btn-ghost--danger" (click)="confirmDelete(activity)" title="Supprimer">
-                <i class="pi pi-trash"></i>
-              </button>
-            </div>
-          </div>
-
-          @if (expandedId() === activity.id) {
-            <div class="admin-act__pending">
-              @if (getPending(activity.id).length === 0) {
-                <p class="admin-act__pending-empty">Aucune demande en attente pour cette activité.</p>
-              } @else {
-                @for (ua of getPending(activity.id); track ua.id) {
-                  <div class="admin-act__pending-item">
-                    <span class="admin-act__pending-name">
-                      {{ ua.member.firstName }} {{ ua.member.lastName }}
-                    </span>
-                    <div class="admin-act__pending-actions">
-                      <button class="btn-success" (click)="approveMember(ua.id, activity.id)">
-                        <i class="pi pi-check"></i> Approuver
-                      </button>
-                      <button class="btn-danger" (click)="rejectMember(ua.id, activity.id)">
-                        <i class="pi pi-times"></i> Refuser
-                      </button>
-                    </div>
+            <div class="admin-act__item-header" (click)="toggle(activity.id)">
+              <div class="admin-act__item-left">
+                @if (activityImageUrl(activity); as imgUrl) {
+                  <img class="admin-act__thumb" [src]="imgUrl" [alt]="activity.name" />
+                } @else {
+                  <div class="admin-act__thumb admin-act__thumb--fallback">
+                    {{ activity.name[0].toUpperCase() }}
                   </div>
                 }
-              }
+                <div class="admin-act__item-meta">
+                  <span class="admin-act__item-name">{{ activity.name }}</span>
+                  <span class="admin-act__item-status"
+                    [class.admin-act__item-status--suspended]="activity.status === 'SUSPENDED'">
+                    {{ activity.status === 'ACTIVE' ? 'Active' : 'Suspendue' }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="admin-act__item-actions" (click)="$event.stopPropagation()">
+                @if (getPending(activity.id).length > 0) {
+                  <span class="admin-act__badge">{{ getPending(activity.id).length }} en attente</span>
+                }
+                <button class="btn-ghost" (click)="openEdit(activity)" title="Modifier">
+                  <i class="pi pi-pencil"></i>
+                </button>
+                <button class="btn-ghost btn-ghost--danger" (click)="confirmDelete(activity)" title="Supprimer">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+
+              <i class="pi admin-act__chevron"
+                [class.pi-chevron-down]="!isOpen(activity.id)"
+                [class.pi-chevron-up]="isOpen(activity.id)">
+              </i>
             </div>
-          }
+
+            @if (isOpen(activity.id)) {
+              <div class="admin-act__item-body">
+
+                <div class="admin-act__enrolled-section">
+                  <div class="admin-act__enrolled-header">
+                    <span class="admin-act__enrolled-title">Professeurs</span>
+                    <button class="btn-secondary" (click)="openAddForm(activity.id, 'TEACHER')">
+                      + Attribuer un professeur
+                    </button>
+                  </div>
+                  @if (getTeachers(activity.id).length === 0) {
+                    <p class="admin-act__enrolled-empty">Aucun professeur assigné.</p>
+                  } @else {
+                    @for (ua of getTeachers(activity.id); track ua.id) {
+                      <div class="admin-act__enrolled-row">
+                        <span>{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
+                        <button class="btn-ghost btn-ghost--danger" (click)="removeEnrolled(ua.id, activity.id)">
+                          <i class="pi pi-times"></i>
+                        </button>
+                      </div>
+                    }
+                  }
+                </div>
+
+                @if (addFormState()?.activityId === activity.id) {
+                  <div class="admin-act__add-form">
+                    <p-autoComplete
+                      [(ngModel)]="selectedMember"
+                      [suggestions]="memberSuggestions()"
+                      (completeMethod)="searchMember($event.query)"
+                      [optionLabel]="'displayName'"
+                      placeholder="Rechercher un membre..."
+                      appendTo="body"
+                    >
+                      <ng-template let-m pTemplate="item">
+                        {{ m.member.firstName }} {{ m.member.lastName }}
+                        <span style="color: var(--text-color-secondary); font-size: 0.8rem;">
+                          — {{ m.member.email }}
+                        </span>
+                      </ng-template>
+                    </p-autoComplete>
+                    <p-button label="Inscrire" size="small" (click)="enroll()" [disabled]="!selectedMember()" />
+                    <p-button label="Annuler" severity="secondary" size="small" (click)="cancelAddForm()" />
+                  </div>
+                }
+
+                <div class="admin-act__enrolled-section">
+                  <div class="admin-act__enrolled-header">
+                    <span class="admin-act__enrolled-title">Élèves</span>
+                    <button class="btn-secondary" (click)="openAddForm(activity.id, 'STUDENT')">
+                      + Inscrire un élève
+                    </button>
+                  </div>
+                  @if (getStudents(activity.id).length === 0) {
+                    <p class="admin-act__enrolled-empty">Aucun élève inscrit.</p>
+                  } @else {
+                    @for (ua of getStudents(activity.id); track ua.id) {
+                      <div class="admin-act__enrolled-row">
+                        <span>{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
+                        <button class="btn-ghost btn-ghost--danger" (click)="removeEnrolled(ua.id, activity.id)">
+                          <i class="pi pi-times"></i>
+                        </button>
+                      </div>
+                    }
+                  }
+                </div>
+
+                @if (getPendingEnrolled(activity.id).length > 0) {
+                  <div class="admin-act__enrolled-section">
+                    <span class="admin-act__enrolled-title">En attente</span>
+                    @for (ua of getPendingEnrolled(activity.id); track ua.id) {
+                      <div class="admin-act__pending-item">
+                        <span>{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
+                        <div class="admin-act__pending-actions">
+                          <button class="btn-success" (click)="approveMember(ua.id, activity.id)">
+                            <i class="pi pi-check"></i> Approuver
+                          </button>
+                          <button class="btn-danger" (click)="rejectMember(ua.id, activity.id)">
+                            <i class="pi pi-times"></i> Refuser
+                          </button>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+              </div>
+            }
+
+          </div>
         }
       </section>
     }

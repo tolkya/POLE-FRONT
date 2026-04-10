@@ -168,4 +168,32 @@
 
     &:hover { opacity: 0.85; }
   }
+
+  &__badge--rejected {
+    background: $color-error-bg;
+    color: $color-error;
+  }
+
+  &__badge--left {
+    background: rgba($color-text-muted, 0.1);
+    color: $color-text-muted;
+  }
+
+  &__action-btn {
+    border: none;
+    border-radius: $radius-sm;
+    padding: 2px 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    
+    &--cancel {
+      background: $color-error-bg;
+      color: $color-error;
+    }
+    
+    &--request {
+      background: var(--club-primary-light, #ede9fe);
+      color: var(--club-primary, $color-primary);
+    }
+  }
 }

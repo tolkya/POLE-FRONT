@@ -14,6 +14,7 @@
     </div>
 
     <div class="hero__banner-actions">
+      <p-tag [value]="joinPolicyLabel" [severity]="joinPolicySeverity" [rounded]="true" />
       @if (userRole) {
         <p-tag [value]="userRole" [severity]="roleSeverity" [rounded]="true" />
         @if (userRole !== 'ADMIN') {

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { HydraCollection, UserActivity, EnrollMemberDto } from '../models';
+import { HydraCollection, UserActivity, EnrollMemberDto, UserActivityStatus } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class ActivityMembersService {
@@ -25,7 +25,7 @@ export class ActivityMembersService {
     );
   }
 
-  patchStatus(id: number, status: string): Observable<UserActivity> {
+  patchStatus(id: number, status: UserActivityStatus): Observable<UserActivity> {
     return this.http.patch<UserActivity>(
       `${environment.api.baseUrl}/user-activities/${id}`,
       { status },

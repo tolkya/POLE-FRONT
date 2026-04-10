@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 :host { display: block; }
 
 .enrollments {
@@ -59,5 +61,32 @@
     display: flex;
     gap: 0.4rem;
     flex-shrink: 0;
+  }
+
+  &__section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-muted;
+    margin: $space-sm 0 $space-xs;
+    &:first-child { margin-top: 0; }
+  }
+
+  &__role {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: $radius-full;
+
+    &--teacher {
+      background: var(--club-primary-light, #ede9fe);
+      color: var(--club-primary, $color-primary);
+    }
+
+    &--student {
+      background: $color-success-bg;
+      color: $color-success;
+    }
   }
 }

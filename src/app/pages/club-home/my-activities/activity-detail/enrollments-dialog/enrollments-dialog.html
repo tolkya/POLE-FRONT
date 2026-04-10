@@ -25,8 +25,8 @@
           </p-tab>
           <p-tab value="1">
             Inscrits
-            @if (approved().length > 0) {
-              <p-tag [value]="approved().length.toString()" severity="success" styleClass="enrollments__badge" />
+            @if (teachers().length + students().length > 0) {
+              <p-tag [value]="(teachers().length + students().length).toString()" severity="success" styleClass="enrollments__badge" />
             }
           </p-tab>
         </p-tablist>
@@ -64,22 +64,49 @@
 
           <!-- Inscrits APPROVED -->
           <p-tabpanel value="1">
-            @if (approved().length === 0) {
+            @if (teachers().length === 0 && students().length === 0) {
               <p class="enrollments__empty">Aucun membre inscrit.</p>
-            } @else {
+            }
+
+            @if (teachers().length > 0) {
+              <p class="enrollments__section-title">Professeurs</p>
               <ul class="enrollments__list">
-                @for (ua of approved(); track ua.id) {
+                @for (ua of teachers(); track ua.id) {
                   <li class="enrollments__item">
                     <div class="enrollments__member">
                       <span class="enrollments__name">{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
-                      <span class="enrollments__date">Depuis le {{ ua.createdAt | date:'dd/MM/yyyy' }}</span>
+                      <span class="enrollments__role enrollments__role--teacher">Professeur</span>
+                    </div>
+                    @if (isAdmin) {
+                      <div class="enrollments__actions">
+                        <button pButton severity="secondary" size="small"
+                          [loading]="processingId() === ua.id"
+                          (click)="remove(ua)"
+                          title="Retirer ce professeur">
+                          <i class="pi pi-times"></i>
+                        </button>
+                      </div>
+                    }
+                  </li>
+                }
+              </ul>
+            }
+
+            @if (students().length > 0) {
+              <p class="enrollments__section-title">Élèves</p>
+              <ul class="enrollments__list">
+                @for (ua of students(); track ua.id) {
+                  <li class="enrollments__item">
+                    <div class="enrollments__member">
+                      <span class="enrollments__name">{{ ua.member.firstName }} {{ ua.member.lastName }}</span>
+                      <span class="enrollments__role enrollments__role--student">Élève</span>
                     </div>
                     <div class="enrollments__actions">
                       <button pButton severity="secondary" size="small"
                         [loading]="processingId() === ua.id"
                         (click)="remove(ua)"
-                        title="Retirer">
-                        <i class="pi pi-user-minus"></i>
+                        title="Retirer cet élève">
+                        <i class="pi pi-times"></i>
                       </button>
                     </div>
                   </li>

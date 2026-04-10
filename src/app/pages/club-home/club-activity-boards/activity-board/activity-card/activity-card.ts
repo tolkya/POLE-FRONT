@@ -45,8 +45,10 @@ export class ActivityCard {
     this.enrollmentStatus() === null
   );
 
-  /** True si l'utilisateur est inscrit (APPROVED ou PENDING) → clic navigue vers Mes activités */
-  readonly isEnrolled = computed(() => this.enrollmentStatus() !== null);
+  /** True si l'utilisateur est inscrit (APPROVED) → clic navigue vers Mes activités */
+  readonly isEnrolled = computed(() => this.enrollmentStatus() === 'APPROVED');
+
+  readonly myActivityEntry = computed(() =>this.myActivities().find(ma => ma.activity.id === this.activity().id) ?? null);
 
   onCardClick(): void {
     if (!this.isEnrolled()) return;
@@ -70,6 +72,24 @@ export class ActivityCard {
           this.toast.error('Erreur lors de l\'inscription.');
         }
       },
+    });
+  }
+
+  cancelRequest(): void {
+    const entry = this.myActivityEntry();
+    if (!entry) return;
+    this.myActivitiesService.cancelRequest(entry.id).subscribe({
+      next: () => { this.toast.success('Demande annulée'); this.joined.emit(); },
+      error: () => this.toast.error('Erreur'),
+    });
+  }
+
+  reRequest(): void {
+    const entry = this.myActivityEntry();
+    if (!entry) return;
+    this.myActivitiesService.reRequestActivity(entry.id).subscribe({
+      next: () => { this.toast.success('Demande envoyée'); this.joined.emit(); },
+      error: () => this.toast.error('Erreur'),
     });
   }
 }

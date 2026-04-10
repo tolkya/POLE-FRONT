@@ -1,7 +1,7 @@
 import { UserRef } from './api.model';
 import { Activity } from './activity.model';
 
-export type UserActivityStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type UserActivityStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'LEFT';
 export type UserActivityRole = 'TEACHER' | 'STUDENT';
 
 export interface UserActivity {

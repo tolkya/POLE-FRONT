@@ -71,6 +71,14 @@ export class ClubHero {
     return 'warn';
   }
 
+  get joinPolicyLabel(): string {
+    return this.club.joinPolicy === 'AUTO_ACCEPT' ? 'Public' : 'Privé';
+  }
+
+  get joinPolicySeverity(): 'success' | 'warn' {
+    return this.club.joinPolicy === 'AUTO_ACCEPT' ? 'success' : 'warn';
+  }
+
   requestLeave(): void {
     this.showLeaveConfirm.set(true);
   }

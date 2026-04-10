@@ -7,6 +7,13 @@ import { ActivityMembersService } from '../../../../core/services/activity-membe
 import { ToastService } from '../../../../core/services/toast.service';
 import { ActivityFormDialog } from './activity-form-dialog/activity-form-dialog';
 import { environment } from '../../../../../environments/environment';
+import { PanelModule } from 'primeng/panel';
+import { ButtonModule } from 'primeng/button';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ClubMembersService } from '../../../../core/services/club-members.service';
+import { ClubMember } from '../../../../core/models';
+import { FormsModule } from '@angular/forms';
+
 
 interface ActivityGroup {
   type: ActivityType;
@@ -15,7 +22,7 @@ interface ActivityGroup {
 
 @Component({
   selector: 'app-admin-activities',
-  imports: [ActivityFormDialog, ConfirmDialogModule],
+  imports: [ActivityFormDialog, ConfirmDialogModule, PanelModule, ButtonModule, AutoCompleteModule, FormsModule],
   templateUrl: './admin-activities.html',
   styleUrl: './admin-activities.scss',
   providers: [ConfirmationService],
@@ -23,6 +30,7 @@ interface ActivityGroup {
 export class AdminActivities implements OnInit {
   readonly clubId = input.required<number>();
 
+  private readonly clubMembersService = inject(ClubMembersService);
   private readonly activitiesService = inject(ActivitiesService);
   private readonly membersService    = inject(ActivityMembersService);
   private readonly toast             = inject(ToastService);
@@ -35,13 +43,26 @@ export class AdminActivities implements OnInit {
   loading          = signal(true);
   error            = signal(false);
 
+  // Inscrits par activité (lazy — chargé au premier clic sur p-panel)
+  enrolledMap   = signal<Map<number, UserActivity[]>>(new Map());
+  private loadedPanels = new Set<number>();
+
+  // Membres du club pour l'autocomplete
+  clubMembersList   = signal<(ClubMember & { displayName: string })[]>([]);
+  memberSuggestions = signal<(ClubMember & { displayName: string })[]>([]);
+
+  // Formulaire inline d'ajout
+  addFormState  = signal<{ activityId: number; role: 'TEACHER' | 'STUDENT' } | null>(null);
+  selectedMember = signal<(ClubMember & { displayName: string }) | null>(null);
+
   // Dialog
   showDialog      = signal(false);
   editingActivity = signal<Activity | null>(null);
 
   // Demandes PENDING par activité : Map<activityId, UserActivity[]>
   pendingMap = signal<Map<number, UserActivity[]>>(new Map());
-  expandedId = signal<number | null>(null);
+
+  openPanels = signal<Set<number>>(new Set());
 
   // Activités regroupées par discipline
   groupedActivities = computed<ActivityGroup[]>(() => {
@@ -59,6 +80,11 @@ export class AdminActivities implements OnInit {
     this.load();
     this.activitiesService.getAllActivityTypes().subscribe({
       next: (types) => this.allActivityTypes.set(types),
+    });
+    this.clubMembersService.getMembers(this.clubId()).subscribe({
+      next: (res) => this.clubMembersList.set(
+        res.members.map(m => ({ ...m, displayName: `${m.member.firstName} ${m.member.lastName}` }))
+      ),
     });
   }
 
@@ -114,29 +140,16 @@ export class AdminActivities implements OnInit {
     });
   }
 
-  // Ouvre/ferme la section "Demandes en attente" pour une activité
-  togglePending(activityId: number): void {
-    if (this.expandedId() === activityId) {
-      this.expandedId.set(null);
-      return;
-    }
-    this.expandedId.set(activityId);
-    // Chargement lazy : on ne charge que si pas déjà fait
-    if (!this.pendingMap().has(activityId)) {
-      this.loadPending(activityId);
-    }
-  }
-
   approveMember(userActivityId: number, activityId: number): void {
     this.membersService.patchStatus(userActivityId, 'APPROVED').subscribe({
-      next: () => { this.toast.success('Inscription approuvée'); this.loadPending(activityId); },
+      next: () => { this.toast.success('Inscription approuvée'); this.reloadEnrolled(activityId); },
       error: () => this.toast.error('Erreur'),
     });
   }
 
   rejectMember(userActivityId: number, activityId: number): void {
     this.membersService.patchStatus(userActivityId, 'REJECTED').subscribe({
-      next: () => { this.toast.success('Inscription refusée'); this.loadPending(activityId); },
+      next: () => { this.toast.success('Inscription refusée'); this.reloadEnrolled(activityId); },
       error: () => this.toast.error('Erreur'),
     });
   }
@@ -164,5 +177,113 @@ export class AdminActivities implements OnInit {
   onTypeCreated(type: ActivityType): void {
     // Ajoute la nouvelle discipline au signal sans rechargement HTTP
     this.allActivityTypes.update(types => [...types, type]);
+  }
+
+  getTeachers(activityId: number): UserActivity[] {
+    return (this.enrolledMap().get(activityId) ?? [])
+      .filter(ua => ua.role === 'TEACHER' && ua.status === 'APPROVED');
+  }
+
+  getStudents(activityId: number): UserActivity[] {
+    return (this.enrolledMap().get(activityId) ?? [])
+      .filter(ua => ua.role === 'STUDENT' && ua.status === 'APPROVED');
+  }
+
+  getPendingEnrolled(activityId: number): UserActivity[] {
+    return (this.enrolledMap().get(activityId) ?? [])
+      .filter(ua => ua.status === 'PENDING');
+  }
+
+  // Autocomplete — filtre les membres du club
+  searchMember(query: string): void {
+    const q = query.toLowerCase();
+    this.memberSuggestions.set(
+      this.clubMembersList().filter(m =>
+        `${m.member.firstName} ${m.member.lastName} ${m.member.email}`
+          .toLowerCase().includes(q)
+      )
+    );
+  }
+
+  openAddForm(activityId: number, role: 'TEACHER' | 'STUDENT'): void {
+    this.addFormState.set({ activityId, role });
+    this.selectedMember.set(null);
+  }
+
+  cancelAddForm(): void {
+    this.addFormState.set(null);
+    this.selectedMember.set(null);
+  }
+
+  enroll(): void {
+    const state  = this.addFormState();
+    const member = this.selectedMember();
+    if (!state || !member) return;
+    this.membersService.enrollMember(state.activityId, {
+      memberId: member.member.id,
+      role: state.role,
+    }).subscribe({
+      next: () => {
+        this.toast.success('Membre inscrit avec succès');
+        this.addFormState.set(null);
+        this.selectedMember.set(null);
+        this.reloadEnrolled(state.activityId);
+      },
+      error: () => this.toast.error('Erreur lors de l\'inscription'),
+    });
+  }
+
+  removeEnrolled(userActivityId: number, activityId: number): void {
+    this.confirm.confirm({
+      message: 'Retirer ce membre de l\'activité ?',
+      accept: () => {
+        this.membersService.deleteMembership(userActivityId).subscribe({
+          next: () => {
+            this.toast.success('Membre retiré');
+            this.reloadEnrolled(activityId);
+          },
+          error: () => this.toast.error('Erreur lors de la suppression'),
+        });
+      },
+    });
+  }
+
+  private reloadEnrolled(activityId: number): void {
+    this.loadedPanels.delete(activityId);
+    this.membersService.getMembers(activityId).subscribe({
+      next: (list) => {
+        const map = new Map(this.enrolledMap());
+        map.set(activityId, list);
+        this.enrolledMap.set(map);
+        this.loadedPanels.add(activityId);
+        // Mettre à jour le badge (pendingMap)
+        const pending = list.filter(m => m.status === 'PENDING');
+        this.pendingMap.update(m => new Map(m).set(activityId, pending));
+      },
+    });
+  }
+
+  isOpen(activityId: number): boolean {
+    return this.openPanels().has(activityId);
+  }
+
+  toggle(activityId: number): void {
+    const set = new Set(this.openPanels());
+    if (set.has(activityId)) {
+      set.delete(activityId);
+    } else {
+      set.add(activityId);
+      if (!this.loadedPanels.has(activityId)) {
+        this.loadedPanels.add(activityId);
+        this.membersService.getMembers(activityId).subscribe({
+          next: (list) => {
+            const map = new Map(this.enrolledMap());
+            map.set(activityId, list);
+            this.enrolledMap.set(map);
+          },
+        });
+      }
+    }
+    this.openPanels.set(set);
   }
 }

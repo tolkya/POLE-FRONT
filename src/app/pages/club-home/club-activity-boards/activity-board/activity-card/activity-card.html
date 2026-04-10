@@ -20,9 +20,33 @@
           <span class="activity-card__new-tag">Nouveau</span>
         }
         @if (enrollmentStatus() === 'APPROVED') {
-          <span class="activity-card__badge activity-card__badge--approved">Inscrit</span>
+          <span class="activity-card__badge activity-card__badge--approved">
+            <i class="pi pi-check"></i> Inscrit
+          </span>
         } @else if (enrollmentStatus() === 'PENDING') {
-          <span class="activity-card__badge activity-card__badge--pending">En attente</span>
+          <span class="activity-card__badge activity-card__badge--pending">
+            <i class="pi pi-clock"></i> En attente
+          </span>
+          <button class="activity-card__action-btn activity-card__action-btn--cancel"
+            (click)="$event.stopPropagation(); cancelRequest()" title="Annuler ma demande">
+            <i class="pi pi-times"></i>
+          </button>
+        } @else if (enrollmentStatus() === 'REJECTED') {
+          <span class="activity-card__badge activity-card__badge--rejected">
+            <i class="pi pi-times-circle"></i> Refusé
+          </span>
+          <button class="activity-card__action-btn activity-card__action-btn--request"
+            (click)="$event.stopPropagation(); reRequest()" title="Redemander">
+            <i class="pi pi-refresh"></i>
+          </button>
+        } @else if (enrollmentStatus() === 'LEFT') {
+          <span class="activity-card__badge activity-card__badge--left">
+            Quitté
+          </span>
+          <button class="activity-card__action-btn activity-card__action-btn--request"
+            (click)="$event.stopPropagation(); reRequest()" title="Rejoindre à nouveau">
+            <i class="pi pi-refresh"></i>
+          </button>
         } @else if (canJoin()) {
           <button class="activity-card__join-btn" (click)="$event.stopPropagation(); join()">
             <i class="pi pi-user-plus"></i> M'inscrire

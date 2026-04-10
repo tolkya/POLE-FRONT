@@ -34,10 +34,14 @@
                 </div>
                 <div class="my-activities__card-footer">
                   <span class="my-activities__badge my-activities__badge--approved">Inscrit</span>
-                  <i class="pi pi-arrow-right my-activities__arrow"></i>
+                  <div class="my-activities__card-actions">
+                    <button class="btn-ghost btn-ghost--sm" (click)="onLeave($event, item)" title="Quitter l'activité">
+                      <i class="pi pi-sign-out"></i>
+                    </button>
+                  </div>
                 </div>
               </a>
-            } @else {
+            } @else if (item.status === 'PENDING') {
               <div class="my-activities__card my-activities__card--pending"
                 [id]="'activity-' + item.activity.id">
                 <div class="my-activities__card-header">
@@ -45,6 +49,35 @@
                 </div>
                 <div class="my-activities__card-footer">
                   <span class="my-activities__badge my-activities__badge--pending">En attente</span>
+                  <button class="btn-ghost btn-ghost--sm" (click)="onCancel(item)" title="Annuler ma demande">
+                    <i class="pi pi-times"></i> Annuler
+                  </button>
+                </div>
+              </div>
+            } @else if (item.status === 'REJECTED') {
+              <div class="my-activities__card my-activities__card--rejected"
+                [id]="'activity-' + item.activity.id">
+                <div class="my-activities__card-header">
+                  <span class="my-activities__card-name">{{ item.activity.name }}</span>
+                </div>
+                <div class="my-activities__card-footer">
+                  <span class="my-activities__badge my-activities__badge--rejected">Refusé</span>
+                  <button class="btn-ghost btn-ghost--sm" (click)="onReRequest(item)" title="Redemander">
+                    <i class="pi pi-refresh"></i> Redemander
+                  </button>
+                </div>
+              </div>
+            } @else if (item.status === 'LEFT') {
+              <div class="my-activities__card my-activities__card--left"
+                [id]="'activity-' + item.activity.id">
+                <div class="my-activities__card-header">
+                  <span class="my-activities__card-name">{{ item.activity.name }}</span>
+                </div>
+                <div class="my-activities__card-footer">
+                  <span class="my-activities__badge my-activities__badge--left">Quitté</span>
+                  <button class="btn-ghost btn-ghost--sm" (click)="onReRequest(item)" title="Rejoindre à nouveau">
+                    <i class="pi pi-refresh"></i> Rejoindre
+                  </button>
                 </div>
               </div>
             }

@@ -87,6 +87,8 @@
       &:hover { transform: translateY(-2px); box-shadow: $shadow-md; }
     }
     &--pending { border-color: rgba($color-warning, 0.3); }
+    &--rejected { border-color: rgba($color-error, 0.3); }
+    &--left     { border-color: rgba($color-text-muted, 0.3); opacity: 0.7; }
   }
 
   &__card-header {
@@ -115,6 +117,8 @@
 
     &--approved { background: $color-success-bg; color: $color-success; }
     &--pending  { background: $color-warning-bg; color: $color-warning; }
+    &--rejected { background: $color-error-bg; color: $color-error; }
+    &--left     { background: rgba($color-text-muted, 0.1); color: $color-text-muted; }
   }
 
   &__role {
@@ -126,5 +130,10 @@
   &__arrow {
     font-size: 0.8rem;
     color: $color-text-muted;
+  }
+
+  .btn-ghost--sm {
+    font-size: 0.75rem;
+    padding: 2px 6px;
   }
 }
