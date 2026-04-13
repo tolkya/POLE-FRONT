@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="200" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="50%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Le S géant avec animation de tracé -->
+  <g filter="url(#glow)">
+    <!-- S rempli (apparaît après le tracé) -->
+    <text
+      x="30"
+      y="150"
+      font-family="Orbitron"
+      font-size="140"
+      font-weight="800"
+      fill="url(#gradient-purple)"
+      opacity="0"
+    >
+      S
+      <animate attributeName="opacity" values="0;0;0;1" keyTimes="0;0.5;0.7;1" dur="2s" fill="freeze" />
+    </text>
+
+    <!-- S en contour qui se dessine -->
+    <text
+      x="30"
+      y="150"
+      font-family="Orbitron"
+      font-size="140"
+      font-weight="800"
+      fill="none"
+      stroke="url(#gradient-purple)"
+      stroke-width="4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      pathLength="1"
+    >
+      S
+      <animate
+        attributeName="stroke-dasharray"
+        values="0,1;1,0;1,0;0,1"
+        keyTimes="0;0.5;0.7;1"
+        dur="2s"
+        fill="freeze"
+      />
+      <animate
+        attributeName="stroke-dashoffset"
+        values="0;0;0;1"
+        keyTimes="0;0.5;0.7;1"
+        dur="2s"
+        fill="freeze"
+      />
+    </text>
+  </g>
+
+  <!-- Le reste du texte "parKlib" qui apparaît -->
+  <g filter="url(#glow)">
+    <text
+      x="115"
+      y="150"
+      font-family="Orbitron"
+      font-size="100"
+      font-weight="700"
+      fill="url(#gradient-purple)"
+      opacity="0"
+    >
+      parKlib
+      <animate attributeName="opacity" values="0;0;0;0;1" keyTimes="0;0.6;0.7;0.8;1" dur="2s" fill="freeze" />
+      <animate attributeName="x" values="100;100;100;115" keyTimes="0;0.7;0.8;1" dur="2s" fill="freeze" />
+    </text>
+  </g>
+
+  <!-- Éclairs d'énergie autour du S -->
+  <g opacity="0">
+    <path d="M 140 40 L 150 25 L 145 40 L 160 30" stroke="#a855f7" stroke-width="3" fill="none" stroke-linecap="round">
+      <animate attributeName="opacity" values="0;0;0;0.7;0.3;0.7" keyTimes="0;0.5;0.7;0.75;0.85;1" dur="2s" repeatCount="indefinite" />
+    </path>
+    <path d="M 20 90 L 5 85 L 20 80 L 10 75" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round">
+      <animate attributeName="opacity" values="0;0;0;0.6;0.2;0.6" keyTimes="0;0.5;0.7;0.8;0.9;1" dur="2s" repeatCount="indefinite" />
+    </path>
+    <path d="M 145 175 L 160 185 L 150 180 L 165 190" stroke="#7c3aed" stroke-width="3" fill="none" stroke-linecap="round">
+      <animate attributeName="opacity" values="0;0;0;0.8;0.4;0.8" keyTimes="0;0.5;0.7;0.77;0.87;1" dur="2s" repeatCount="indefinite" />
+    </path>
+  </g>
+</svg>

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&display=swap');
 // Layout global
 $header-height:     56px;
 $nav-collapsed:     56px;
@@ -7,22 +8,21 @@ $transition:        0.22s cubic-bezier(0.4, 0, 0.2, 1);
 .app-main {
   margin-top: $header-height;
   margin-left: $nav-collapsed;
-  min-height: calc(100vh - #{$header-height});
+  height: calc(100vh - #{$header-height});
+  overflow: hidden;
   transition: margin-left $transition;
 
   &--expanded { margin-left: $nav-expanded; }
 }
 
-// Backdrop transparent pour fermer la sidenav au clic en dehors
 .app-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 89; // juste sous la sidenav (z-index: 90)
+  z-index: 89;
   background: transparent;
   cursor: default;
 }
 
 router-outlet {
   display: block;
-  padding: 1.5rem;
 }
