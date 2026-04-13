@@ -80,9 +80,9 @@ $transition-smooth:  0.25s ease;
 
 html.dark {
   --color-bg:           #0f0f14;
-  --color-surface:      #1a1a24;
+  --color-surface:      #585858;
   --color-surface-alt:  #1f1f2e;
-  --color-border:       rgba(255, 255, 255, 0.1);
+  --color-border:       rgba(123, 4, 4, 0.1);
   --color-text:         #e8e8f0;
   --color-text-muted:   #9090aa;
 
@@ -92,4 +92,9 @@ html.dark {
   --surface-border:     rgba(255, 255, 255, 0.1);
   --text-color:         #e8e8f0;
   --text-color-secondary: #9090aa;
+
+  --color-warning-bg:   rgba(217, 119, 6, 0.12);
+  --color-input-bg:     #16161f;
+  --color-neutral-bg:   #1f1f2e;
+
 }

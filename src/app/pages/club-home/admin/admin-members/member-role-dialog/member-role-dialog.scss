@@ -10,13 +10,14 @@
   &__name {
     font-weight: 600;
     margin: 0 0 $space-md;
-    color: $color-text;
+    color: var(--text-color);
   }
 
   &__options {
     display: flex;
     flex-direction: column;
     gap: $space-sm;
+    color: var(--text-color);
   }
 
   &__option {
@@ -24,6 +25,6 @@
     align-items: center;
     gap: $space-sm;
 
-    label { cursor: pointer; color: $color-text; }
+    label { cursor: pointer; color: var(--text-color); }
   }
 }

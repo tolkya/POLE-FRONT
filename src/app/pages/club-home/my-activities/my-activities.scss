@@ -22,7 +22,7 @@
     height: 36px;
     border-radius: $radius-md;
     background: rgba(0,0,0,0.06);
-    color: $color-text;
+    color: var(--text-color);
     text-decoration: none;
     transition: background 0.15s;
     &:hover { background: rgba(0,0,0,0.12); }
@@ -32,6 +32,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
+    color: var(--text-color);
   }
 
   &__loading, &__empty {
@@ -40,11 +41,11 @@
     align-items: center;
     gap: $space-md;
     padding: $space-xl;
-    color: $color-text-muted;
+    color: var(--text-color);
     font-size: 1rem;
 
     i { font-size: 2.5rem; opacity: 0.4; }
-    a { color: $color-primary; text-decoration: none; font-weight: 600; }
+    a { color: var(--text-color); text-decoration: none; font-weight: 600; }
   }
 
   &__section { margin-bottom: $space-xl; }
@@ -55,11 +56,13 @@
     gap: $space-sm;
     font-size: 1rem;
     font-weight: 600;
-    color: $color-text-muted;
+    color: var(--text-color);
     margin-bottom: $space-md;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    i { font-size: 1rem; }
+    i { 
+      font-size: 1rem;
+      color: var(--text-color); }
   }
 
   &__grid {
@@ -69,7 +72,7 @@
   }
 
   &__card {
-    background: white;
+    background: var(--surface-card);
     border-radius: $radius-lg;
     padding: $space-md;
     border: 2px solid transparent;

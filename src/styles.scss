@@ -14,8 +14,8 @@
 body {
   margin: 0;
   font-family: $font-base;
-  background: $color-bg;
-  color: $color-text;
+  background: var(--surface-ground);
+  color: var(--text-color);
 }
 
 // Dialog rejoindre un club — masquer le header natif PrimeNG

@@ -4,7 +4,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: $color-bg;
+  background: var(--surface-ground);
 
   // ── Héro centré ───────────────────────────────────────────────────────────────
   &__hero {
@@ -36,7 +36,7 @@
   &__hero-title {
     font-size: 3.2rem;
     font-weight: 900;
-    color: $color-text;
+    color: var(--color-text);
     letter-spacing: -1.5px;
     line-height: 1.1;
     margin: 0;
@@ -47,7 +47,7 @@
 
   &__hero-sub {
     font-size: $font-size-lg;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     line-height: 1.65;
     max-width: 540px;
     margin: 0;
@@ -100,7 +100,7 @@
 
   // ── Blocs ─────────────────────────────────────────────────────────────────
   &__block {
-    background: $color-surface;
+    background: var(--color-surface);
     border-radius: $radius-2xl;
     padding: $space-xl;
     display: flex;
@@ -121,7 +121,7 @@
 
     // Bloc pratiquants — fond violet très doux
     &--discover {
-      background: linear-gradient(145deg, #f5f3ff 0%, #ede9fe 100%);
+      background: var(--color-surface);
       border-color: rgba($color-primary, 0.14);
     }
   }

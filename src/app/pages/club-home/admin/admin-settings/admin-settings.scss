@@ -36,7 +36,7 @@
   &__section-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: $color-text;
+    color: var(--text-color);
     margin: 0 0 $space-md;
     padding-bottom: $space-sm;
     border-bottom: 2px solid var(--club-primary, $color-primary);
@@ -97,7 +97,7 @@
   &__label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: $color-text;
+    color: var(--text-color);
   }
 
   &__input {

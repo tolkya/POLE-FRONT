@@ -15,7 +15,7 @@
     }
 
     &__stat {
-        background: $color-surface;
+        background: var(--surface-card);
         border: 1px solid $color-border;
         border-radius: $radius-lg;
         padding: $space-lg;
@@ -42,7 +42,7 @@
         font-size: 1rem;
         font-weight: 600;
         margin: 0 0 $space-md;
-        color: $color-text;
+        color: var( --text-color);
     }
 
     &__alert {
@@ -50,23 +50,23 @@
         align-items: center;
         gap: $space-sm;
         padding: $space-md;
-        background: $color-warning-bg;
-        border-left: 3px solid $color-warning;
+        background: rgba(82, 82, 82, 0.08);
+        border-left: 3px solid  rgba(82, 82, 82, 0.08);
         border-radius: $radius-md;
         margin-bottom: $space-sm;
-        color: $color-text;
+        color: $color-primary;
 
-        i { color: $color-warning; }
+        i { color: $color-primary; }
     }
     &__alert-btn {
         margin-left: auto;
         background: none;
-        border: 1px solid $color-warning;
-        color: $color-warning;
+        border: 1px solid $color-primary;
+        color: $color-primary;
         border-radius: $radius-sm;
         padding: 2px $space-sm;
         cursor: pointer;
         font-size: 0.8rem;
-        &:hover { background: $color-warning-bg; }
+        &:hover { background: var(--color-surface); }
     }
 }
