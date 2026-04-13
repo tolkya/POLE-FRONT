@@ -24,55 +24,89 @@
   } @else if (members().length === 0) {
     <p class="admin-members__empty">Aucun membre trouvé.</p>
   } @else {
-    <div class="admin-members__table">
-      <div class="admin-members__header-row">
-        <span>Membre</span>
-        <span>Rôles</span>
-        <span>Statut</span>
-        <span>Actions</span>
-      </div>
 
-      @for (m of members(); track m.id) {
-        <div class="admin-members__row" [class.admin-members__row--pending]="isPending(m)">
-          <div class="admin-members__identity">
-            <span class="admin-members__name">{{ m.member.firstName }} {{ m.member.lastName }}</span>
-            <span class="admin-members__email">{{ m.member.email }}</span>
-          </div>
-
-          <div class="admin-members__roles">
-            @for (role of m.roles; track role) {
-              <p-tag [value]="getRoleLabel(role)" severity="secondary" />
-            }
-          </div>
-
-          <div class="admin-members__status">
-            @if (isPending(m)) {
-              <p-tag value="En attente" severity="warn" />
-            } @else {
-              <p-tag value="Validé" severity="success" />
-            }
-          </div>
-
-          <div class="admin-members__actions">
-            @if (isPending(m)) {
-              <p-button icon="pi pi-check" severity="success" [text]="true" (click)="validateMember(m)" pTooltip="Valider" />
-            }
-            <p-button icon="pi pi-shield" severity="secondary" [text]="true" (click)="openRoleDialog(m)" pTooltip="Modifier les rôles" />
-            <p-button icon="pi pi-trash" severity="danger" [text]="true" (click)="confirmExclude(m)" pTooltip="Exclure" />
-          </div>
+    @if (pendingMembers().length > 0) {
+      <div class="admin-members__section">
+        <div class="admin-members__section-title admin-members__section-title--pending">
+          <i class="pi pi-clock"></i>
+          En attente de validation ({{ pendingMembers().length }})
         </div>
-      }
-    </div>
+        <div class="admin-members__table">
+          <div class="admin-members__header-row">
+            <span>Membre</span>
+            <span>Rôles</span>
+            <span>Actions</span>
+          </div>
+          @for (m of pendingMembers(); track m.id) {
+            <div class="admin-members__row admin-members__row--pending">
+              <div class="admin-members__identity">
+                <span class="admin-members__name">{{ m.member.firstName }} {{ m.member.lastName }}</span>
+                <span class="admin-members__email">{{ m.member.email }}</span>
+              </div>
+              <div class="admin-members__roles">
+                @for (role of m.roles; track role) {
+                  <p-tag [value]="getRoleLabel(role)" severity="secondary" />
+                }
+              </div>
+              <div class="admin-members__actions">
+                <p-button icon="pi pi-check" severity="success" [text]="true" (click)="validateMember(m)" pTooltip="Valider l'inscription" />
+                <p-button icon="pi pi-trash" severity="danger" [text]="true" (click)="confirmExclude(m)" pTooltip="Refuser" />
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (validatedMembers().length > 0) {
+      <div class="admin-members__section">
+        <div class="admin-members__section-title">
+          <i class="pi pi-users"></i>
+          Membres validés ({{ validatedMembers().length }})
+        </div>
+        <div class="admin-members__table">
+          <div class="admin-members__header-row">
+            <span>Membre</span>
+            <span>Rôles</span>
+            <span>Statut</span>
+            <span>Actions</span>
+          </div>
+          @for (m of validatedMembers(); track m.id) {
+            <div class="admin-members__row">
+              <div class="admin-members__identity">
+                <span class="admin-members__name">{{ m.member.firstName }} {{ m.member.lastName }}</span>
+                <span class="admin-members__email">{{ m.member.email }}</span>
+              </div>
+              <div class="admin-members__roles">
+                @for (role of m.roles; track role) {
+                  <p-tag [value]="getRoleLabel(role)" severity="secondary" />
+                }
+              </div>
+              <div class="admin-members__status">
+                <p-tag value="Validé" severity="success" />
+              </div>
+              <div class="admin-members__actions">
+                <p-button icon="pi pi-shield" severity="secondary" [text]="true" (click)="openRoleDialog(m)" pTooltip="Modifier les rôles" />
+                <p-button icon="pi pi-trash" severity="danger" [text]="true" (click)="confirmExclude(m)" pTooltip="Exclure" />
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
   }
 
 </div>
-  <p-paginator
-    [rows]="limit()"
-    [totalRecords]="total()"
-    [first]="(page() - 1) * limit()"
-    (onPageChange)="onPageChange($event)"
-    [rowsPerPageOptions]="[5,10,20,50]"
-  />
+
+<p-paginator
+  [rows]="limit()"
+  [totalRecords]="total()"
+  [first]="(page() - 1) * limit()"
+  (onPageChange)="onPageChange($event)"
+  [rowsPerPageOptions]="[5,10,20,50]"
+/>
+
 <app-member-role-dialog
   [member]="selectedMember()"
   [visible]="showRoleDialog()"
@@ -80,4 +114,4 @@
   (save)="onSaveRoles($event)"
 />
 
-<p-confirmDialog />
+<p-confirm-dialog />

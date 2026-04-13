@@ -13,20 +13,26 @@
       [club]="club()!"
       [activityTypes]="activityTypes()"
       [userRole]="userRole()"
+      [isPending]="isPendingMember()"
       [logoUrl]="logoAbsoluteUrl()"
       (themeColorChange)="onThemeChange($event)"
       (leaveClub)="onLeaveClub()"
       (joinClub)="onJoinClub()"
+      (cancelRequest)="onCancelRequest()"
       (navigateToSettings)="onEditClub()"
     />
 
-    @if (isMember() || club()!.joinPolicy === 'AUTO_ACCEPT') {
+    @if (isPendingMember()) {
+      <div class="club-home__pending-notice">
+        <i class="pi pi-clock"></i>
+        <p>Votre demande d'adhésion est en attente de validation par l'administrateur du club.</p>
+      </div>
+    } @else if (isMember() || club()!.joinPolicy === 'AUTO_ACCEPT') {
       <app-club-stats
         [membersCount]="membersCount()"
         [activitiesCount]="activitiesCount()"
         [teachersCount]="teachersCount()"
       />
-
       <app-club-activity-boards
         [clubId]="club()!.id"
         [userRole]="userRole()"

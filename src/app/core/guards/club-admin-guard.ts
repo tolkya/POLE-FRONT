@@ -4,39 +4,34 @@ import { map, catchError, of, switchMap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserClubsService } from '../services/user-clubs.service';
 
-export const clubAdminGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
-  const router = inject(Router);
+export const clubAdminGuard: CanActivateFn = (route) => {
+  const auth             = inject(AuthService);
+  const router           = inject(Router);
   const userClubsService = inject(UserClubsService);
 
-  const redirectToHome = () => router.createUrlTree(['/']);
+  const clubId = Number(route.paramMap.get('id'));
 
-  // Vérifie si l'utilisateur est admin d'un club
-  const checkClubAdmin = () => {
-    // Si les clubs sont déjà chargés
-    if (userClubsService.userClubs().length > 0) {
-      return userClubsService.isAdminOfAnyClub()
-        ? true
-        : redirectToHome();
-    }
-
-    // Sinon, charger les clubs
-    return userClubsService.fetchUserClubs().pipe(
-      map(() => userClubsService.isAdminOfAnyClub() ? true : redirectToHome()),
-      catchError(() => of(redirectToHome()))
+  const check = () => {
+    const isAdmin = userClubsService.userClubs().some(
+      uc => uc.club.id === clubId && uc.roles.includes('ADMIN')
     );
+    return isAdmin ? true : router.createUrlTree(['/club', clubId]);
   };
 
-  // Si l'utilisateur est déjà connecté
-  const user = auth.currentUser();
-  if (user) {
-    return checkClubAdmin();
+  if (userClubsService.userClubs().length > 0) {
+    return check();
   }
 
-  // Sinon, vérifier la connexion puis les clubs
+  if (auth.currentUser()) {
+    return userClubsService.fetchUserClubs().pipe(
+      map(() => check()),
+      catchError(() => of(router.createUrlTree(['/club', clubId])))
+    );
+  }
+
   return auth.getMe().pipe(
     switchMap(() => userClubsService.fetchUserClubs()),
-    map(() => userClubsService.isAdminOfAnyClub() ? true : redirectToHome()),
-    catchError(() => of(redirectToHome()))
+    map(() => check()),
+    catchError(() => of(router.createUrlTree(['/login'])))
   );
 };

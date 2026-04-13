@@ -159,17 +159,17 @@
 
 <!-- ── Level form dialog ─────────────────────────────────────────────────── -->
 <app-level-form-dialog
+  [level]="levelFormTarget()"
   [visible]="levelFormVisible()"
   (visibleChange)="levelFormVisible.set($event)"
-  [level]="levelFormTarget()"
   [saving]="levelFormSaving()"
   (save)="onLevelFormSave($event)"
 />
 
 <app-skill-form-dialog
+  [skill]="skillFormTarget()"
   [visible]="skillFormVisible()"
   (visibleChange)="skillFormVisible.set($event)"
-  [skill]="skillFormTarget()"
   [saving]="skillFormSaving()"
   (save)="onSkillFormSave($event)"
 />

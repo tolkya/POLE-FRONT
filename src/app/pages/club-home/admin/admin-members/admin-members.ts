@@ -1,4 +1,4 @@
-import { Component, input, signal, inject, OnInit } from '@angular/core';
+import { Component, input, signal, inject, OnInit, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -29,6 +29,8 @@ export class AdminMembers implements OnInit {
   private readonly toast               = inject(ToastService);
 
   members    = signal<ClubMember[]>([]);
+  pendingMembers  = computed(() => this.members().filter(m => this.isPending(m)));
+  validatedMembers = computed(() => this.members().filter(m => !this.isPending(m)));
   loading    = signal(true);
   total      = signal(0);
   page       = signal(1);
@@ -110,6 +112,6 @@ export class AdminMembers implements OnInit {
     });
   }
 
-  isPending(member: ClubMember): boolean { return member.validatedAt === null; }
+  isPending(member: ClubMember): boolean { return member.validatedAt == null; }
   getRoleLabel(role: ClubRole): string { return this.roleLabels[role] ?? role; }
 }

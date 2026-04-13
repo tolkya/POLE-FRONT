@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { superAdminGuard } from './core/guards/super-admin-guard';
 import { dashboardGuard } from './core/guards/dashboard-guard';
+import { clubAdminGuard } from './core/guards/club-admin-guard';
 
 export const routes: Routes = [
   {
@@ -36,8 +37,8 @@ export const routes: Routes = [
   },
   {
     path: 'club/:id/admin',
-    loadComponent: () => import('./pages/club-home/admin/admin-panel/admin-panel').then((m) => m.AdminPanel),
-    canActivate: [dashboardGuard],
+    loadComponent: () => import('./pages/club-home/admin/admin-panel/admin-panel').then(m => m.AdminPanel),
+    canActivate: [clubAdminGuard],
   },
   {
     path: 'dashboard/super-admin',

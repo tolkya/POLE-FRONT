@@ -22,6 +22,7 @@ export class ClubHero {
   @Input() activityTypes: { id: number; name: string }[] = [];
   @Input() userRole: 'ADMIN' | 'TEACHER' | 'MEMBRE' | null = null;
   @Input() logoUrl: string | null = null;
+  @Input() isPending = false;
 
   /** Émis quand l'admin valide un changement de couleur */
   @Output() themeColorChange = new EventEmitter<string>();
@@ -29,6 +30,8 @@ export class ClubHero {
   @Output() leaveClub = new EventEmitter<void>();
   /** Émis quand l'utilisateur non-membre veut s'inscrire */
   @Output() joinClub = new EventEmitter<void>();
+  
+  @Output() cancelRequest = new EventEmitter<void>();
 
   @Output() navigateToSettings = new EventEmitter<void>();
 

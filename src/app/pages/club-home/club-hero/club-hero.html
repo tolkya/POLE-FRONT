@@ -15,7 +15,13 @@
 
     <div class="hero__banner-actions">
       <p-tag [value]="joinPolicyLabel" [severity]="joinPolicySeverity" [rounded]="true" />
-      @if (userRole) {
+      @if (isPending) {
+        <p-tag value="En attente" severity="warn" [rounded]="true" />
+        <button class="hero__leave-btn" (click)="cancelRequest.emit()" title="Annuler ma demande">
+          <i class="pi pi-times"></i>
+          <span>Annuler</span>
+        </button>
+      } @else if (userRole) {
         <p-tag [value]="userRole" [severity]="roleSeverity" [rounded]="true" />
         @if (userRole !== 'ADMIN') {
           <button class="hero__leave-btn" (click)="requestLeave()" title="Quitter ce club">

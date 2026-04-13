@@ -80,7 +80,8 @@ export class ClubHome implements OnInit, OnDestroy {
 
   isAdmin = computed(() => this.myUserClub()?.roles.includes('ADMIN') ?? false);
   isTeacher = computed(() => this.myUserClub()?.roles.includes('TEACHER') ?? false);
-  isMember = computed(() => this.myUserClub() !== null);
+  isMember = computed(() => {const uc = this.myUserClub();return uc !== null && uc.validatedAt != null;});
+  isPendingMember = computed(() => {const uc = this.myUserClub();return uc !== null && uc.validatedAt == null;});
 
   logoAbsoluteUrl = computed(() => {
     const url = this.club()?.logoUrl;
@@ -91,13 +92,14 @@ export class ClubHome implements OnInit, OnDestroy {
   });
 
   /** Rôle de l'utilisateur dans ce club spécifique */
-  userRole = computed<'ADMIN' | 'TEACHER' | 'MEMBRE' | null>(() => {
-    const uc = this.myUserClub();
-    if (!uc) return null;
-    if (uc.roles.includes('ADMIN')) return 'ADMIN';
-    if (uc.roles.includes('TEACHER')) return 'TEACHER';
-    return 'MEMBRE';
-  });
+userRole = computed<'ADMIN' | 'TEACHER' | 'MEMBRE' | null>(() => {
+  const uc = this.myUserClub();
+  if (!uc) return null;
+  if (uc.validatedAt === null) return null;  // en attente = pas de rôle affiché
+  if (uc.roles.includes('ADMIN')) return 'ADMIN';
+  if (uc.roles.includes('TEACHER')) return 'TEACHER';
+  return 'MEMBRE';
+});
 
   /** ActivityTypes distincts du club (alimenté par ClubBoards) */
   activityTypes = signal<{ id: number; name: string }[]>([]);
@@ -161,13 +163,26 @@ export class ClubHome implements OnInit, OnDestroy {
     });
   }
 
+  onCancelRequest(): void {
+    const uc = this.myUserClub();
+    if (!uc) return;
+    this.clubService.leaveClub(uc.id).subscribe({
+      next: () => {
+        this.userClubsService.fetchUserClubs().subscribe();
+        this.toast.success('Demande d\'inscription annulée.');
+      },
+      error: () => this.toast.error('Impossible d\'annuler la demande.'),
+    });
+  }
+
   /** S'inscrire au club — inscription directe sans dialog (on connaît déjà le club) */
   onJoinClub(): void {
     const club = this.club();
     if (!club) return;
     this.clubService.joinClub(club.clubCode).subscribe({
       next: () => {
-        this.toast.success('Inscription en attente de validation.');
+        const isManual = club.joinPolicy === 'MANUAL_VALIDATION';
+        this.toast.success(isManual ? 'Demande envoyée — en attente de validation.' : 'Vous avez rejoint le club !');
         this.clubService.getClub(club.id).subscribe(c => this.club.set(c));
         this.userClubsService.fetchUserClubs().subscribe();
       },
