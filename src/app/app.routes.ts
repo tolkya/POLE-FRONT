@@ -48,5 +48,10 @@ export const routes: Routes = [
       ),
     canActivate: [superAdminGuard],
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile),
+    canActivate: [dashboardGuard],
+  },
   { path: '**', redirectTo: '' },
 ];

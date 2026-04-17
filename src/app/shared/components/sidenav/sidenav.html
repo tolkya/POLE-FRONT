@@ -100,11 +100,10 @@
 
   <!-- Footer -->
   <div class="sidenav__footer">
-    <button class="sidenav__item" title="Profil">
+    <a class="sidenav__item" routerLink="/profile" routerLinkActive="sidenav__item--active" title="Profil">
       <i class="sidenav__icon pi pi-user"></i>
       @if (expanded()) { <span class="sidenav__label">{{ user()?.firstName }} {{ user()?.lastName }}</span> }
-    </button>
-
+    </a>
     <button class="sidenav__item" (click)="themeService.toggle()" [title]="darkMode() ? 'Mode clair' : 'Mode sombre'">
       <i class="sidenav__icon pi" [class.pi-moon]="!darkMode()" [class.pi-sun]="darkMode()"></i>
       @if (expanded()) { <span class="sidenav__label">{{ darkMode() ? 'Mode clair' : 'Mode sombre' }}</span> }

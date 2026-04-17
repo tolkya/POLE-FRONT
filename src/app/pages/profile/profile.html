@@ -1,0 +1,146 @@
+<div class="profile-page">
+
+  <h1 class="profile-page__title">Mon profil</h1>
+
+  <div class="profile-page__grid">
+
+    <!-- Bloc infos personnelles -->
+    <section class="profile-card">
+      <h2 class="profile-card__title">Informations personnelles</h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="submitProfile()" novalidate>
+
+        <div class="form-group">
+          <label for="firstName">Prénom</label>
+          <input id="firstName" type="text" formControlName="firstName" autocomplete="given-name" />
+          @if (profileForm.controls.firstName.invalid && profileForm.controls.firstName.touched) {
+            <span class="form-error">Minimum 2 caractères.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Nom</label>
+          <input id="lastName" type="text" formControlName="lastName" autocomplete="family-name" />
+          @if (profileForm.controls.lastName.invalid && profileForm.controls.lastName.touched) {
+            <span class="form-error">Minimum 2 caractères.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="email" formControlName="email" autocomplete="email" />
+          @if (profileForm.controls.email.invalid && profileForm.controls.email.touched) {
+            <span class="form-error">Email invalide.</span>
+          }
+          <span class="form-hint">⚠ Modifier l'email entraîne une reconnexion.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Téléphone <span class="text-muted text-sm">(optionnel)</span></label>
+          <input id="phone" type="tel" formControlName="phone" autocomplete="tel" />
+        </div>
+
+        <button
+          type="submit"
+          class="btn-primary btn--full"
+          [disabled]="profileForm.invalid || pendingProfile()"
+        >
+          {{ pendingProfile() ? 'Enregistrement...' : 'Enregistrer' }}
+        </button>
+
+      </form>
+    </section>
+
+    <!-- Bloc sécurité -->
+    <section class="profile-card">
+      <h2 class="profile-card__title">Sécurité</h2>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="submitPassword()" novalidate>
+
+        <div class="form-group">
+          <label for="currentPassword">Mot de passe actuel</label>
+          <div class="form-group__input-wrap">
+            <input id="currentPassword"
+              [type]="showCurrentPwd() ? 'text' : 'password'"
+              formControlName="currentPassword"
+              autocomplete="current-password" />
+            <button type="button" class="form-group__eye"
+              (click)="showCurrentPwd.set(!showCurrentPwd())"
+              [attr.aria-label]="showCurrentPwd() ? 'Masquer' : 'Afficher'">
+              <app-eye-icon [visible]="showCurrentPwd()" />
+            </button>
+          </div>
+          @if (passwordForm.controls.currentPassword.invalid && passwordForm.controls.currentPassword.touched) {
+            <span class="form-error">Champ obligatoire.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="plainPassword">Nouveau mot de passe</label>
+          <div class="form-group__input-wrap">
+            <input id="plainPassword"
+              [type]="showNewPwd() ? 'text' : 'password'"
+              formControlName="plainPassword"
+              autocomplete="new-password"
+              (focus)="pwdFocused.set(true)" />
+            <button type="button" class="form-group__eye"
+              (click)="showNewPwd.set(!showNewPwd())"
+              [attr.aria-label]="showNewPwd() ? 'Masquer' : 'Afficher'">
+              <app-eye-icon [visible]="showNewPwd()" />
+            </button>
+          </div>
+
+          @if (pwdFocused()) {
+            <ul class="pwd-criteria">
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().minLength">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().minLength ? '✓' : '✗' }}</span>
+                8 caractères minimum
+              </li>
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().hasUpper">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().hasUpper ? '✓' : '✗' }}</span>
+                1 majuscule
+              </li>
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().hasDigit">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().hasDigit ? '✓' : '✗' }}</span>
+                1 chiffre
+              </li>
+              <li [class.pwd-criteria__item--ok]="pwdCriteria().hasSpecial">
+                <span class="pwd-criteria__icon">{{ pwdCriteria().hasSpecial ? '✓' : '✗' }}</span>
+                1 symbole (!@#$%...)
+              </li>
+            </ul>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le mot de passe</label>
+          <div class="form-group__input-wrap">
+            <input id="confirmPassword"
+              [type]="showConfirmPwd() ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              autocomplete="new-password" />
+            <button type="button" class="form-group__eye"
+              (click)="showConfirmPwd.set(!showConfirmPwd())"
+              [attr.aria-label]="showConfirmPwd() ? 'Masquer' : 'Afficher'">
+              <app-eye-icon [visible]="showConfirmPwd()" />
+            </button>
+          </div>
+          @if (passwordForm.controls.confirmPassword.dirty && passwordForm.hasError('passwordsMismatch')) {
+            <span class="form-error">Les mots de passe ne correspondent pas.</span>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="btn-primary btn--full"
+          [disabled]="passwordForm.invalid || pendingPassword()"
+        >
+          {{ pendingPassword() ? 'Modification...' : 'Modifier le mot de passe' }}
+        </button>
+
+      </form>
+    </section>
+
+  </div>
+
+</div>
