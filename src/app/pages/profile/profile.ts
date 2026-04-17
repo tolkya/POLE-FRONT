@@ -1,3 +1,6 @@
+import { timer } from 'rxjs';
+import { DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -28,6 +31,8 @@ export class Profile {
   readonly currentUser     = this.auth.currentUser;
   readonly pendingProfile  = signal(false);
   readonly pendingPassword = signal(false);
+
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly showCurrentPwd = signal(false);
   readonly showNewPwd     = signal(false);
@@ -92,11 +97,13 @@ export class Profile {
             summary: 'Reconnexion requise',
             detail: 'Votre email a changé. Veuillez vous reconnecter.',
           });
-          setTimeout(() => {
+          timer(2000).pipe(
+            takeUntilDestroyed(this.destroyRef)
+          ).subscribe(() => {
             this.auth.currentUser.set(null);
             this.auth.logout();
             void this.router.navigate(['/login']);
-          }, 2000);
+          });
         }
       },
       error: (err: HttpErrorResponse) => {
