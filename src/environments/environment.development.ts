@@ -1,7 +1,8 @@
 export const environment = {
   production: false,
   api: {
-    baseUrl: 'https://localhost/api',
-    mediaBaseUrl: 'https://localhost',
+    baseUrl: 'https://uneffectuated-immovably-jair.ngrok-free.dev/api',
+    mediaBaseUrl: 'https://uneffectuated-immovably-jair.ngrok-free.dev'
+
   },
 };
