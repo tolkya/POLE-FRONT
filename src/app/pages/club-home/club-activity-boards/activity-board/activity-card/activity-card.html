@@ -63,7 +63,7 @@
       @if (activity().levels.length > 0) {
         <div class="activity-card__levels">
           @for (level of activity().levels; track level.id) {
-            <span class="activity-card__level-badge">{{ level.value | levelLabel }}</span>
+            <span class="activity-card__level-badge">{{ level.name }}</span>
           }
         </div>
       }

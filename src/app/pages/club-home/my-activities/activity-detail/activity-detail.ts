@@ -6,7 +6,7 @@ import { SkillsService } from '../../../../core/services/skills.service';
 import { SkillMediaTutosService } from '../../../../core/services/skill-media-tutos.service';
 import { UserClubsService } from '../../../../core/services/user-clubs.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Level, LEVEL_VALUES } from '../../../../core/models/level.model';
+import { Level } from '../../../../core/models/level.model';
 import { Skill, SkillMediaTuto } from '../../../../core/models/skill.model';
 import { MyActivity } from '../../../../core/models/user-activity.model';
 import { AccordionModule } from 'primeng/accordion';
@@ -67,14 +67,12 @@ export class ActivityDetail implements OnInit {
     this.levelFormVisible.set(true);
   }
 
-  onLevelFormSave(data: { value: import('../../../../core/models/level.model').LevelValue; description: string | null }): void {
+  onLevelFormSave(data: { name: string; description: string | null }): void {
     this.levelFormSaving.set(true);
     const target = this.levelFormTarget();
-    const dto = { value: data.value, description: data.description ?? undefined };
 
     if (target) {
-      // Édition : PATCH
-      this.levelsService.patchLevel(target.id, data.description).subscribe({
+      this.levelsService.updateLevel(target.id, { name: data.name, description: data.description }).subscribe({
         next: (updated) => {
           this.levels.update(list => list.map(l => l.id === updated.id ? updated : l));
           this.levelFormVisible.set(false);
@@ -83,8 +81,7 @@ export class ActivityDetail implements OnInit {
         error:    () => this.levelFormSaving.set(false),
       });
     } else {
-      // Création : POST
-      this.levelsService.createLevel(this.activityId(), dto).subscribe({
+      this.levelsService.createLevel(this.activityId(), { name: data.name, description: data.description ?? undefined }).subscribe({
         next: (created) => {
           this.levels.update(list => [...list, created]);
           this.levelFormVisible.set(false);
@@ -97,7 +94,7 @@ export class ActivityDetail implements OnInit {
 
   deleteLevel(level: Level, event: Event): void {
     event.stopPropagation();
-    if (!confirm(`Supprimer le niveau "${this.levelLabel(level.value)}" ? Cette action est irréversible.`)) return;
+    if (!confirm(`Supprimer le niveau "${level.name}" ? Cette action est irréversible.`)) return;
     this.levelsService.deleteLevel(level.id).subscribe({
       next: () => {
         this.levels.update(list => list.filter(l => l.id !== level.id));
@@ -105,6 +102,21 @@ export class ActivityDetail implements OnInit {
         this.skillsByLevel.update(map => { map.delete(level.id); return new Map(map); });
       },
     });
+  }
+
+  reorderLevel(level: Level, direction: 'up' | 'down', event: Event): void {
+    event.stopPropagation();
+    const list = [...this.levels()];
+    const idx  = list.findIndex(l => l.id === level.id);
+
+    if (direction === 'up'   && idx === 0)               return;
+    if (direction === 'down' && idx === list.length - 1) return;
+
+    const swapIdx          = direction === 'up' ? idx - 1 : idx + 1;
+    [list[idx], list[swapIdx]] = [list[swapIdx], list[idx]];
+
+    this.levels.set(list);
+    this.levelsService.reorder(this.activityId(), list.map(l => l.id)).subscribe();
   }
 
   // ── Skill form dialog ─────────────────────────────────────────────────────
@@ -297,9 +309,6 @@ export class ActivityDetail implements OnInit {
   }
 
   readonly mediaBaseUrl = environment.api.mediaBaseUrl;
-
-  readonly levelLabel = (value: string): string =>
-    LEVEL_VALUES.find(l => l.value === value)?.label ?? value;
 
   // Retourne les médias avec une url valide uniquement
   readonly validMedias = (skill: Skill): SkillMediaTuto[] =>

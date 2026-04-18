@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { HydraCollection, Level, LevelCreateDto, LEVEL_VALUES } from '../models';
-
-export { LEVEL_VALUES };
+import { HydraCollection } from '../models/api.model';
+import { Level, LevelCreateDto, LevelUpdateDto } from '../models/level.model';
 
 @Injectable({ providedIn: 'root' })
 export class LevelsService {
@@ -27,17 +27,24 @@ export class LevelsService {
     );
   }
 
+  updateLevel(levelId: number, dto: LevelUpdateDto): Observable<Level> {
+    return this.http.patch<Level>(
+      `${environment.api.baseUrl}/levels/${levelId}`,
+      dto,
+      { headers: new HttpHeaders({ 'Content-Type': 'application/merge-patch+json' }) }
+    );
+  }
+
   deleteLevel(levelId: number): Observable<void> {
     return this.http.delete<void>(
       `${environment.api.baseUrl}/levels/${levelId}`
     );
   }
 
-  patchLevel(levelId: number, description: string | null): Observable<Level> {
-    return this.http.patch<Level>(
-      `${environment.api.baseUrl}/levels/${levelId}`,
-      { description },
-      { headers: new HttpHeaders({ 'Content-Type': 'application/merge-patch+json' }) }
+  reorder(activityId: number, levelIds: number[]): Observable<void> {
+    return this.http.post<void>(
+      `${environment.api.baseUrl}/activities/${activityId}/levels/reorder`,
+      { levelIds }
     );
   }
 }

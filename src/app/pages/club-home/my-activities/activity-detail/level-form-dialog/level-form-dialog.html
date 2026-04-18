@@ -11,23 +11,26 @@
 >
   @if (showContent()) {
     <div class="level-form">
-      <!-- Sélecteur de valeur (désactivé en édition) -->
-      @if (!isEdit) {
-        <div class="level-form__field">
-          <label class="level-form__label">Niveau *</label>
-          <p-select
-            [options]="levelValues"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Choisir un niveau"
-            [ngModel]="selectedValue()"
-            (ngModelChange)="selectedValue.set($event)"
-            styleClass="w-full"
-          />
-        </div>
-      }
 
-      <!-- Description -->
+      <div class="level-form__field">
+        <label class="level-form__label">Nom du niveau *</label>
+        <input
+          type="text"
+          pInputText
+          placeholder="Ex: Débutant, Bronze, Inter 1..."
+          maxlength="100"
+          [ngModel]="levelName()"
+          (ngModelChange)="levelName.set($event)"
+          class="level-form__input"
+        />
+        @if (levelName().trim().length === 0) {
+          <span class="level-form__error">Le nom est obligatoire.</span>
+        }
+        @if (levelName().trim().length > 100) {
+          <span class="level-form__error">100 caractères maximum.</span>
+        }
+      </div>
+
       <div class="level-form__field">
         <label class="level-form__label">Description <span class="level-form__optional">(facultatif)</span></label>
         <textarea
@@ -39,6 +42,7 @@
           class="level-form__textarea"
         ></textarea>
       </div>
+
     </div>
   }
 

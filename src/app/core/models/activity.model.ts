@@ -20,7 +20,7 @@ export interface Activity {
   status: 'ACTIVE' | 'SUSPENDED';
   activityType: ActivityType;
   createdAt: string;
-  levels: { id: number; value: string }[];
+  levels: { id: number; name: string }[];
   medias: ActivityMedia[];
 }
 

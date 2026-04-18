@@ -23,8 +23,17 @@
     font-size: 0.8rem;
   }
 
+  &__input {
+    width: 100%;
+  }
+
   &__textarea {
     width: 100%;
     resize: vertical;
+  }
+
+  &__error {
+    font-size: 0.8rem;
+    color: var(--red-500);
   }
 }
