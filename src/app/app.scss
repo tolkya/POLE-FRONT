@@ -8,8 +8,8 @@ $transition:        0.22s cubic-bezier(0.4, 0, 0.2, 1);
 .app-main {
   margin-top: $header-height;
   margin-left: $nav-collapsed;
-  height: calc(100vh - #{$header-height});
-  overflow: hidden;
+  min-height: calc(100vh - #{$header-height});
+  overflow-y: auto;
   transition: margin-left $transition;
 
   &--expanded { margin-left: $nav-expanded; }
