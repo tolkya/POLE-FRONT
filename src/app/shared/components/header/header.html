@@ -1,7 +1,58 @@
 <header class="header">
   <a routerLink="/" class="header__brand">
-  <img src="/assets/sparklib-logo-animated.svg" alt="Sparklib" />
-</a>
+    <svg class="header__logo" viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gradient-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#7c3aed" />
+          <stop offset="50%" stop-color="#8b5cf6" />
+          <stop offset="100%" stop-color="#a855f7" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <g filter="url(#glow)">
+        <text x="30" y="150" font-family="Orbitron" font-size="140" font-weight="800" fill="url(#gradient-purple)" opacity="0">
+          S
+          <animate attributeName="opacity" values="0;0;0;1;1" keyTimes="0;0.5;0.7;0.8;1" dur="4s" fill="freeze" />
+        </text>
+        <text x="30" y="150" font-family="Orbitron" font-size="140" font-weight="800" fill="none" stroke="url(#gradient-purple)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" pathLength="1">
+          S
+          <animate attributeName="stroke-dasharray" values="0,1;1,0;1,0;0,1;0,1" keyTimes="0;0.5;0.7;0.8;1" dur="4s" fill="freeze" />
+          <animate attributeName="stroke-dashoffset" values="0;0;0;1;1" keyTimes="0;0.5;0.7;0.8;1" dur="4s" fill="freeze" />
+        </text>
+      </g>
+
+      <g filter="url(#glow)">
+        <text x="155" y="150" font-family="Orbitron" font-size="100" font-weight="700" fill="url(#gradient-purple)" opacity="0">
+          parKlib
+          <animate attributeName="opacity" values="0;0;0;0;1;1" keyTimes="0;0.6;0.7;0.8;0.9;1" dur="4s" fill="freeze" />
+          <animate attributeName="x" values="135;135;135;155;155" keyTimes="0;0.7;0.8;0.9;1" dur="4s" fill="freeze" />
+        </text>
+      </g>
+
+      <path d="M 140 40 L 150 25 L 145 40 L 160 30" stroke="#a855f7" stroke-width="3" fill="none" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0.8;0.3;0.8;0.3;0.8" keyTimes="0;0.5;0.7;0.75;0.8;0.85;0.9;1" dur="4s" repeatCount="indefinite" />
+      </path>
+      <path d="M 20 90 L 5 85 L 20 80 L 10 75" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0.7;0.2;0.7;0.2;0.7" keyTimes="0;0.5;0.7;0.78;0.84;0.88;0.94;1" dur="4s" repeatCount="indefinite" />
+      </path>
+      <path d="M 145 175 L 160 185 L 150 180 L 165 190" stroke="#7c3aed" stroke-width="3" fill="none" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0.9;0.4;0.9;0.4;0.9" keyTimes="0;0.5;0.7;0.76;0.82;0.87;0.92;1" dur="4s" repeatCount="indefinite" />
+      </path>
+      <path d="M 130 185 L 120 195 L 125 185 L 115 190" stroke="#a855f7" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0.6;0.2;0.6;0.2;0.6" keyTimes="0;0.5;0.7;0.8;0.85;0.9;0.95;1" dur="4s" repeatCount="indefinite" />
+      </path>
+      <path d="M 155 50 L 170 45 L 160 55 L 175 52" stroke="#8b5cf6" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0.7;0.3;0.7;0.3;0.7" keyTimes="0;0.5;0.7;0.77;0.83;0.89;0.93;1" dur="4s" repeatCount="indefinite" />
+      </path>
+    </svg>
+  </a>
 
   <nav class="header__nav">
     @if (isLoggedIn()) {

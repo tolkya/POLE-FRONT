@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
+  padding: 0 0.5rem;
   background: var(--color-surface-alt);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 
@@ -21,12 +21,13 @@
     height: 100%;
     text-decoration: none;
 
-    img {
-      display: block;
-      height: 56px;
-      width: auto;
-      pointer-events: none;
-    }
+  }
+
+  &__logo {
+    display: block;
+    height: 40px;
+    width: auto;
+    pointer-events: none;
   }
 
   &__nav {
