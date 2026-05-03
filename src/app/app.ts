@@ -14,7 +14,7 @@ import { AuthService } from './core/services/auth.service';
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
-  protected readonly title = signal('POLE-FRONT');
+  protected readonly title = signal('Sparklib');
   readonly auth    = inject(AuthService);
   readonly sidenav = inject(SidenavService);
 
