@@ -33,6 +33,7 @@ CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--poll", "1000"]
 FROM node:22-alpine AS build
 
 ARG API_BASE_URL=
+ARG MEDIA_BASE_URL=
 
 WORKDIR /app
 
@@ -44,7 +45,8 @@ RUN npm ci
 COPY . .
 
 # Injecte l'URL du back
-RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.ts src/environments/environment.development.ts
+RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.ts src/environments/environment.development.ts \
+    && sed -i "s|__MEDIA_BASE_URL__|${MEDIA_BASE_URL}|g" src/environments/environment.ts src/environments/environment.development.ts
 
 # Compile Angular en mode production (fichiers JS/CSS minifiés)
 RUN ng build --configuration production
