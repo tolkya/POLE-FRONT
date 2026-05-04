@@ -32,7 +32,7 @@ CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200", "--poll", "1000"]
 # ============================================================
 FROM node:22-alpine AS build
 
-ARG API_BASE_URL=
+ARG API_BASE_URL=/api
 ARG MEDIA_BASE_URL=
 
 WORKDIR /app
