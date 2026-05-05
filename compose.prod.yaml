@@ -8,7 +8,7 @@ services:
         # En prod, passer la variable via : docker compose --env-file .env.prod -f compose.prod.yaml up -d --build
         # Ou via l'environnement shell : API_BASE_URL=https://mondomaine.com docker compose ...
         API_BASE_URL: ${API_BASE_URL:-/api}
-        MEDIA_BASE_URL: ${MEDIA_BASE_URL:-/}
+        MEDIA_BASE_URL: ${MEDIA_BASE_URL:-}
     container_name: pole-front-nginx
     ports:
       - "80:80"
