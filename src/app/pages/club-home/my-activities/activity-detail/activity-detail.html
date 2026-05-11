@@ -46,13 +46,6 @@
       <a [routerLink]="['/club', clubId(), 'my-activities']">Retour à mes activités</a>
     </div>
   } @else if (levels().length === 0) {
-    <div class="activity-detail__empty">
-      <i class="pi pi-book"></i>
-      <p>Aucun niveau défini pour cette activité.</p>
-    </div>
-  } @else {
-    <section class="activity-detail__levels">
-
       @if (canManageContent()) {
         <div class="activity-detail__toolbar">
           <button pButton severity="secondary" size="small" (click)="openLevelCreate()">
@@ -60,6 +53,12 @@
           </button>
         </div>
       }
+      <div class="activity-detail__empty">
+        <i class="pi pi-book"></i>
+        <p>Aucun niveau défini pour cette activité.</p>
+      </div>
+  } @else {
+    <section class="activity-detail__levels">
 
       <p-accordion [multiple]="true">
         @for (level of levels(); track level.id) {
