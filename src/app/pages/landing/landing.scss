@@ -3,7 +3,7 @@
 /* Cas connecté: landing rendue dans .app-main */
 :host-context(.app-main) .landing {
   height: 100%;
-  min-height: 0;
+  min-height: 100%;
   margin-top: 0;
   padding-top: 0;
   overflow: hidden;
@@ -15,9 +15,8 @@
 
 /* Cas non connecté */
 .landing {
-  min-height: 100vh;
+  min-height: 100%;
   margin-top: 0;
-  padding-top: 56px;
   display: flex;
   flex-direction: column;
   background: var(--surface-ground);

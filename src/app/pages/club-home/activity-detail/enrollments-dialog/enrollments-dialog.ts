@@ -3,11 +3,10 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';
 import { TagModule } from 'primeng/tag';
-import { ActivityMembersService } from '../../../../../core/services/activity-members.service';
-import { ToastService } from '../../../../../core/services/toast.service';
-import { UserActivity } from '../../../../../core/models/user-activity.model';
+import { ActivityMembersService } from '../../../../core/services/activity-members.service';
+import { ToastService } from '../../../../core/services/toast.service';
+import { UserActivity } from '../../../../core/models/user-activity.model';
 import { DatePipe } from '@angular/common';
-import { MyActivitiesService } from '../../../../../core/services/my-activities.service';
 
 @Component({
   selector: 'app-enrollments-dialog',

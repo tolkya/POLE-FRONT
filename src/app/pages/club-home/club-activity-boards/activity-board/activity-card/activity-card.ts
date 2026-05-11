@@ -44,18 +44,31 @@ export class ActivityCard {
     this.enrollmentStatus() === null
   );
 
-  /** True si l'utilisateur est inscrit (APPROVED) → clic navigue vers Mes activités */
+  /** True si l'utilisateur est inscrit (APPROVED) → clic navigue vers le détail */
   readonly isEnrolled = computed(() => this.enrollmentStatus() === 'APPROVED');
 
-  readonly myActivityEntry = computed(() =>this.myActivities().find(ma => ma.activity.id === this.activity().id) ?? null);
+  readonly myActivityEntry = computed(() => this.myActivities().find(ma => ma.activity.id === this.activity().id) ?? null);
+
+  /** Rôle de l'utilisateur sur cette activité (TEACHER / STUDENT), null si non inscrit */
+  readonly activityRole = computed(() => this.myActivityEntry()?.role ?? null);
+
+  /** True si la card est cliquable (inscrit APPROVED ou admin du club) */
+  readonly isClickable = computed(() => this.isEnrolled() || this.userRole() === 'ADMIN');
 
   onCardClick(): void {
-    if (!this.isEnrolled()) return;
+    if (!this.isClickable()) return;
     const clubId = this.route.snapshot.paramMap.get('id');
-    this.router.navigate(
-      ['/club', clubId, 'my-activities'],
-      { fragment: `activity-${this.activity().id}` }
-    );
+    this.router.navigate(['/club', clubId, 'my-activities', this.activity().id]);
+  }
+
+  leave(): void {
+    const entry = this.myActivityEntry();
+    if (!entry) return;
+    if (!confirm(`Quitter l'activité "${this.activity().name}" ?`)) return;
+    this.myActivitiesService.leaveActivity(entry.id).subscribe({
+      next: () => { this.toast.success('Vous avez quitté cette activité.'); this.joined.emit(); },
+      error: () => this.toast.error('Erreur lors de la désinscription.'),
+    });
   }
 
   join(): void {

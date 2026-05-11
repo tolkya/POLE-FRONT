@@ -1,21 +1,21 @@
 import { Component, inject, OnInit, signal, computed, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MyActivitiesService } from '../../../../core/services/my-activities.service';
-import { LevelsService } from '../../../../core/services/levels.service';
-import { SkillsService } from '../../../../core/services/skills.service';
-import { SkillMediaTutosService } from '../../../../core/services/skill-media-tutos.service';
-import { UserClubsService } from '../../../../core/services/user-clubs.service';
-import { AuthService } from '../../../../core/services/auth.service';
-import { Level } from '../../../../core/models/level.model';
-import { Skill, SkillMediaTuto } from '../../../../core/models/skill.model';
-import { MyActivity } from '../../../../core/models/user-activity.model';
+import { MyActivitiesService } from '../../../core/services/my-activities.service';
+import { LevelsService } from '../../../core/services/levels.service';
+import { SkillsService } from '../../../core/services/skills.service';
+import { SkillMediaTutosService } from '../../../core/services/skill-media-tutos.service';
+import { UserClubsService } from '../../../core/services/user-clubs.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { Level } from '../../../core/models/level.model';
+import { Skill, SkillMediaTuto } from '../../../core/models/skill.model';
+import { MyActivity } from '../../../core/models/user-activity.model';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { LevelFormDialog } from './level-form-dialog/level-form-dialog';
 import { SkillFormDialog } from './skill-form-dialog/skill-form-dialog';
 import { EnrollmentsDialog } from './enrollments-dialog/enrollments-dialog';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-activity-detail',
@@ -355,12 +355,8 @@ export class ActivityDetail implements OnInit {
       this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe({
         next: () => load(),
         error: () => {
-          if (this.isAdmin()) {
-            load(); // l'admin n'a pas besoin d'être inscrit
-          } else {
-            this.loading.set(false);
-            this.router.navigate(['/club', this.clubId(), 'my-activities']);
-          }
+          this.loading.set(false);
+          this.router.navigate(['/club', this.clubId()]);
         },
       });
     } else {
