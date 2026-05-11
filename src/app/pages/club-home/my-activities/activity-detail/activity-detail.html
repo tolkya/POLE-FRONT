@@ -31,7 +31,7 @@
     <div class="activity-detail__loading">
       <i class="pi pi-spin pi-spinner"></i>
     </div>
-  } @else if (myActivityEntry()?.status !== 'APPROVED') {
+  } @else if (!isAdmin() && myActivityEntry()?.status !== 'APPROVED') {
     <div class="activity-detail__pending">
       @if (myActivityEntry()?.status === 'REJECTED') {
         <i class="pi pi-times-circle"></i>

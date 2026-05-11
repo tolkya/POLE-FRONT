@@ -355,8 +355,12 @@ export class ActivityDetail implements OnInit {
       this.myActivitiesService.fetchMyActivities(this.clubId()).subscribe({
         next: () => load(),
         error: () => {
-          this.loading.set(false);
-          this.router.navigate(['/club', this.clubId(), 'my-activities']);
+          if (this.isAdmin()) {
+            load(); // l'admin n'a pas besoin d'être inscrit
+          } else {
+            this.loading.set(false);
+            this.router.navigate(['/club', this.clubId(), 'my-activities']);
+          }
         },
       });
     } else {
