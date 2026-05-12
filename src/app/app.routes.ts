@@ -26,13 +26,8 @@ export const routes: Routes = [
     canActivate: [dashboardGuard],
   },
   {
-    path: 'club/:id/my-activities',
-    loadComponent: () => import('./pages/club-home/my-activities/my-activities').then((m) => m.MyActivities),
-    canActivate: [dashboardGuard],
-  },
-  {
     path: 'club/:id/my-activities/:activityId',
-    loadComponent: () => import('./pages/club-home/my-activities/activity-detail/activity-detail').then((m) => m.ActivityDetail),
+    loadComponent: () => import('./pages/club-home/activity-detail/activity-detail').then((m) => m.ActivityDetail),
     canActivate: [dashboardGuard],
   },
   {

@@ -135,11 +135,20 @@
   }
 
   &__badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
     font-size: $font-size-xs;
     font-weight: 600;
+    line-height: 1;
     padding: 0.2rem 0.6rem;
     border-radius: $radius-full;
+
+    .pi {
+      font-size: 0.8em;
+      line-height: 1;
+    }
 
     &--approved {
       background: #dcfce7;

@@ -7,6 +7,15 @@
 @use 'styles/auth';
 @use 'styles/club-theme';
 
+:root {
+  --color-bg: #f8f7f4;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f9fafb;
+  --color-border: #e5e7eb;
+  --color-text: #1a1a2e;
+  --color-text-muted: #6b7280;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }

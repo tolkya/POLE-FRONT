@@ -1,5 +1,5 @@
 <div class="activity-card"
-  [class.activity-card--clickable]="isEnrolled()"
+  [class.activity-card--clickable]="isClickable()"
   (click)="onCardClick()">
 
     <div class="activity-card__image">
@@ -20,9 +20,19 @@
           <span class="activity-card__new-tag">Nouveau</span>
         }
         @if (enrollmentStatus() === 'APPROVED') {
-          <span class="activity-card__badge activity-card__badge--approved">
-            <i class="pi pi-check"></i> Inscrit
-          </span>
+          @if (activityRole() === 'TEACHER') {
+            <span class="activity-card__badge activity-card__badge--approved">
+              <i class="pi pi-graduation-cap"></i> Enseignant
+            </span>
+          } @else {
+            <span class="activity-card__badge activity-card__badge--approved">
+              <i class="pi pi-check"></i> Élève
+            </span>
+          }
+          <button class="activity-card__action-btn activity-card__action-btn--leave"
+            (click)="$event.stopPropagation(); leave()" title="Quitter cette activité">
+            <i class="pi pi-sign-out"></i>
+          </button>
         } @else if (enrollmentStatus() === 'PENDING') {
           <span class="activity-card__badge activity-card__badge--pending">
             <i class="pi pi-clock"></i> En attente

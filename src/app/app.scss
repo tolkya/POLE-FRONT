@@ -23,6 +23,11 @@ $transition:        0.22s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
 }
 
+.app-public {
+  margin-top: $header-height;
+  min-height: calc(100vh - #{$header-height});
+}
+
 router-outlet {
   display: block;
 }
